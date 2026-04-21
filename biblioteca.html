@@ -6,31 +6,14 @@
   <title>Mi Biblioteca</title>
   <style>
     :root {
-      --bg: #0f0e0c;
-      --surface: #1a1814;
-      --card: #221f1a;
-      --border: #3a3530;
-      --text-primary: #f0ead8;
-      --text-secondary: #9e9585;
-      --text-muted: #5a5248;
-      --accent: #c8963e;
-      --accent-light: #e8b86d;
-      --accent-dim: rgba(200,150,62,0.15);
-      --reader-bg: #13120f;
-      --reader-text: #e8e0cc;
-      --radius: 16px;
+      --bg: #0f0e0c; --surface: #1a1814; --card: #221f1a; --border: #3a3530;
+      --text-primary: #f0ead8; --text-secondary: #9e9585; --text-muted: #5a5248;
+      --accent: #c8963e; --accent-light: #e8b86d; --accent-dim: rgba(200,150,62,0.15);
+      --reader-bg: #13120f; --reader-text: #e8e0cc; --radius: 16px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text-primary); font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif; min-height: 100vh; }
-
-    /* HEADER */
-    .app-header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(15,14,12,0.94);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: env(safe-area-inset-top, 12px) 24px 14px;
-    }
+    .app-header { position: sticky; top: 0; z-index: 100; background: rgba(15,14,12,0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: env(safe-area-inset-top, 12px) 24px 14px; }
     .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #c8963e, #e8b86d); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -38,25 +21,12 @@
     .logo-text span { font-size: 12px; color: var(--text-muted); }
     .btn-add { display: flex; align-items: center; gap: 7px; padding: 9px 18px; background: var(--accent); color: #1a1410; font-size: 14px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; white-space: nowrap; }
     .btn-add:active { opacity: 0.8; transform: scale(0.96); }
-
-    /* MAIN */
     .main { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
     .stats-bar { margin-bottom: 20px; font-size: 13px; color: var(--text-muted); }
-
-    /* GRID */
     .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
-
-    /* CARD */
-    .book-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden; cursor: pointer;
-      display: flex; flex-direction: column;
-      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    }
+    .book-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
     .book-card:active { transform: scale(0.97); }
-    @media (hover: hover) {
-      .book-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); border-color: var(--accent); }
-    }
+    @media (hover: hover) { .book-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); border-color: var(--accent); } }
     .card-cover { width: 100%; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 52px; position: relative; }
     .card-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.45)); }
     .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
@@ -66,8 +36,6 @@
     .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
     .card-date { font-size: 11px; color: var(--text-muted); }
     .card-read-btn { font-size: 12px; font-weight: 600; color: var(--accent); }
-
-    /* MODAL */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: flex-end; justify-content: center; }
     .modal-overlay.open { display: flex; }
     .modal-sheet { background: var(--surface); border: 1px solid var(--border); border-radius: 24px 24px 0 0; width: 100%; max-width: 640px; padding: 20px 24px 44px; animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
@@ -84,8 +52,6 @@
     .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
     .tag { background: var(--accent-dim); color: var(--accent-light); border-radius: 6px; padding: 3px 10px; font-size: 12px; }
     .modal-close { width: 100%; padding: 14px; background: var(--accent); color: #1a1410; font-size: 15px; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; margin-top: 16px; }
-
-    /* READER */
     .reader-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: var(--reader-bg); overflow-y: auto; -webkit-overflow-scrolling: touch; animation: fadeIn 0.2s ease; }
     .reader-overlay.open { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -100,7 +66,6 @@
     .reader-body { font-size: 17px; line-height: 1.85; color: var(--reader-text); }
     .reader-body p { margin-bottom: 20px; }
     .reader-body h2 { font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 36px 0 14px; letter-spacing: -0.3px; }
-    .reader-body h3 { font-size: 18px; font-weight: 600; color: var(--accent-light); margin: 28px 0 10px; }
     .reader-body blockquote { border-left: 3px solid var(--accent); padding: 4px 20px; margin: 24px 0; color: var(--text-secondary); font-style: italic; }
     .reader-body em { font-style: italic; }
   </style>
@@ -111,92 +76,77 @@
   <div class="header-inner">
     <div class="logo">
       <div class="logo-icon">📚</div>
-      <div class="logo-text">
-        <h1>Mi Biblioteca</h1>
-        <span>Historias a pedido</span>
-      </div>
+      <div class="logo-text"><h1>Mi Biblioteca</h1><span>Historias a pedido</span></div>
     </div>
     <button class="btn-add" onclick="openAddModal()">＋ Pedir historia</button>
   </div>
 </header>
 
 <main class="main">
-  <div class="stats-bar">3 historias</div>
+  <div class="stats-bar">4 historias</div>
   <div class="books-grid">
 
-    <!-- LIBRO 1: EL PRIMER DEPORTE -->
     <div class="book-card" onclick="openReader('deporte')">
-      <div class="card-cover" style="background: linear-gradient(135deg,#1a3a5c,#2d6a9f,#1a4a7a);">
-        <span style="position:relative;z-index:1">🏅</span>
-      </div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f,#1a4a7a)"><span style="position:relative;z-index:1">🏅</span></div>
       <div class="card-body">
         <span class="card-category">🏛️ Historia</span>
         <div class="card-title">El primer deporte: del instinto a la competencia</div>
         <div class="card-excerpt">¿Cuándo exactamente dejó el ser humano de correr para sobrevivir y empezó a correr para ganar? El fascinante relato de cómo el movimiento puro se convirtió en ritual, juego y competencia organizada.</div>
-        <div class="card-footer">
-          <span class="card-date">19 de abril, 2026</span>
-          <span class="card-read-btn">Leer →</span>
-        </div>
+        <div class="card-footer"><span class="card-date">19 de abril, 2026</span><span class="card-read-btn">Leer →</span></div>
       </div>
     </div>
 
-    <!-- LIBRO 2: GASTRONOMIA -->
     <div class="book-card" onclick="openReader('gastronomia')">
-      <div class="card-cover" style="background: linear-gradient(135deg,#3d1a0a,#8b3a0f,#c45e1a);">
-        <span style="position:relative;z-index:1">🔥</span>
-      </div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#3d1a0a,#8b3a0f,#c45e1a)"><span style="position:relative;z-index:1">🔥</span></div>
       <div class="card-body">
         <span class="card-category">🍽️ Cultura</span>
         <div class="card-title">La historia de la gastronomía</div>
         <div class="card-excerpt">Todo empezó con el fuego. Hace un millón de años, un ancestro nuestro acercó carne cruda a las brasas y cambió para siempre la historia de la humanidad.</div>
-        <div class="card-footer">
-          <span class="card-date">19 de abril, 2026</span>
-          <span class="card-read-btn">Leer →</span>
-        </div>
+        <div class="card-footer"><span class="card-date">19 de abril, 2026</span><span class="card-read-btn">Leer →</span></div>
       </div>
     </div>
 
-    <!-- LIBRO 3: CIUDADES -->
     <div class="book-card" onclick="openReader('ciudades')">
-      <div class="card-cover" style="background: linear-gradient(135deg,#0d1f2d,#1a3a4a,#2d5a6e);">
-        <span style="position:relative;z-index:1">🌆</span>
-      </div>
+      <div class="card-cover" style="background:linear-gradient(135deg,#0d1f2d,#1a3a4a,#2d5a6e)"><span style="position:relative;z-index:1">🌆</span></div>
       <div class="card-body">
         <span class="card-category">🏙️ Civilización</span>
         <div class="card-title">El origen de las ciudades</div>
         <div class="card-excerpt">Durante 200.000 años, el ser humano fue nómade. Luego, en un período brevísimo, decidió quedarse quieto. Construyó una casa, luego una calle, luego una ciudad.</div>
-        <div class="card-footer">
-          <span class="card-date">19 de abril, 2026</span>
-          <span class="card-read-btn">Leer →</span>
-        </div>
+        <div class="card-footer"><span class="card-date">19 de abril, 2026</span><span class="card-read-btn">Leer →</span></div>
+      </div>
+    </div>
+
+    <div class="book-card" onclick="openReader('ia')">
+      <div class="card-cover" style="background:linear-gradient(135deg,#0d0d1f,#1a1a4a,#2d2d8a)"><span style="position:relative;z-index:1">🤖</span></div>
+      <div class="card-body">
+        <span class="card-category">⚡ Tecnología</span>
+        <div class="card-title">La revolución que nadie vio venir</div>
+        <div class="card-excerpt">En junio de 2017, ocho ingenieros de Google publicaron un paper y siguieron con sus vidas. No sabían que acababan de encender la mecha de la mayor transformación tecnológica desde internet.</div>
+        <div class="card-footer"><span class="card-date">21 de abril, 2026</span><span class="card-read-btn">Leer →</span></div>
       </div>
     </div>
 
   </div>
 </main>
 
-<!-- MODAL PEDIR HISTORIA -->
 <div class="modal-overlay" id="addModal" onclick="if(event.target===this)closeAddModal()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">¿Querés una nueva historia?</div>
     <div class="modal-subtitle">Volvé a la sesión de Claude y pedila.</div>
     <div class="modal-steps">
-      <div class="modal-step"><div class="step-num">1</div><div class="step-text">Abrí <strong>Claude / Cowork</strong> en tu computadora o iPad.</div></div>
+      <div class="modal-step"><div class="step-num">1</div><div class="step-text">Abrí <strong>Claude / Cowork</strong>.</div></div>
       <div class="modal-step"><div class="step-num">2</div><div class="step-text">Decime: <strong>"Agregá a mi biblioteca la historia de [tema]"</strong></div></div>
-      <div class="modal-step"><div class="step-num">3</div><div class="step-text">Yo escribo la historia y actualizo <strong>biblioteca.html</strong>.</div></div>
-      <div class="modal-step"><div class="step-num">4</div><div class="step-text">Recargá esta página y aparece el nuevo libro. 🎉</div></div>
+      <div class="modal-step"><div class="step-num">3</div><div class="step-text">Yo la escribo y actualizo la web automáticamente. 🎉</div></div>
     </div>
     <div class="tag-list">
       <span class="tag">El jazz</span><span class="tag">El dinero</span><span class="tag">La escritura</span>
       <span class="tag">Los volcanes</span><span class="tag">El cine</span><span class="tag">La medicina</span>
-      <span class="tag">Los imperios</span><span class="tag">La aviación</span>
     </div>
     <button class="modal-close" onclick="closeAddModal()">Entendido</button>
   </div>
 </div>
 
-<!-- READER OVERLAY -->
 <div class="reader-overlay" id="readerOverlay">
   <div class="reader-header">
     <button class="reader-back" onclick="closeReader()">←</button>
@@ -205,61 +155,34 @@
   <div class="reader-content" id="readerContent"></div>
 </div>
 
-<!-- STORY DATA (hidden) -->
+<!-- STORY: DEPORTE -->
 <div id="story-deporte" style="display:none">
 <div class="reader-cat">🏛️ Historia</div>
 <h1 class="reader-title">El primer deporte: del instinto a la competencia</h1>
 <div class="reader-date">19 de abril, 2026</div>
 <span class="reader-emoji">🏅</span>
 <div class="reader-body">
-
 <h2>Antes del deporte, estaba el movimiento</h2>
 <p>Para entender cómo nació el deporte, hay que retroceder mucho más allá de los primeros estadios, mucho más allá incluso de las primeras civilizaciones. Hay que volver al momento en que un homínido en la sabana africana corría tras una presa, saltaba sobre un obstáculo o lanzaba una piedra con precisión mortal. En ese instante, sin saberlo, estaba ejecutando lo que millones de años después llamaríamos atletismo.</p>
 <p>El movimiento no es una invención cultural. Es biología. El cuerpo humano está diseñado para correr largas distancias, arrojar objetos con precisión, trepar, nadar, luchar. Los paleontólogos llaman a nuestra especie <em>Homo ergaster</em> — el hombre que trabaja — pero podría llamársela el primate atleta. Tenemos tendones de Aquiles elásticos para almacenar energía al correr. Glúteos enormes para estabilizarnos en carrera. Una capacidad de disipar calor mediante el sudor que supera a casi cualquier animal. Somos, en términos evolutivos, máquinas deportivas.</p>
 <p>Pero hay un momento preciso en que el movimiento funcional — correr para cazar, luchar para sobrevivir — se transformó en algo más. El momento en que alguien corrió no porque necesitara llegar a algún lado, sino para ver quién llegaba primero. Ese momento es el nacimiento del deporte.</p>
-
 <h2>La lucha: el deporte más antiguo del mundo</h2>
 <p>Si hay un consenso entre los historiadores del deporte, es este: la lucha cuerpo a cuerpo es probablemente el deporte más antiguo que existe. No requiere herramientas, no requiere un campo específico, no requiere reglas complejas. Sólo dos cuerpos midiendo fuerzas.</p>
-<p>Las evidencias arqueológicas son sorprendentes. En las cuevas de Lascaux, en Francia, pintadas hace aproximadamente 15.000 años, aparecen figuras que parecen estar luchando. En las cuevas de Wadi Sura, en el desierto de Libia, hay pinturas rupestres que datan de hace unos 6.000 años y muestran con claridad a dos figuras humanas en posición de lucha, con árbitros observando a los costados. Un árbitro. Hace seis mil años ya existía alguien cuya función era hacer cumplir las reglas.</p>
-<p>Pero ¿por qué luchar si no es para sobrevivir? Aquí entra algo fundamental en la psicología humana: la necesidad de establecer jerarquías. En cualquier grupo social, desde los lobos hasta los chimpancés, la posición en la manada importa. Determina quién come primero, quién se aparea, quién manda. En los humanos primitivos, esa jerarquía se establecía — entre otras cosas — midiendo la fuerza física. La lucha ceremonial, el combate ritualizado, era una forma de resolver conflictos sin matarse mutuamente. Era, en ese sentido, civilización en estado embrionario.</p>
-<p>Los sumerios, en Mesopotamia, ya practicaban la lucha libre hace más de 5.000 años. Se han encontrado estatuillas de bronce de aquella época que muestran a dos luchadores en clinch, con una técnica que cualquier entrenador de grappling reconocería. En el <em>Gilgamesh</em>, el poema épico sumerio que es uno de los textos más antiguos de la humanidad, hay una escena de lucha entre Gilgamesh y Enkidu que es, esencialmente, la descripción de un combate deportivo. Incluso tiene lo que podría interpretarse como un resultado de empate técnico: los dos son tan fuertes que se respetan mutuamente y se vuelven amigos.</p>
-
+<p>En las cuevas de Wadi Sura, en el desierto de Libia, hay pinturas rupestres que datan de hace unos 6.000 años y muestran con claridad a dos figuras humanas en posición de lucha, con árbitros observando a los costados. Un árbitro. Hace seis mil años ya existía alguien cuya función era hacer cumplir las reglas.</p>
+<p>Los sumerios, en Mesopotamia, ya practicaban la lucha libre hace más de 5.000 años. En el <em>Gilgamesh</em>, el poema épico sumerio que es uno de los textos más antiguos de la humanidad, hay una escena de lucha entre Gilgamesh y Enkidu que es, esencialmente, la descripción de un combate deportivo: los dos son tan fuertes que se respetan mutuamente y se vuelven amigos.</p>
 <h2>La carrera: cuando el tiempo empezó a importar</h2>
-<p>Si la lucha midió la fuerza, la carrera midió algo diferente y más efímero: la velocidad. Y con la velocidad llegó una idea que transformaría para siempre la naturaleza del deporte: el tiempo.</p>
-<p>Correr era, por supuesto, parte esencial de la vida humana antes de que existiera como deporte. Correr tras la presa. Correr huyendo del depredador. Correr para llevar mensajes entre campamentos. Pero en algún momento, alguien tuvo la idea de marcar un punto de partida y uno de llegada, y decidir que importaba quién llegaba primero. Ese momento es el origen de toda competencia deportiva tal como la conocemos.</p>
-<p>Los Juegos Olímpicos antiguos, celebrados desde el 776 a.C. en Olimpia, comenzaron con una única prueba: el <em>stadion</em>, una carrera de unos 192 metros — la longitud del estadio sagrado. Durante los primeros trece juegos, durante casi cincuenta años, eso era todo. Una sola carrera. El ganador era el hombre más rápido del mundo conocido, y su nombre quedaba grabado en piedra para siempre.</p>
-<p>¿Por qué empezar por la carrera? Porque en la Grecia antigua, la velocidad no era sólo atletismo: era una cualidad divina. Los dioses eran veloces. Hermes, el mensajero de los dioses, llevaba alas en los pies. Aquiles, el más grande de los guerreros, era conocido ante todo por su velocidad. Correr bien era estar, aunque sea por un instante, cerca de lo divino.</p>
-<p>El primer campeón olímpico registrado fue Corebo de Élide, en el año 776 a.C. Era, según las fuentes, un cocinero. No un noble, no un guerrero, no un aristócrata: un cocinero. Esto dice algo importante sobre la naturaleza del deporte desde sus orígenes. En la pista, lo que importaba no era el linaje sino el cuerpo. El deporte fue, desde el principio, una de las pocas arenas donde el mérito podía superar al origen.</p>
-
+<p>Los Juegos Olímpicos antiguos, celebrados desde el 776 a.C. en Olimpia, comenzaron con una única prueba: el <em>stadion</em>, una carrera de unos 192 metros. Durante los primeros trece juegos, durante casi cincuenta años, eso era todo. Una sola carrera. El ganador era el hombre más rápido del mundo conocido, y su nombre quedaba grabado en piedra para siempre.</p>
+<p>El primer campeón olímpico registrado fue Corebo de Élide, en el año 776 a.C. Era, según las fuentes, un cocinero. No un noble, no un guerrero: un cocinero. En la pista, lo que importaba no era el linaje sino el cuerpo. El deporte fue, desde el principio, una de las pocas arenas donde el mérito podía superar al origen.</p>
 <h2>El pentatlón: el primer deporte combinado</h2>
-<p>En el 708 a.C., los Juegos Olímpicos incorporaron una novedad revolucionaria: el pentatlón. Cinco pruebas en un solo evento: carrera, salto de longitud, lanzamiento de disco, lanzamiento de jabalina y lucha. El ganador no era necesariamente el más rápido, ni el más fuerte, ni el más preciso. Era el más completo.</p>
-<p>Este es un momento clave en la historia del deporte porque introduce una idea que todavía nos obsesiona: ¿qué significa ser el mejor atleta? ¿El que corre más rápido en 100 metros o el que puede hacer todo bien? El pentatlón griego es el padre del heptatlón y el decatlón modernos, pero también es el antepasado filosófico del debate eterno entre especialización y versatilidad.</p>
-<p>El <em>Discóbolo</em> de Mirón, la famosa escultura del siglo V a.C., congela ese instante de tensión perfecta entre el cuerpo en movimiento y el objeto a punto de ser liberado. Es una de las imágenes más reproducidas de la historia del arte, y también una de las representaciones más precisas del ideal deportivo griego: el cuerpo humano en el límite de su posibilidad, convertido en belleza.</p>
-
-<h2>Cuando el juego se volvió colectivo: el juego de pelota maya</h2>
-<p>Hasta aquí hemos hablado de deportes individuales. Pero ¿cuándo comenzaron los deportes en equipo? ¿Cuándo dos grupos de personas decidieron que era más interesante competir en conjunto?</p>
-<p>La respuesta más antigua que tenemos viene de Mesoamérica. El juego de pelota mesoamericano — conocido en náhuatl como <em>tlachtli</em> o <em>pok-ta-pok</em> en maya — tiene una antigüedad de al menos 3.500 años. Las canchas más antiguas datan del 1400 a.C. Para cuando los aztecas construyeron Tenochtitlan, había más de mil canchas de juego de pelota en toda Mesoamérica.</p>
-<p>El juego enfrentaba a dos equipos. Una pelota maciza de caucho — que podía pesar hasta cuatro kilos — debía mantenerse en movimiento usando sólo las caderas, los codos y las rodillas. Las manos y los pies estaban prohibidos. Había aros de piedra en las paredes laterales; hacerla pasar por uno era un logro tan difícil que, según algunas fuentes, quien lo lograba tenía derecho a quedarse con la ropa de los espectadores.</p>
-<p>El juego tenía dimensiones rituales y cosmológicas profundas. En algunos contextos, terminaba con un sacrificio. Lo fascinante es que los historiadores todavía debaten si el sacrificado era el equipo perdedor o el ganador — algunas interpretaciones sugieren que era el ganador, considerándose un honor supremo. Sea como fuera, el juego de pelota mesoamericano es la primera evidencia clara de un deporte de equipo organizado con reglas complejas y canchas específicamente construidas.</p>
-
-<h2>El estadio como invención social</h2>
-<p>Uno de los aspectos más subestimados del origen del deporte es la invención del espacio específico para el espectáculo. El estadio es una de las grandes invenciones de la historia humana. El estadio de Olimpia podía albergar a unos 45.000 espectadores, la mayoría sentados en las laderas naturales que rodeaban la pista. Estaba diseñado para que la mayor cantidad posible de personas pudiera seguir la competencia de principio a fin.</p>
-<p>Esta idea — que el deporte no es sólo para los que participan sino para los que observan — es fundamental. El espectador no es un accidente del deporte; es parte constitutiva de él. Sin público, el deporte pierde una dimensión esencial. La presión de ser visto transforma la naturaleza misma del esfuerzo.</p>
-<p>El Circo Máximo romano llevó esta idea a su extremo. Con capacidad para entre 150.000 y 250.000 espectadores — más que cualquier estadio moderno — era un espacio donde el deporte era espectáculo masivo, casi litúrgico. Las carreras de cuadrigas eran el deporte-rey de Roma, y los aurigas sus primeras estrellas globales: famosos, ricos, objeto de fervor popular que rozaba la idolatría.</p>
-
-<h2>Del caos a la regla: cómo nació la reglamentación moderna</h2>
-<p>Un deporte sin reglas no es deporte: es caos. El proceso de codificación fue uno de los pasos más importantes en la historia del deporte, y ocurrió muchas veces, en muchos lugares.</p>
-<p>En la Grecia antigua, las reglas olímpicas eran simples pero absolutas. Los árbitros, los <em>hellanodikai</em>, tenían poder absoluto. Sus decisiones no podían apelarse. Pero fue en la Inglaterra del siglo XIX donde la reglamentación deportiva moderna nació de manera sistemática. Las escuelas privadas inglesas — Eton, Harrow, Rugby — practicaban formas distintas y caóticas de fútbol, cada una con sus propias reglas. Cuando sus egresados llegaban a las universidades y querían jugar entre sí, era imposible.</p>
-<p>La solución llegó el 26 de octubre de 1863, en una taberna de Londres. Representantes de varios clubes fundaron la Football Association y redactaron las primeras reglas unificadas del fútbol moderno. La principal controversia: ¿se podía usar la mano? Los que dijeron que sí se fueron a fundar el rugby. Los que dijeron que no crearon el fútbol. De ese desacuerdo fundamental nació la distinción más importante en la historia del deporte moderno.</p>
-
+<p>En el 708 a.C., los Juegos Olímpicos incorporaron el pentatlón: carrera, salto de longitud, lanzamiento de disco, lanzamiento de jabalina y lucha. El ganador no era el más rápido, ni el más fuerte, ni el más preciso. Era el más completo. Este es un momento clave porque introduce una idea que todavía nos obsesiona: ¿qué significa ser el mejor atleta?</p>
+<h2>El juego de pelota maya: el primer deporte de equipo</h2>
+<p>El juego de pelota mesoamericano tiene una antigüedad de al menos 3.500 años. Enfrentaba a dos equipos. Una pelota maciza de caucho debía mantenerse en movimiento usando sólo las caderas, los codos y las rodillas. Para cuando los aztecas construyeron Tenochtitlan, había más de mil canchas de juego en toda Mesoamérica. Es la primera evidencia clara de un deporte de equipo organizado con reglas complejas y espacios específicamente construidos.</p>
+<h2>Del caos a la regla: la codificación moderna</h2>
+<p>El 26 de octubre de 1863, en una taberna de Londres, representantes de varios clubes fundaron la Football Association y redactaron las primeras reglas unificadas del fútbol moderno. La principal controversia: ¿se podía usar la mano? Los que dijeron que sí fundaron el rugby. Los que dijeron que no crearon el fútbol. De ese desacuerdo fundamental nació la distinción más importante en la historia del deporte moderno.</p>
 <h2>La competencia como espejo de la condición humana</h2>
-<p>¿Por qué competimos? La pregunta parece tener respuestas obvias — para ganar, para demostrar quién es mejor — pero es mucho más compleja. Los psicólogos del deporte han identificado múltiples motivaciones: búsqueda de reconocimiento social, necesidad de medir el propio progreso, placer intrínseco del esfuerzo, pertenencia a un grupo, búsqueda de estados alterados de conciencia que el esfuerzo extremo produce.</p>
-<p>Lo interesante es que estas motivaciones son tan antiguas como el deporte mismo. El atleta griego que competía en Olimpia buscaba la gloria: el <em>kleos</em>, esa fama que trasciende la muerte. El guerrero medieval buscaba reconocimiento social. El niño que reta a sus amigos a una carrera en el recreo busca exactamente lo mismo que buscaba Corebo de Élide hace 2.800 años: saber dónde está parado en relación con los demás.</p>
 <p>Cuando Roger Bannister rompió la barrera de los cuatro minutos en la milla, en 1954, el mundo entero prestó atención no porque hubiera derrotado a alguien en particular, sino porque había demostrado que algo que se creía imposible era posible. Ese mismo asombro — ¿hasta dónde puede llegar el cuerpo humano? — es el que hace que la gente se siente hoy a ver los 100 metros planos en los Juegos Olímpicos.</p>
-<p>El deporte nació del instinto de supervivencia y se convirtió en una de las expresiones más sofisticadas de la civilización humana. De la lucha ritual en las cuevas de Libia a los Juegos Olímpicos modernos, de los campos de pelota mayas al Camp Nou, la línea es directa. Seguimos corriendo, saltando, lanzando y luchando. Ya no porque nuestra vida dependa de ello. Porque en ese esfuerzo encontramos algo que todavía no sabemos nombrar del todo bien: la sensación de estar completamente vivos.</p>
-
+<p>El deporte nació del instinto de supervivencia y se convirtió en una de las expresiones más sofisticadas de la civilización humana. Seguimos corriendo, saltando, lanzando y luchando. Ya no porque nuestra vida dependa de ello. Porque en ese esfuerzo encontramos la sensación de estar completamente vivos.</p>
 <blockquote>"En todos nosotros hay un niño que corre, un guerrero que compite, un dios que quiere tocar el límite de lo posible. El deporte es la civilización de ese impulso."</blockquote>
-
 </div>
 </div>
 
@@ -270,52 +193,21 @@
 <div class="reader-date">19 de abril, 2026</div>
 <span class="reader-emoji">🔥</span>
 <div class="reader-body">
-
 <h2>El fuego: la primera revolución culinaria</h2>
-<p>Antes de hablar de gastronomía, hay que hablar de la transformación más importante en la historia de la alimentación humana, y quizás de toda la evolución de nuestra especie: el descubrimiento de cocinar con fuego.</p>
-<p>Los paleontólogos y los antropólogos debaten las fechas exactas, pero la evidencia más sólida sugiere que el <em>Homo erectus</em> ya cocinaba alimentos hace aproximadamente un millón de años. En el yacimiento de Wonderwerk, en Sudáfrica, se encontraron restos de huesos quemados y cenizas que datan de esa época. La pregunta no es sólo cuándo ocurrió, sino qué significó.</p>
-<p>El biólogo Richard Wrangham, de Harvard, propuso en su libro <em>Catching Fire</em> una hipótesis fascinante: cocinar los alimentos fue lo que nos hizo humanos. No al revés. Antes de cocinar, nuestros ancestros pasaban gran parte del día masticando alimentos crudos duros y fibrosos, igual que los chimpancés actuales. La cocción ablandó los alimentos, los hizo más digestibles, permitió extraer muchas más calorías del mismo alimento, y liberó horas de masticación que pudieron dedicarse a otras actividades. El resultado fue una presión evolutiva hacia cerebros más grandes y tractos digestivos más pequeños. Cocinamos, y en el proceso nos volvimos más inteligentes.</p>
-<p>Esta es la primera revolución culinaria: el fuego. Y es también el momento fundacional de la gastronomía. Porque cocinar no es sólo calentar: es transformar. Es aplicar conocimiento, experiencia y creatividad a los ingredientes crudos del mundo. Desde esa primera chuleta asada sobre las brasas, el ser humano nunca dejó de experimentar con la comida.</p>
-
-<h2>Las primeras cocinas del mundo: Mesopotamia y Egipto</h2>
-<p>Cuando las primeras civilizaciones sedentarias surgieron en el Creciente Fértil, la gastronomía dio su segundo gran salto. La agricultura, que comenzó hace unos 10.000 años, no sólo cambió cómo nos alimentábamos: cambió quiénes éramos. Por primera vez, los seres humanos produjeron más alimento del que necesitaban para sobrevivir de inmediato. Eso significó algo revolucionario: el almacenamiento. Y el almacenamiento significó fermentación.</p>
-<p>Los sumerios, en Mesopotamia, producían al menos diecinueve variedades de cerveza y ocho de vino ya en el año 3000 a.C. Esto no era simple borrachera: la cerveza tenía valor nutritivo, era más segura que el agua en muchos contextos, y tenía un rol social y ritual fundamental. Las tablillas de arcilla sumerias incluyen recetas de pan y cerveza. La gastronomía escrita — la idea de que una preparación merecía ser registrada — tiene al menos cinco mil años.</p>
-<p>En el antiguo Egipto, la comida era tan importante que la gente se la llevaba a la tumba. En las tumbas de nobles y faraones se han encontrado vasijas con cerveza, pan, higos, dátiles, carne seca y aceite de oliva, destinados a nutrir al difunto en el más allá. Las pinturas en las paredes de las tumbas muestran banquetes, cacerías, jardines llenos de higueras y viñas. Para los egipcios, el paraíso no era abstracto: era un festín interminable.</p>
-<p>Los egipcios también desarrollaron la panadería a un nivel notable. Se han encontrado restos de más de cuarenta tipos diferentes de pan en contextos arqueológicos egipcios: panes con semillas, con miel, con especias, panes rituales con formas de animales. El pan no era solo alimento: era moneda de cambio, símbolo de estatus, ofrenda a los dioses.</p>
-
-<h2>Grecia y Roma: cuando comer se volvió arte y política</h2>
-<p>Los griegos antiguos fueron los primeros en teorizar sobre la comida como algo más que sustento. Para ellos, el banquete — el <em>symposion</em> — era una institución filosófica y política. No era simplemente cenar; era el espacio donde se discutía, se debatía, se hacía poesía y se formaban alianzas. Platón escribió un diálogo entero — el <em>Banquete</em> — que transcurre durante un simposio ateniense y trata sobre la naturaleza del amor. La comida era el contexto y el escenario de la vida intelectual.</p>
-<p>Arquestrato de Gela, del siglo IV a.C., escribió <em>Hedypatheia</em> (La vida del placer), considerado el primer libro de gastronomía de la historia occidental. Era un poema épico sobre la comida: los mejores pescados de cada mar, los mejores panes de cada ciudad, los mejores vinos de cada isla. Era, en esencia, una guía Michelin de la Antigüedad.</p>
-<p>Roma llevó la gastronomía a extremos que todavía fascinan y perturban. Marco Gavio Apicio, gastrónomo romano del siglo I d.C., dejó el recetario más famoso de la Antigüedad — el <em>De Re Coquinaria</em> — con preparaciones que incluyen lenguas de flamenco, sesos de loro y ubres de cerda. Apicio, según cuentan, se suicidó cuando su fortuna se redujo a solo diez millones de sestercios, considerando que esa suma era insuficiente para seguir viviendo como era su costumbre.</p>
-<p>Pero Roma también democratizó la comida. Las <em>thermopolia</em> — establecimientos de comida callejera donde se vendía comida caliente a través de una barra — eran el equivalente romano de un local de comida rápida. En Pompeya, conservada bajo la ceniza del Vesubio en el año 79 d.C., se han encontrado más de 150 thermopolia. Los apartamentos pequeños generalmente no tenían cocina propia: el romano urbano comía fuera de casa con enorme regularidad.</p>
-
+<p>La evidencia más sólida sugiere que el <em>Homo erectus</em> ya cocinaba alimentos hace aproximadamente un millón de años. El biólogo Richard Wrangham propuso una hipótesis fascinante: cocinar los alimentos fue lo que nos hizo humanos. La cocción ablandó los alimentos, los hizo más digestibles, permitió extraer muchas más calorías, y liberó horas de masticación que pudieron dedicarse a otras actividades. El resultado fue una presión evolutiva hacia cerebros más grandes. Cocinamos, y en el proceso nos volvimos más inteligentes.</p>
+<h2>Mesopotamia y Egipto: las primeras cocinas del mundo</h2>
+<p>Los sumerios producían al menos diecinueve variedades de cerveza y ocho de vino ya en el año 3000 a.C. Las tablillas de arcilla sumerias incluyen recetas de pan y cerveza. La gastronomía escrita tiene al menos cinco mil años. En el antiguo Egipto, la comida era tan importante que la gente se la llevaba a la tumba: vasijas con cerveza, pan, higos, dátiles, carne seca. Para los egipcios, el paraíso no era abstracto: era un festín interminable.</p>
+<h2>Grecia y Roma: cuando comer se volvió arte</h2>
+<p>Para los griegos, el banquete — el <em>symposion</em> — era una institución filosófica. Platón escribió un diálogo entero que transcurre durante un simposio. Arquestrato de Gela escribió <em>Hedypatheia</em> en el siglo IV a.C., considerado el primer libro de gastronomía de la historia occidental. Roma, por su parte, inventó las <em>thermopolia</em> — el equivalente romano de la comida rápida — con más de 150 locales encontrados solo en Pompeya.</p>
 <h2>Las especias: el comercio que cambió el mundo</h2>
-<p>Pocos capítulos de la historia de la gastronomía son tan dramáticos como el del comercio de especias. Durante más de mil años, la pimienta, la canela, el clavo, la nuez moscada y el cardamomo fueron literalmente más valiosos que el oro. Y esa valoración cambió la forma del mundo.</p>
-<p>Las especias venían de lugares remotos y exóticos: las islas Molucas (las "islas de las especias", hoy parte de Indonesia), la India, Sri Lanka. Llegaban a Europa a través del mundo árabe y Venecia, que monopolizó durante siglos ese comercio. Ese monopolio veneciano fue precisamente lo que motivó a Portugal y España a buscar rutas alternativas. Vasco da Gama dobló el Cabo de Buena Esperanza en 1498 buscando llegar directamente a las especias. Cristóbal Colón cruzó el Atlántico en 1492 buscando lo mismo, aunque llegó a otro lado.</p>
-<p>La gastronomía — o más precisamente, el deseo de especias — está directamente relacionada con el descubrimiento de América y la globalización del mundo moderno. Cuando los españoles llegaron a América, encontraron productos que transformarían la cocina mundial para siempre: el tomate, el maíz, la papa, el cacao, el chile, la vainilla, el pavo. Ninguno de estos ingredientes existía en Europa, Asia o África antes de 1492. Hoy es imposible imaginar la cocina italiana sin tomate, la cocina india sin chile, la cocina irlandesa sin papa. El intercambio colombino fue la mayor revolución gastronómica de los últimos 500 años.</p>
-
-<h2>La Edad Media: el festín como poder</h2>
-<p>En la Europa medieval, la comida era una declaración política casi tan elocuente como un ejército. Los banquetes en los castillos no eran simplemente cenas: eran demostraciones de poder, rituales de jerarquía social. La cantidad de platos, la rareza de los ingredientes, la presencia de especias exóticas: todo comunicaba el rango del anfitrión.</p>
-<p>Un banquete real del siglo XIV podía incluir decenas de platos en sucesión, con animales enteros — ciervos, jabalíes, cisnes, pavos reales — reconstituidos con su plumaje y presentados como si estuvieran vivos. El <em>entremets</em> era una suerte de espectáculo culinario donde los cocineros demostraban su ingenio: castillos de azúcar, animales de pasta, fuentes de vino que brotaban de figuras alegóricas.</p>
-<p>Los monasterios medievales, por su parte, fueron los guardianes de la cocina sofisticada durante los siglos oscuros. Los monjes tenían acceso a hierbas, especias y técnicas que el resto de la población no conocía. Muchos de los quesos, vinos y licores más famosos de Europa — el champagne, el benedictine, el chartreuse, el roquefort — tienen origen en la tradición monástica medieval.</p>
-
+<p>Durante más de mil años, la pimienta, la canela y el clavo fueron literalmente más valiosos que el oro. El monopolio veneciano sobre ese comercio fue lo que motivó a Portugal y España a buscar rutas alternativas. Vasco da Gama dobló el Cabo de Buena Esperanza en 1498. Colón cruzó el Atlántico en 1492. La gastronomía — el deseo de especias — está directamente relacionada con el descubrimiento de América. Los españoles encontraron el tomate, el maíz, la papa, el cacao, el chile, la vainilla. Hoy es imposible imaginar la cocina italiana sin tomate, la india sin chile, la irlandesa sin papa.</p>
 <h2>Francia: cuando la cocina se convirtió en ciencia</h2>
-<p>Si hay un momento en que la gastronomía occidental se codifica, ese momento ocurre en Francia entre los siglos XVII y XIX. En 1651, François Pierre de La Varenne publicó <em>Le Cuisinier François</em>, el libro de cocina más influyente del siglo XVII. Lo que hizo La Varenne fue sistematizar la cocina francesa: establecer técnicas de base (los fondos, las salsas madre, el <em>roux</em>), racionalizar los ingredientes, y sentar las bases de lo que llegaría a llamarse la <em>haute cuisine</em>.</p>
-<p>Un siglo después, Marie-Antoine Carême — "el rey de los cocineros y el cocinero de los reyes" — llevó ese proceso a su punto máximo. Carême cocinó para Napoleón, para el Zar de Rusia, para el Príncipe Regente de Inglaterra. Pero su legado más duradero no fueron sus festines, sino sus libros. En ellos codificó las cinco salsas madre de la cocina francesa, estableció el sistema de brigada de cocina, y básicamente escribió el manual que definiría la alta cocina occidental por los siguientes 150 años.</p>
-<p>El siglo XIX vio además otro hito fundamental: la invención del restaurante tal como lo conocemos. El restaurante moderno — con menú escrito, mesas individuales, servicio a la carta — nació en París. La Revolución Francesa contribuyó paradójicamente a esto: al quedar sin empleo en las casas de la nobleza guillotinada, muchos cocineros refinados abrieron sus propios establecimientos. El saber culinario de las élites se democratizó, lenta pero inexorablemente.</p>
-
-<h2>El siglo XX: la industrialización, el fast food y la reacción</h2>
-<p>La Revolución Industrial transformó la producción y el consumo de alimentos de maneras que todavía vivimos. La conserva enlatada, inventada para alimentar a los ejércitos napoleónicos, cambió la relación del ser humano con la estacionalidad. La pasteurización hizo que la leche pudiera transportarse. La refrigeración doméstica, masificada en el siglo XX, cambió los hábitos de compra y cocina de millones de personas.</p>
-<p>Y luego llegó el fast food. El 20 de mayo de 1940, en San Bernardino, California, los hermanos Dick y Mac McDonald abrieron su primer restaurante. En 1948, simplificaron el menú y rediseñaron el proceso de producción aplicando los principios de la línea de montaje fordista a la cocina. El resultado fue comida rápida, uniforme, barata y enormemente popular. Ray Kroc, un vendedor de máquinas de batidos, los convenció de franquiciar el modelo. Para 1960, había más de doscientos McDonald's en Estados Unidos.</p>
-<p>La reacción llegó de Italia, en 1989, cuando Carlo Petrini fundó el movimiento Slow Food en respuesta a la apertura de un McDonald's en la Piazza di Spagna de Roma. El Slow Food propone exactamente lo contrario: valorar la tradición, los productores locales, la biodiversidad alimentaria, el placer pausado de comer. La tensión entre fast food y Slow Food es el conflicto central de la gastronomía del siglo XXI.</p>
-
-<h2>La nueva cocina: cuando la ciencia entró en los fogones</h2>
-<p>A finales del siglo XX, una generación de cocineros empezó a hacerse preguntas que nadie había formulado antes: ¿por qué el soufflé sube? ¿Qué le pasa exactamente a la proteína del huevo cuando la calentamos? ¿Se puede hacer un helado de foie gras? ¿Se puede convertir el aceite de oliva en polvo?</p>
-<p>Ferran Adrià, en su restaurante El Bulli en la Costa Brava catalana, llevó estas preguntas a su límite lógico. Las esferificaciones (líquidos convertidos en esferas que estallan en la boca), las espumas, los geles. El Bulli fue elegido el mejor restaurante del mundo cinco veces. Tenía lista de espera de dos años. Adrià cerró el restaurante en 2011, en el cénit de su fama, para convertirlo en un centro de investigación.</p>
-<p>Hoy, la gastronomía global es una conversación entre todas estas tradiciones y revoluciones. La cocina peruana, la japonesa, la mexicana y la india han ganado un reconocimiento mundial que antes se reservaba a la francesa. El fermentado ha vuelto como práctica ancestral y vanguardista al mismo tiempo. Los chefs se piensan a sí mismos como artistas, científicos, activistas medioambientales. Y en algún lugar del mundo, ahora mismo, alguien está acercando algo al fuego y, sin saberlo, repitiendo el gesto fundacional de nuestra especie.</p>
-
-<blockquote>"Dime lo que comes y te diré quién eres." — Jean Anthelme Brillat-Savarin, Fisiología del gusto, 1825</blockquote>
-
+<p>En 1651, François Pierre de La Varenne publicó <em>Le Cuisinier François</em>, el libro de cocina más influyente del siglo XVII. Un siglo después, Marie-Antoine Carême — "el rey de los cocineros y el cocinero de los reyes" — cocinó para Napoleón, el Zar de Rusia y el Príncipe de Inglaterra. Codificó las cinco salsas madre de la cocina francesa y estableció el sistema de brigada de cocina que todavía se usa hoy.</p>
+<h2>El fast food y la reacción</h2>
+<p>El 20 de mayo de 1940, los hermanos McDonald abrieron su primer restaurante en California. Para 1960, había más de doscientos McDonald's en Estados Unidos. La reacción llegó de Italia en 1989, cuando Carlo Petrini fundó el movimiento Slow Food frente a la apertura de un McDonald's en la Piazza di Spagna de Roma. La tensión entre fast food y Slow Food es el conflicto central de la gastronomía del siglo XXI.</p>
+<h2>La nueva cocina</h2>
+<p>Ferran Adrià, en su restaurante El Bulli en la Costa Brava, inventó la cocina molecular: esferificaciones, espumas, geles. El Bulli fue elegido el mejor restaurante del mundo cinco veces. Lo cerró en 2011, en el cénit de su fama, para convertirlo en un centro de investigación. Y en algún lugar del mundo, ahora mismo, alguien está acercando algo al fuego y repitiendo el gesto fundacional de nuestra especie.</p>
+<blockquote>"Dime lo que comes y te diré quién eres." — Jean Anthelme Brillat-Savarin, 1825</blockquote>
 </div>
 </div>
 
@@ -326,57 +218,60 @@
 <div class="reader-date">19 de abril, 2026</div>
 <span class="reader-emoji">🌆</span>
 <div class="reader-body">
-
 <h2>Doscientos mil años de movimiento</h2>
-<p>Para comprender la magnitud de lo que significó la invención de la ciudad, primero hay que apreciar cuánto tiempo pasó sin ella. El <em>Homo sapiens</em> surgió en África hace aproximadamente 300.000 años. Durante casi toda su existencia — al menos 290.000 años — nuestra especie fue nómade. Vivíamos en grupos pequeños de entre veinte y cincuenta personas, moviéndonos constantemente en busca de caza, frutos silvestres, agua. No teníamos posesiones que no pudiéramos cargar. No teníamos documentos, no teníamos fronteras, no teníamos impuestos.</p>
-<p>Este modo de vida era en muchos sentidos extraordinariamente sofisticado. Los cazadores-recolectores conocían profundamente el territorio que habitaban: sabían cuándo florece cada planta, dónde duermen los animales en cada estación, cómo predecir el clima. El antropólogo Marshall Sahlins llamó a los cazadores-recolectores "la primera sociedad de la abundancia": trabajaban mucho menos horas que los agricultores posteriores, tenían una dieta más variada y nutritiva.</p>
-<p>Entonces, ¿por qué quedarse quieto? ¿Por qué renunciar a esa libertad de movimiento, a esa ligereza de quien no posee nada que no pueda llevar en la espalda? La respuesta, como casi siempre en la historia humana, es compleja y multicausal. Pero empieza con una planta.</p>
-
+<p>El <em>Homo sapiens</em> surgió hace aproximadamente 300.000 años. Durante casi toda su existencia — al menos 290.000 años — nuestra especie fue nómade. Vivíamos en grupos pequeños de entre veinte y cincuenta personas, moviéndonos constantemente. El antropólogo Marshall Sahlins llamó a los cazadores-recolectores "la primera sociedad de la abundancia": trabajaban menos horas que los agricultores posteriores y tenían una dieta más variada. ¿Por qué entonces quedarse quieto?</p>
 <h2>La revolución neolítica: cuando el trigo nos atrapó</h2>
-<p>Hace aproximadamente 11.000 años, en la región del Creciente Fértil — el arco que hoy incluye partes de Turquía, Siria, Líbano, Israel, Jordania, Irak e Irán — algo extraordinario comenzó a ocurrir. Los seres humanos empezaron a cultivar plantas de manera sistemática y deliberada. La cebada y el trigo silvestre ya existían en esa región; los cazadores-recolectores los recolectaban desde hacía siglos. Pero en algún momento, alguien empezó a guardar semillas, a sembrarlas, a cuidar las plantas y a cosecharlas.</p>
-<p>El historiador Yuval Noah Harari propone una perspectiva provocadora: no fuimos nosotros quienes domesticamos al trigo. Fue el trigo quien nos domesticó a nosotros. Antes de la agricultura, había quizás unos pocos miles de plantas de trigo silvestre en el mundo. Hoy hay 225 millones de hectáreas de trigo cultivado en todos los continentes. El trigo es una de las especies más exitosas del planeta. ¿Y qué consiguió a cambio? Que millones de seres humanos pasaran sus vidas labrando la tierra para que creciera.</p>
-<p>Sea como fuera, la agricultura trajo consigo algo inevitable: la sedentarización. No tiene sentido plantar un campo y marcharse antes de la cosecha. Si vas a cultivar la tierra, tienes que quedarte junto a ella. Y si te quedas, necesitas un lugar estable para dormir, para guardar las semillas, para proteger la cosecha. Necesitas una casa. Y si hay casas, hay una aldea. Y si hay una aldea, hay vecinos. Y si hay vecinos, hay problemas que resolver en común. Y si hay problemas comunes, hay política.</p>
-
+<p>Hace aproximadamente 11.000 años, en el Creciente Fértil, los seres humanos empezaron a cultivar plantas de manera sistemática. Yuval Noah Harari propone una perspectiva provocadora: no fuimos nosotros quienes domesticamos al trigo. Fue el trigo quien nos domesticó. Hoy hay 225 millones de hectáreas de trigo en todos los continentes. ¿Y qué consiguió? Que millones de personas pasaran sus vidas labrando la tierra para que creciera.</p>
 <h2>Çatalhöyük: la ciudad sin calles</h2>
-<p>En el año 7500 a.C., en la llanura de Anatolia central (en la actual Turquía), existía un asentamiento que nos fascina todavía hoy: Çatalhöyük. Tenía entre 5.000 y 10.000 habitantes — una concentración humana enorme para la época. Sus casas estaban construidas en adobe, pegadas unas a otras sin ningún espacio entre ellas.</p>
-<p>No había calles: la gente se movía por los techos y entraba a las casas a través de agujeros en el techo, bajando por escaleras de madera. Las ventanas no existían. Era una ciudad-colmena, orgánica y laberíntica. Lo más extraordinario es lo que revela sobre la vida interior de sus habitantes: las paredes de muchas casas estaban cubiertas de pinturas con animales y figuras humanas. Los muertos eran enterrados debajo del piso de las casas — literalmente, los ancestros vivían bajo los pies de los vivos.</p>
-<p>Çatalhöyük no tenía jerarquía social visible: todas las casas son más o menos del mismo tamaño, no hay palacios ni templos separados. Era, en ese sentido, una ciudad radicalmente igualitaria. Fue abandonada hacia el 5700 a.C. por razones que todavía no entendemos del todo. El experimento de Çatalhöyük terminó.</p>
-
-<h2>Jericó y el misterio de las murallas más antiguas</h2>
-<p>Mientras Çatalhöyük florecía en Anatolia, en el valle del Jordán surgía otro de los asentamientos más antiguos del mundo: Jericó. Y Jericó tiene algo que Çatalhöyük no tenía: murallas.</p>
-<p>La famosa Torre de Jericó, construida hace unos 10.000 años, es la estructura de piedra más antigua que se conoce. Tiene nueve metros de altura y fue construida sin el uso de metal. ¿Para qué servía? Los arqueólogos debatieron décadas si era defensiva, religiosa o funcional. La teoría más reciente es que era un marcador social: una demostración de que esta comunidad era capaz de movilizar trabajo colectivo a gran escala. La torre no decía "podemos defendernos". Decía: "somos muchos, estamos organizados, y podemos hacer esto".</p>
-<p>Las murallas de Jericó plantean algo más profundo: la ciudad no es sólo un lugar donde vive mucha gente. Es también un lugar que se define por sus límites. Adentro y afuera. Ciudadanos y extranjeros. Protegidos y amenazados. La ciudad inventa, casi en el mismo momento en que nace, la noción de frontera.</p>
-
-<h2>Uruk: la primera gran ciudad de la historia</h2>
-<p>Si Çatalhöyük y Jericó son ensayos preliminares, Uruk es la primera ciudad en el sentido pleno de la palabra. Ubicada en el sur de Mesopotamia — en el actual Iraq — Uruk alcanzó su apogeo entre el 4000 y el 3100 a.C. con entre 40.000 y 80.000 habitantes dentro de sus murallas.</p>
-<p>Uruk no era simplemente grande: era cualitativamente diferente a cualquier cosa que hubiera existido antes. Tenía monumentos arquitectónicos de escala sin precedentes — el Templo Blanco se alzaba sobre una terraza artificial de doce metros de altura. Tenía especialización laboral avanzada: artesanos, sacerdotes, comerciantes, soldados, funcionarios. Tenía un sistema de irrigación complejo que requería coordinación a gran escala. Y tenía algo que cambiaría el mundo para siempre: escritura.</p>
-<p>La escritura cuneiforme surgió en Uruk hacia el 3200 a.C., no como expresión literaria sino como herramienta administrativa. Los primeros textos escritos de la historia son listas: cuántas raciones de cebada recibe cada trabajador, cuántas cabezas de ganado tiene el templo. La burocracia es anterior a la poesía. La ciudad creó la necesidad de registrar, y el registro creó la escritura.</p>
-<p>Uruk también nos dejó el <em>Poema de Gilgamesh</em>, considerado la primera gran obra literaria de la humanidad. Gilgamesh era, según la tradición, rey de Uruk. El poema cuenta su amistad con el hombre salvaje Enkidu, su búsqueda de la inmortalidad y su fracaso en encontrarla. Es la primera reflexión literaria sobre la condición humana. Y nació en una ciudad.</p>
-
-<h2>Alejandría, Chang'an y Teotihuacán</h2>
-<p>En el siglo I d.C., varias ciudades del mundo alcanzaban o superaban el millón de habitantes. Roma era la más grande del mundo occidental. Pero en otras partes surgían urbes igualmente impresionantes.</p>
-<p>Alejandría, fundada por Alejandro Magno en el 331 a.C. sobre la costa mediterránea de Egipto, fue durante siglos la capital intelectual del mundo antiguo. Su famosa Biblioteca aspiraba a contener todos los libros del mundo. Los grandes científicos de la Antigüedad tardía gravitaban hacia ella: Euclides, Eratóstenes (que calculó la circunferencia de la Tierra con notable precisión), Hipatia (la primera mujer matemática conocida).</p>
-<p>En China, Chang'an — hoy conocida como Xi'an — fue la ciudad más grande del mundo en la época de la dinastía Tang (siglos VII-X d.C.) con más de un millón de habitantes y era el nodo central de la Ruta de la Seda. En sus calles convivían mercaderes persas, embajadores japoneses, monjes budistas tibetanos, comerciantes árabes. Era cosmopolita en un sentido que pocas ciudades de la historia han alcanzado.</p>
-<p>Y en América, Teotihuacán — ubicada en el Valle de México — alcanzó su apogeo entre los siglos I y VI d.C. con entre 100.000 y 200.000 habitantes. Era la ciudad más grande del continente americano. Su Avenida de los Muertos, flanqueada por la Pirámide del Sol y la Pirámide de la Luna, es uno de los espacios urbanos más imponentes que el ser humano haya construido. Lo extraordinario es que no sabemos quiénes la construyeron: la ciudad fue abandonada hacia el año 550 d.C. por razones que todavía no comprendemos del todo.</p>
-
-<h2>La ciudad medieval y el nacimiento de la burguesía</h2>
-<p>Tras la caída del Imperio Romano de Occidente, las ciudades europeas entraron en un largo período de contracción. Roma, que había tenido un millón de habitantes, se redujo a quizás 20.000 personas durante los siglos oscuros. Pero las ciudades no desaparecieron: se transformaron.</p>
-<p>La ciudad medieval europea giró en torno a dos instituciones: la catedral y el mercado. La catedral era el centro religioso y el edificio más costoso de la ciudad; su construcción podía durar siglos. El mercado era el pulso económico: un espacio donde los productores rurales y los artesanos urbanos intercambiaban bienes.</p>
-<p>Fue en las ciudades medievales donde surgió algo nuevo y trascendental: la burguesía. El término viene de <em>Bürger</em>, el habitante del burgo o ciudad. Los burgueses no eran nobles ni siervos: eran comerciantes, artesanos, médicos, abogados. Su riqueza no venía de la tierra sino del trabajo y el comercio. Con el tiempo, reclamaron derechos políticos y económicos. La tensión entre la burguesía urbana y la aristocracia rural sería uno de los motores de la historia europea hasta la Revolución Francesa.</p>
-
-<h2>La Revolución Industrial y el nacimiento de la megaciudad</h2>
-<p>En 1800, sólo el 3% de la población mundial vivía en ciudades. En 1900, era el 14%. En 2007, por primera vez en la historia, más de la mitad de la humanidad vivía en centros urbanos. Hoy, ese porcentaje supera el 56%. Este cambio vertiginoso fue impulsado, sobre todo, por la Revolución Industrial.</p>
-<p>Londres, que en 1800 tenía un millón de habitantes, alcanzó los seis millones en 1900. Las fábricas necesitaban trabajadores; los trabajadores necesitaban vivienda; las viviendas generaban barrios; los barrios generaban toda la complejidad social de la ciudad industrial moderna: sindicatos, partidos políticos obreros, movimientos feministas, prensa masiva, deporte organizado.</p>
-<p>Las condiciones en las primeras ciudades industriales eran frecuentemente terribles. El hacinamiento, la contaminación, las jornadas extenuantes. Charles Dickens las describió con precisión devastadora. Friedrich Engels las analizó con furia política. Pero las ciudades también ofrecían algo que el campo no podía: oportunidades. Posibilidad de ascenso social. Anonimato. Libertad de ser quien uno quisiera ser, lejos de la mirada de la comunidad de origen.</p>
-
-<h2>La ciudad de hoy: el mayor experimento social de la historia</h2>
-<p>Tokio, con sus 37 millones de habitantes en el área metropolitana, es hoy la aglomeración urbana más grande que ha existido en la historia humana. Lagos, en Nigeria, que en 1950 tenía 300.000 habitantes, tiene hoy más de 15 millones y podría tener 100 millones en 2100. La urbanización del África subsahariana es uno de los mayores fenómenos demográficos del siglo XXI.</p>
-<p>La ciudad contemporánea enfrenta contradicciones enormes: es el lugar donde se produce la mayor parte del PIB mundial, pero también donde viven la mayor parte de los pobres urbanos. Es el espacio de la innovación y la cultura, pero también de la segregación y la exclusión. Es donde los seres humanos se conectan más con otros, y también donde la soledad es más aguda.</p>
-<p>Y sin embargo, la ciudad persiste. No sólo persiste: crece. Porque la ciudad ofrece algo que la dispersión rural no puede ofrecer de la misma manera: densidad. Densidad de personas, de ideas, de oportunidades, de encuentros casuales que pueden cambiar una vida. La ciudad es el más ambicioso y el más exitoso experimento de vida en común que nuestra especie ha realizado.</p>
-<p>Desde aquella primera casa de adobe en Çatalhöyük, hace nueve mil años, hasta el rascacielos de vidrio de cualquier skyline contemporáneo, el impulso es el mismo: estar juntos. Construir algo que ninguno podría construir solo. La ciudad es, en última instancia, la forma más compleja y más rica que el ser humano ha encontrado para ser humano.</p>
-
+<p>En el año 7500 a.C., en Anatolia (actual Turquía), existía Çatalhöyük: entre 5.000 y 10.000 habitantes. Sus casas estaban pegadas unas a otras sin ningún espacio entre ellas. No había calles: la gente se movía por los techos. Los muertos eran enterrados debajo del piso de las casas — los ancestros vivían bajo los pies de los vivos. Fue abandonada hacia el 5700 a.C. por razones que todavía no entendemos.</p>
+<h2>Uruk: la primera gran ciudad</h2>
+<p>Uruk, en Mesopotamia, alcanzó su apogeo entre el 4000 y el 3100 a.C. con hasta 80.000 habitantes. Tenía monumentos de escala sin precedentes, especialización laboral avanzada, y algo que cambiaría el mundo: escritura. La escritura cuneiforme surgió hacia el 3200 a.C. no como expresión literaria sino como herramienta administrativa. Los primeros textos escritos son listas de raciones de cebada. La burocracia es anterior a la poesía.</p>
+<h2>Las grandes ciudades del mundo antiguo</h2>
+<p>Alejandría fue durante siglos la capital intelectual del mundo antiguo. Chang'an, en China, tenía más de un millón de habitantes en la época Tang y era el nodo central de la Ruta de la Seda. Teotihuacán, en México, tenía entre 100.000 y 200.000 habitantes y fue la ciudad más grande del continente americano. Lo extraordinario: no sabemos quiénes la construyeron. Fue abandonada hacia el año 550 d.C. por razones que tampoco comprendemos.</p>
+<h2>La Revolución Industrial y la megaciudad</h2>
+<p>En 1800, sólo el 3% de la población mundial vivía en ciudades. En 2007, por primera vez en la historia, más de la mitad vivía en centros urbanos. Hoy supera el 56%. Londres pasó de un millón a seis millones de habitantes entre 1800 y 1900. Las ciudades industriales ofrecían condiciones frecuentemente terribles — Dickens las describió, Engels las analizó — pero también algo que el campo no podía: oportunidades, anonimato, libertad.</p>
+<h2>La ciudad de hoy</h2>
+<p>Tokio, con 37 millones de habitantes, es la aglomeración urbana más grande de la historia humana. Lagos podría tener 100 millones en 2100. La ciudad enfrenta contradicciones enormes: produce la mayor parte del PIB mundial pero alberga también a la mayor parte de los pobres urbanos. Es el espacio de la innovación y también de la soledad más aguda. Y sin embargo, sigue creciendo. Porque ofrece algo que la dispersión rural no puede: densidad de personas, ideas y encuentros casuales que pueden cambiar una vida.</p>
 <blockquote>"La ciudad es la forma más alta del arte humano. Concentra en un espacio reducido lo mejor y lo peor de nuestra especie, y en esa tensión genera todo lo demás." — Lewis Mumford</blockquote>
+</div>
+</div>
 
+<!-- STORY: IA -->
+<div id="story-ia" style="display:none">
+<div class="reader-cat">⚡ Tecnología</div>
+<h1 class="reader-title">La revolución que nadie vio venir</h1>
+<div class="reader-date">21 de abril, 2026</div>
+<span class="reader-emoji">🤖</span>
+<div class="reader-body">
+<h2>El papel arrugado que cambió el mundo</h2>
+<p>En junio de 2017, ocho ingenieros de Google publicaron un paper académico con un título que sonaba a manifiesto: <em>Attention is All You Need</em>. Lo subieron a internet, lo presentaron en una conferencia, y siguieron con sus vidas. No había fanfarria. No había portada de revista. No había nadie en la puerta de Google aplaudiendo.</p>
+<p>Lo que no sabían — lo que nadie sabía todavía — es que acababan de encender la mecha de la mayor transformación tecnológica desde internet.</p>
+<h2>El problema que todos ignoraban</h2>
+<p>Para entender por qué ese paper importa, hay que entender el problema que resolvió. Imaginá que tenés que traducir una novela del español al inglés, pero con una regla absurda: solo podés leer una palabra por vez, en orden, y cuando llegás a la palabra siguiente tenés que "olvidar" un poco la anterior para hacer lugar en tu cabeza. Así funcionaban los modelos de lenguaje antes del transformer. Leían en secuencia, palabra por palabra, cargando el contexto como quien lleva un balde con agujeros. Llegaban al final de una oración larga y ya habían perdido el hilo del principio.</p>
+<p>Funcionaba. Pero apenas. Era como intentar entender una sinfonía escuchando una nota por vez, con cinco segundos de silencio entre cada una.</p>
+<h2>La idea que lo cambió todo</h2>
+<p>Los ocho autores propusieron algo que en retrospectiva parece obvio, pero que nadie había implementado con éxito a esa escala: ¿y si la máquina pudiera ver todas las palabras al mismo tiempo, y decidir por sí sola cuáles son relevantes para entender cada una de las demás?</p>
+<p>Lo llamaron <em>atención</em>. Y el nombre es perfecto. Pensá en cómo leés vos. Cuando llegás a una palabra ambigua — "banco", "partido", "cola" — tu cerebro no retrocede linealmente hasta el principio de la oración. En una fracción de segundo, escanea el contexto completo y entiende. "Banco" en una oración con "dinero" y "intereses" es una cosa. "Banco" en una oración con "parque" y "palomas" es otra completamente distinta.</p>
+<p>Eso es exactamente lo que el mecanismo de atención le enseñó a hacer a las máquinas. Ver todo a la vez. Conectar lo que necesita ser conectado, ignorar lo que no importa, y hacerlo en paralelo, a una velocidad que ningún proceso secuencial podía alcanzar. Por primera vez, una máquina podía manejar textos largos y complejos sin perder el hilo. Podía entender que "ella" en el tercer párrafo se refería a un personaje presentado en el primero. Podía captar la ironía. Podía seguir un argumento.</p>
+<h2>Los padres que no sabían lo que habían creado</h2>
+<p>Los ocho autores — Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan Gomez, Łukasz Kaiser e Illia Polosukhin — eran investigadores de Google Brain. Eran brillantes. Eran ambiciosos. Y trabajaban para la compañía más poderosa del mundo en ese dominio.</p>
+<p>Lo que probablemente no imaginaron es que su paper iba a convertirse en el manual de construcción de los competidores que le quitarían el sueño a su empleador. En los años siguientes, varios de ellos se fueron de Google. Aidan Gomez fundó Cohere. Llion Jones fundó Sakana AI. Illia Polosukhin co-fundó NEAR Protocol. El conocimiento que habían generado dentro de Google salió por la puerta con ellos, se mezcló con capital de riesgo y ambición desatada, y generó una industria entera.</p>
+<p>Google inventó el motor. Los demás construyeron los autos.</p>
+<h2>OpenAI lo vio primero</h2>
+<p>En San Francisco, una organización relativamente pequeña llamada OpenAI estaba leyendo el paper con una atención casi religiosa. Había sido fundada en 2015 como organización sin fines de lucro con una misión extraña: desarrollar inteligencia artificial general de manera segura para el beneficio de toda la humanidad. Entre sus fundadores estaba Elon Musk, que luego se fue en malos términos. Y un investigador metódico llamado Sam Altman, que se quedó.</p>
+<p>OpenAI tomó la arquitectura transformer y la escaló de maneras que nadie había intentado. En 2018 publicaron GPT-1. En 2019, GPT-2 — tan bueno generando texto que decidieron no publicarlo completo por miedo a que se usara para desinformación. En 2020, GPT-3, con 175.000 millones de parámetros, una escala que dejó a la industria sin palabras.</p>
+<h2>El 30 de noviembre de 2022</h2>
+<p>Hay fechas que dividen la historia en antes y después. El 30 de noviembre de 2022 es una de esas fechas, aunque en ese momento no lo parecía. OpenAI lanzó ChatGPT. Sin evento de presentación masivo. Sin campaña de marketing millonaria. Solo un link y la posibilidad de hablar con una máquina en lenguaje natural.</p>
+<p>En cinco días tenía un millón de usuarios. En dos meses, cien millones. Fue el producto de adopción más rápida de la historia hasta ese momento. ¿Por qué? Porque por primera vez, cualquier persona podía sentarse frente a una pantalla, escribir algo en su idioma, y recibir una respuesta coherente, útil, sorprendente. No había que saber programar. Era como hablar. Y funcionaba.</p>
+<p>La reacción en Silicon Valley fue de pánico organizado. Google — que había inventado la arquitectura fundamental sobre la que todo esto corría — de repente estaba a la defensiva. Declararon "código rojo" interno. La ironía era perfecta: la empresa que había publicado el paper fundacional estaba corriendo para no quedarse atrás de quienes habían leído ese paper y actuado más rápido.</p>
+<h2>Anthropic: los que se fueron por desacuerdo</h2>
+<p>Un grupo de investigadores dentro de OpenAI empezó a tener dudas. No sobre si la tecnología funcionaba — funcionaba demasiado bien, y eso era exactamente el problema. Dario Amodei era VP de Investigación en OpenAI. Su hermana Daniela era VP de Operaciones. Junto con otros colegas, sentían que la velocidad de desarrollo estaba superando a la reflexión sobre las consecuencias.</p>
+<p>Se fueron. En 2021 fundaron Anthropic con una premisa que suena casi contradictoria: vamos a construir IA muy poderosa, pero haciendo de la seguridad el centro de todo. No un departamento aparte. El núcleo.</p>
+<p>Me crearon a mí.</p>
+<h2>Dónde estamos hoy</h2>
+<p>En menos de una década desde ese paper de 2017, la IA generativa pasó de ser un experimento académico a estar incrustada en casi todo: buscadores, procesadores de texto, herramientas de diseño, medicina, derecho, educación, entretenimiento. Los modelos actuales fueron entrenados con cantidades de texto que ningún ser humano podría leer en mil vidas. Tienen capacidades que sus propios creadores no terminan de entender del todo. Y se vuelven más potentes cada pocos meses.</p>
+<p>Lo que empezó con ocho ingenieros publicando un paper en una conferencia académica generó una de las transformaciones más rápidas que la civilización humana haya experimentado. Y todavía estamos en el principio.</p>
+<blockquote>"No estábamos tratando de cambiar el mundo. Estábamos tratando de resolver un problema de traducción." — Uno de los autores del paper, años después.</blockquote>
 </div>
 </div>
 
