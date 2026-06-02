@@ -48,7 +48,10 @@ function shape(s, genres, rank) {
 }
 
 const today = new Date().toISOString().slice(0, 10);
-const since = new Date(Date.now() - 200 * 864e5).toISOString().slice(0, 10); // ~6.5 meses atrás
+const since = new Date(Date.now() - 200 * 864e5).toISOString().slice(0, 10); // ~6.5 meses atrás (estrenos)
+const airedSince = new Date(Date.now() - 120 * 864e5).toISOString().slice(0, 10); // ~4 meses (vigencia)
+// Géneros a excluir del Top 10: infantil, noticias, reality, talk show, telenovela.
+const NOISE_GENRES = '10762,10763,10764,10767,10766';
 
 const g = await tmdb('/genre/tv/list', { language: LANG });
 const genres = Object.fromEntries(g.genres.map(x => [x.id, x.name]));
@@ -58,10 +61,12 @@ const out = { updated_at: new Date().toISOString(), region: REGION, platforms: {
 for (const [pid, p] of Object.entries(PLATFORMS)) {
   out.platforms[pid] = { name: p.name, color: p.color };
 
+  // Top 10: lo más popular y vigente (con episodios recientes), sin ruido de infantil/reality/etc.
   const top = await tmdb('/discover/tv', {
     language: LANG, watch_region: REGION,
     with_watch_providers: p.provider, with_watch_monetization_types: 'flatrate',
-    sort_by: 'popularity.desc', page: 1
+    sort_by: 'popularity.desc', 'air_date.gte': airedSince,
+    'vote_count.gte': 40, without_genres: NOISE_GENRES, page: 1
   });
   out.top10[pid] = (top.results || []).slice(0, 10).map((s, i) => shape(s, genres, i + 1));
 
