@@ -1,6 +1,6 @@
-# TopSeries 🍅
+# TopSeries 🍿
 
-App web (una sola página, sin dependencias) que concentra las **series mejor rankeadas por Rotten Tomatoes** de las principales plataformas de streaming:
+App web (una sola página, sin dependencias) que concentra el **Top 10 y los estrenos de cada plataforma de streaming en Argentina**:
 
 - Netflix
 - Max (HBO Max)
@@ -11,20 +11,29 @@ App web (una sola página, sin dependencias) que concentra las **series mejor ra
 
 ## Funcionalidades
 
-- **Top general** y filtros por plataforma, ordenados por Tomatometer.
-- Cada serie muestra puntaje de Rotten Tomatoes, género, año y sinopsis.
+- Dos vistas por plataforma: **🔥 Top 10** (lo más visto) y **🆕 Estrenos** (lo más nuevo).
+- Cada serie muestra ranking, póster, género, año y sinopsis.
 - **CTA en cada serie:**
   - ❤️ **Wishlist** — agregá lo que querés ver.
   - ✅ **Ya la vi** — marcá lo que ya viste.
   - 🗑️ **Eliminar** — sacá una serie de tu wishlist o de tus vistas.
 - Vistas dedicadas **"Mi wishlist"** y **"Ya vistas"** con contadores en el header.
-- Todo se guarda en `localStorage`, así que persiste en tu dispositivo.
+- La wishlist y las vistas se guardan en `localStorage` (en tu dispositivo).
 
-## Uso
+## Contenido y actualización automática
 
-Abrí `index.html` en cualquier navegador. No requiere build ni servidor.
+- Los datos viven en `data/series.json`.
+- `scripts/build-series.mjs` los regenera consultando **JustWatch** (lo más visto y los estrenos por plataforma en Argentina). **No requiere API key.**
+- `.github/workflows/update-series.yml` corre **cada lunes** (y a mano vía *Run workflow*), regenera el JSON y lo commitea solo.
+- Si `data/series.json` todavía no existe, la app usa datos de ejemplo embebidos.
 
-> Los puntajes Tomatometer son aproximados, a modo de referencia curada. El listado de series se mantiene en el dataset dentro de `index.html`.
+## Uso local
+
+Servir la carpeta y abrir `index.html` (un `fetch` lee `data/series.json`, que no funciona con `file://`):
+
+```
+npx http-server -p 8080 .
+```
 
 ---
 
