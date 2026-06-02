@@ -1,0 +1,1334 @@
+{
+  "updated_at": "2026-06-02T23:07:32.940Z",
+  "region": "AR",
+  "platforms": {
+    "netflix": {
+      "name": "Netflix",
+      "color": "#e50914"
+    },
+    "max": {
+      "name": "Max",
+      "color": "#5b2db8"
+    },
+    "apple": {
+      "name": "Apple TV+",
+      "color": "#aab0bb"
+    },
+    "prime": {
+      "name": "Prime Video",
+      "color": "#1ba8e0"
+    },
+    "paramount": {
+      "name": "Paramount+",
+      "color": "#0064ff"
+    },
+    "disney": {
+      "name": "Disney+",
+      "color": "#1f6fe5"
+    }
+  },
+  "top10": {
+    "netflix": [
+      {
+        "rank": 1,
+        "id": 2734,
+        "title": "La Ley y el Orden: Unidad de Víctimas Especiales",
+        "year": "1999",
+        "date": "1999-09-20",
+        "genre": "Crimen",
+        "overview": "Serie surgida a la sombra de \"Law & Order\". Una unidad especial de la policía de Nueva York se dedica a investigar delitos de carácter sexual: violaciones, pedofilia y malos tratos infantiles.",
+        "poster": "https://image.tmdb.org/t/p/w500/kvo558UKEhp8v3JoRGCSIx3Xxab.jpg",
+        "rating": 7.9
+      },
+      {
+        "rank": 2,
+        "id": 79744,
+        "title": "The Rookie",
+        "year": "2018",
+        "date": "2018-10-16",
+        "genre": "Crimen",
+        "overview": "Comenzar de nuevo no es fácil, especialmente para el chico de una pequeña ciudad John Nolan que, después de un incidente que cambia su vida, está persiguiendo su sueño de ser un oficial de policía de Los Ángeles. Como el novato más viejo de la fuerza, se ha encontrado con el escepticismo de algunos de los superiores que lo ven como una crisis ambulante.",
+        "poster": "https://image.tmdb.org/t/p/w500/g39Rn6PcZjK2yLzz5Z5oBKSpsZR.jpg",
+        "rating": 8.5
+      },
+      {
+        "rank": 3,
+        "id": 60625,
+        "title": "Rick y Morty",
+        "year": "2013",
+        "date": "2013-12-02",
+        "genre": "Animación",
+        "overview": "Rick Sánchez es un genio científico alcohólico que se ha mudado con la familia de su hija Beth. Él pasa el tiempo con su nieto adolescente Morty (y en ocasiones con otros miembros de la familia) en aventuras peligrosas y surrealistas a través del espacio y universos paralelos.",
+        "poster": "https://image.tmdb.org/t/p/w500/5Yiep9EwcQgLolg013ETBVqHxuD.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 4,
+        "id": 308014,
+        "title": "Berlín y la dama del armiño",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Drama",
+        "overview": "Berlín, ansioso por dar un nuevo golpe, reúne a su banda en Sevilla y convierte a un ambicioso duque en víctima de su propio plan: robar una obra de arte de Leonardo da Vinci.",
+        "poster": "https://image.tmdb.org/t/p/w500/3uhJ3AHKxSsEWe1BUG9pV0bpqna.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 5,
+        "id": 95479,
+        "title": "Jujutsu Kaisen",
+        "year": "2020",
+        "date": "2020-10-03",
+        "genre": "Animación",
+        "overview": "La vida de Itadori cambia para siempre cuando, para salvar a un compañero de clase, se come el dedo de Ryomen Sukuna y absorbe una poderosa maldición.",
+        "poster": "https://image.tmdb.org/t/p/w500/80eHrBl03xWcQYecoTO1LlkXpN1.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 6,
+        "id": 56570,
+        "title": "Outlander",
+        "year": "2014",
+        "date": "2014-08-09",
+        "genre": "Drama",
+        "overview": "Sigue la historia de Claire Randall, una enfermera de combate casada en los años 40, que misteriosamente es arrastrada atrás en el tiempo hasta 1743, donde se lanza de inmediato a un mundo desconocido, viéndose amenazada su propia vida. Cuando se ve obligada a casarse con Jamie Fraser, un joven guerrero escocés caballeroso y romántico, Claire comienza un pasional triángulo entre dos hombres muy diferentes con dos vidas irreconciliables.",
+        "poster": "https://image.tmdb.org/t/p/w500/wwxKbrMlwMrC06B7aCIkDy3SAo6.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 7,
+        "id": 209867,
+        "title": "Frieren: Más allá del final del viaje",
+        "year": "2023",
+        "date": "2023-09-29",
+        "genre": "Animación",
+        "overview": "Décadas después de que su grupo derrotara al Rey Demonio, el funeral de un viejo amigo lleva a la hechicera elfa Frieren a embarcarse en un viaje de autodescubrimiento.",
+        "poster": "https://image.tmdb.org/t/p/w500/6A8IHWrtMLtadNXnMTjggvVY8cs.jpg",
+        "rating": 8.8
+      },
+      {
+        "rank": 8,
+        "id": 45790,
+        "title": "JoJo's Bizarre Adventure",
+        "year": "2012",
+        "date": "2012-10-06",
+        "genre": "Animación",
+        "overview": "En la Gran Bretaña de finales del siglo XIX, el joven Jonathan Joestar conoce a su nuevo hermano adoptivo, Dio Brando, quien únicamente quiere usurparle el puesto de heredero de la familia Joestar a Jonathan. No obstante, su plan fracasa y decide usar una máscara de piedra de origen mesoamericano que lo convierte en un vampiro, obteniendo la inmortalidad y poderes sobrenaturales. Jonathan, junto a su maestro del Hamon Will A. Zeppeli y a un matón callejero llamado Robert E.O. Speedwagon, deberá detener y destruir a Dio ahora que su objetivo es dominar a todo el mundo. Serie basada en el famoso manga de mismo nombre. La primera temporada abarca dos arcos argumentales diferentes \"Phantom Blood\" y \"Battle Tendency\".",
+        "poster": "https://image.tmdb.org/t/p/w500/ieP7Q9z24sNUfVNFC38rYBw6yxq.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 9,
+        "id": 259837,
+        "title": "The WONDERfools",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Action & Adventure",
+        "overview": "En esta comedia de acción ambientada en la previa a un cambio de siglo, un disparatado grupo recibe superpoderes y lucha contra el mal, mientras el pánico se extiende.",
+        "poster": "https://image.tmdb.org/t/p/w500/zEZuIW4UDU9OHTwN7zMf8BE5tOF.jpg",
+        "rating": 9.2
+      },
+      {
+        "rank": 10,
+        "id": 94664,
+        "title": "Mushoku Tensei Jobless Reincarnation",
+        "year": "2021",
+        "date": "2021-01-11",
+        "genre": "Action & Adventure",
+        "overview": "Cuando un autobús atropella a un joven de 34 años que no ha logrado mucho en su vida, su historia no termina ahí. Habiendo reencarnado en un niño, Rudy aprovechará cada oportunidad para vivir la vida que siempre quiso. ¡Con la ayuda de sus amigos, unas habilidades mágicas recién adquiridas, y el coraje para hacer las cosas que siempre ha soñado, se embarca en una aventura épica, con su experiencia pasada intacta!",
+        "poster": "https://image.tmdb.org/t/p/w500/MfjgMCzSp8aMQUYx9RclrKDBgV.jpg",
+        "rating": 8.6
+      }
+    ],
+    "max": [
+      {
+        "rank": 1,
+        "id": 85552,
+        "title": "Euphoria",
+        "year": "2019",
+        "date": "2019-06-16",
+        "genre": "Drama",
+        "overview": "Un grupo de adolescentes experimenta los altibajos del amor y la amistad en un mundo de redes sociales, sexo, drogas y violencia.",
+        "poster": "https://image.tmdb.org/t/p/w500/6Sdm5XwdCnspdEF8fTFx6UJrl7o.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 2,
+        "id": 60625,
+        "title": "Rick y Morty",
+        "year": "2013",
+        "date": "2013-12-02",
+        "genre": "Animación",
+        "overview": "Rick Sánchez es un genio científico alcohólico que se ha mudado con la familia de su hija Beth. Él pasa el tiempo con su nieto adolescente Morty (y en ocasiones con otros miembros de la familia) en aventuras peligrosas y surrealistas a través del espacio y universos paralelos.",
+        "poster": "https://image.tmdb.org/t/p/w500/5Yiep9EwcQgLolg013ETBVqHxuD.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 3,
+        "id": 95479,
+        "title": "Jujutsu Kaisen",
+        "year": "2020",
+        "date": "2020-10-03",
+        "genre": "Animación",
+        "overview": "La vida de Itadori cambia para siempre cuando, para salvar a un compañero de clase, se come el dedo de Ryomen Sukuna y absorbe una poderosa maldición.",
+        "poster": "https://image.tmdb.org/t/p/w500/80eHrBl03xWcQYecoTO1LlkXpN1.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 4,
+        "id": 209867,
+        "title": "Frieren: Más allá del final del viaje",
+        "year": "2023",
+        "date": "2023-09-29",
+        "genre": "Animación",
+        "overview": "Décadas después de que su grupo derrotara al Rey Demonio, el funeral de un viejo amigo lleva a la hechicera elfa Frieren a embarcarse en un viaje de autodescubrimiento.",
+        "poster": "https://image.tmdb.org/t/p/w500/6A8IHWrtMLtadNXnMTjggvVY8cs.jpg",
+        "rating": 8.8
+      },
+      {
+        "rank": 5,
+        "id": 45790,
+        "title": "JoJo's Bizarre Adventure",
+        "year": "2012",
+        "date": "2012-10-06",
+        "genre": "Animación",
+        "overview": "En la Gran Bretaña de finales del siglo XIX, el joven Jonathan Joestar conoce a su nuevo hermano adoptivo, Dio Brando, quien únicamente quiere usurparle el puesto de heredero de la familia Joestar a Jonathan. No obstante, su plan fracasa y decide usar una máscara de piedra de origen mesoamericano que lo convierte en un vampiro, obteniendo la inmortalidad y poderes sobrenaturales. Jonathan, junto a su maestro del Hamon Will A. Zeppeli y a un matón callejero llamado Robert E.O. Speedwagon, deberá detener y destruir a Dio ahora que su objetivo es dominar a todo el mundo. Serie basada en el famoso manga de mismo nombre. La primera temporada abarca dos arcos argumentales diferentes \"Phantom Blood\" y \"Battle Tendency\".",
+        "poster": "https://image.tmdb.org/t/p/w500/ieP7Q9z24sNUfVNFC38rYBw6yxq.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 6,
+        "id": 94997,
+        "title": "La casa del dragón",
+        "year": "2022",
+        "date": "2022-08-21",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "Basada en el libro 'Fuego y Sangre' de George R.R. Martin. La serie se centra en la casa Targaryen, trescientos años antes de los eventos vistos en 'Juego de Tronos'.",
+        "poster": "https://image.tmdb.org/t/p/w500/8MaxftF69sEAAD5673vTjIl8yT3.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 7,
+        "id": 45140,
+        "title": "Los Jóvenes Titanes en acción",
+        "year": "2013",
+        "date": "2013-04-23",
+        "genre": "Animación",
+        "overview": "Teen Titans Go! es una serie de animación que sigue las aventuras de los Jóvenes Titanes cuando no están salvando el mundo mientras viven juntos como adolescentes sin adultos que se entrometan. Las situaciones son, a diferencia de la mayoría de las series superheróicas, cómicas, alocadas y paródicas; por ejemplo, bromas juveniles que alcanzan nuevas cotas de peligrosidad, obtener el permiso de conducir tras destrozar el Batmóvil o lavar los trajes tras mancharlos al luchar contra sus enemigos.",
+        "poster": "https://image.tmdb.org/t/p/w500/dFRzEMjRuAF778RnYg6VsMMlKwx.jpg",
+        "rating": 6.5
+      },
+      {
+        "rank": 8,
+        "id": 250307,
+        "title": "The Pitt",
+        "year": "2025",
+        "date": "2025-01-09",
+        "genre": "Drama",
+        "overview": "El personal del Centro Médico de Traumatismo de Pittsburgh trabaja para salvar vidas en un servicio de urgencias saturado y sin fondos suficientes.",
+        "poster": "https://image.tmdb.org/t/p/w500/kvFSpESyBZMjaeOJDx7RS3P1jey.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 9,
+        "id": 37854,
+        "title": "One Piece",
+        "year": "1999",
+        "date": "1999-10-20",
+        "genre": "Action & Adventure",
+        "overview": "Esta historia se sitúa en el momento más álgido de la Gran Era de los Piratas, cuando el joven Monkey D. Luffy quiere llegar a ser el Rey de los Piratas y hacerse al fin con un legendario tesoro, el One Piece.",
+        "poster": "https://image.tmdb.org/t/p/w500/8f33Q5AuM2G5ZqFeusbIqDjr3cI.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 10,
+        "id": 124101,
+        "title": "Hacks",
+        "year": "2021",
+        "date": "2021-05-13",
+        "genre": "Comedia",
+        "overview": "Hacks explora una oscura relación entre Deborah Vance, una legendaria comediante de Las Vegas, y una marginada muchacha titulada de 25 años.",
+        "poster": "https://image.tmdb.org/t/p/w500/ca5XiEFgyGsI38QT3wEKa1QVGX.jpg",
+        "rating": 7.4
+      }
+    ],
+    "apple": [
+      {
+        "rank": 1,
+        "id": 87917,
+        "title": "For All Mankind",
+        "year": "2019",
+        "date": "2019-11-01",
+        "genre": "Drama",
+        "overview": "La serie explora lo que habría ocurrido si la carrera espacial mundial nunca hubiera terminado y la Unión Soviética hubiera conseguido superar a Estados Unidos como el primer país en poner a un hombre en la Luna.",
+        "poster": "https://image.tmdb.org/t/p/w500/q5vmnIJvXJgstbjCW9Jxhd4GoRJ.jpg",
+        "rating": 7.7
+      },
+      {
+        "rank": 2,
+        "id": 270476,
+        "title": "La maldición de Widow's Bay",
+        "year": "2026",
+        "date": "2026-04-28",
+        "genre": "Drama",
+        "overview": "El alcalde de un pueblo en una isla de Nueva Inglaterra decide convertirla en la próxima sensación turística, a pesar de las advertencias locales de que está maldita.",
+        "poster": "https://image.tmdb.org/t/p/w500/hAI5wOXpKdbTRnjSZMw9FpfKlMS.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 3,
+        "id": 241609,
+        "title": "Vicios ocultos",
+        "year": "2025",
+        "date": "2025-04-10",
+        "genre": "Drama",
+        "overview": "Cuando un titán de las inversiones se queda sin trabajo y se divorcia comienza a robar las riquezas de sus vecinos para sobrevivir. Robar dentro de su círculo social lo emociona de forma extraña, pero poco a poco se adentra en una red mortal.",
+        "poster": "https://image.tmdb.org/t/p/w500/ikaSVbTZyzsnjHK0ex64bJqQpgd.jpg",
+        "rating": 7.7
+      },
+      {
+        "rank": 4,
+        "id": 202411,
+        "title": "Monarch: Legado de monstruos",
+        "year": "2023",
+        "date": "2023-11-16",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "Después de haber sobrevivido al ataque de Godzilla en San Francisco, Cate se asombra de nuevo por un secreto impactante. Entre amenazas gigantescas, ella se embarca a una aventura por todo el mundo para saber la verdad sobre su familia y la misteriosa organización conocida como Monarch.",
+        "poster": "https://image.tmdb.org/t/p/w500/66Ofbs8H1ZiYVjxaG6OWIev4xrR.jpg",
+        "rating": 7.8
+      },
+      {
+        "rank": 5,
+        "id": 125988,
+        "title": "Silo",
+        "year": "2023",
+        "date": "2023-05-04",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "En un futuro arruinado y tóxico, existe una comunidad en un enorme silo subterráneo cientos de pisos bajo tierra. Ahí, hombres y mujeres viven en una sociedad llena de reglas que creen que están hechas para protegerlos.",
+        "poster": "https://image.tmdb.org/t/p/w500/8gjKCC85lHIGer9q6duOcVR1PVm.jpg",
+        "rating": 8.1
+      },
+      {
+        "rank": 6,
+        "id": 97546,
+        "title": "Ted Lasso",
+        "year": "2020",
+        "date": "2020-08-14",
+        "genre": "Drama",
+        "overview": "Ted Lasso, un ingenuo entrenador de fútbol americano que decide probar suerte en un club de fútbol inglés aunque no tiene idea de ese deporte. Su inexperiencia despierta recelo y desdén entre jugadores y aficionados. Con un equipo y una ciudad que lo mira con sospecha, ¿Logrará tener éxito?",
+        "poster": "https://image.tmdb.org/t/p/w500/6YUzArR2TElmGMj1HmnnfVlgunL.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 7,
+        "id": 245318,
+        "title": "Margo tiene problemas de dinero",
+        "year": "2026",
+        "date": "2026-04-14",
+        "genre": "Drama",
+        "overview": "Margo Millet, aspirante a escritora, se embaraza y se ve obligada a dejar la universidad y enfrentar la ruina económica. Pero cuando aparece su padre distanciado, un ex luchador profesional, Margo encuentra una forma inesperada de capitalizar su talento para contar historias.",
+        "poster": "https://image.tmdb.org/t/p/w500/zqUvfOQtaffnkQL0ZVKPD7Z1KIR.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 8,
+        "id": 136311,
+        "title": "Terapia sin filtro",
+        "year": "2023",
+        "date": "2023-01-26",
+        "genre": "Drama",
+        "overview": "Jimmy tiene problemas para sobrellevar la muerte de su esposa al ser padre, amigo y terapeuta. Decide tener un método nuevo con todas las personas que se le crucen: completa sinceridad sin filtros. ¿Hará que las cosas mejoren... o se desatará un caos turbulento?",
+        "poster": "https://image.tmdb.org/t/p/w500/1paLVdoniAR45emRMlOTGnZG0F7.jpg",
+        "rating": 7.8
+      },
+      {
+        "rank": 9,
+        "id": 198102,
+        "title": "Hijack",
+        "year": "2023",
+        "date": "2023-06-28",
+        "genre": "Drama",
+        "overview": "Sam Nelson es un experto negociador que está por vivir el viaje de su vida junto a todos los que van a bordo con él, luego de que secuestradores toman el control. Sam intenta utilizar sus habilidades para detenerlos..., pero los riesgos van aumentando.",
+        "poster": "https://image.tmdb.org/t/p/w500/pAon3hPvgl6oNUwVH6jUheSTwoc.jpg",
+        "rating": 7.5
+      },
+      {
+        "rank": 10,
+        "id": 108181,
+        "title": "Mujeres imperfectas",
+        "year": "2026",
+        "date": "2026-03-17",
+        "genre": "Drama",
+        "overview": "Tras un asesinato que destruye las vidas de tres amigos, su vínculo de décadas se pone a prueba cuando una investigación revela verdades impactantes.",
+        "poster": "https://image.tmdb.org/t/p/w500/najFLDmQhH0qg9mygSxgTtWhJIX.jpg",
+        "rating": 6.2
+      }
+    ],
+    "prime": [
+      {
+        "rank": 1,
+        "id": 273240,
+        "title": "Off Campus",
+        "year": "2026",
+        "date": "2026-05-13",
+        "genre": "Drama",
+        "overview": "Hannah Wells acepta darle clases particulares a Garrett Graham, el capitán del equipo de hockey, para conquistar al chico que le gusta. Lo que empieza como un simple acuerdo se convierte en una conexión real mientras ambos enfrentan su pasado. Mientras tanto, sus amigos Logan, Dean, Tucker y Allie viven sus propias aventuras entre romances y la vida universitaria.",
+        "poster": "https://image.tmdb.org/t/p/w500/pI4sEVVbswtyOL2uaFxZs2tPOnQ.jpg",
+        "rating": 9
+      },
+      {
+        "rank": 2,
+        "id": 220102,
+        "title": "Spider-Noir",
+        "year": "2026",
+        "date": "2026-05-25",
+        "genre": "Crimen",
+        "overview": "Al detective privado Ben Reilly lo contratan para un par de casos sencillos... hasta que unos mafiosos, unos monstruos y una femme fatale misteriosa tejen una red que lo obliga a encarar su antigua vida como el único superhéroe de Nueva York: La Araña.",
+        "poster": "https://image.tmdb.org/t/p/w500/4Pec5a1At5UMeADkgcxwf6nLqau.jpg",
+        "rating": 8.8
+      },
+      {
+        "rank": 3,
+        "id": 76479,
+        "title": "The Boys",
+        "year": "2019",
+        "date": "2019-07-25",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "La serie tiene lugar en un mundo en el que los superhéroes representan el lado oscuro de la celebridad y la fama. Un grupo de vigilantes que se hacen llamar \"The Boys\" decide hacer todo lo posible por frenar a los superhéroes que están perjudicando a la sociedad, independientemente de los riesgos que ello conlleva.",
+        "poster": "https://image.tmdb.org/t/p/w500/lTb6v3ZRanWLWoOpofXrBHNo9s1.jpg",
+        "rating": 8.5
+      },
+      {
+        "rank": 4,
+        "id": 2734,
+        "title": "La Ley y el Orden: Unidad de Víctimas Especiales",
+        "year": "1999",
+        "date": "1999-09-20",
+        "genre": "Crimen",
+        "overview": "Serie surgida a la sombra de \"Law & Order\". Una unidad especial de la policía de Nueva York se dedica a investigar delitos de carácter sexual: violaciones, pedofilia y malos tratos infantiles.",
+        "poster": "https://image.tmdb.org/t/p/w500/kvo558UKEhp8v3JoRGCSIx3Xxab.jpg",
+        "rating": 7.9
+      },
+      {
+        "rank": 5,
+        "id": 549,
+        "title": "La Ley y el Orden",
+        "year": "1990",
+        "date": "1990-09-13",
+        "genre": "Crimen",
+        "overview": "Serie sobre la investigación de crímenes en la ciudad de Nueva York. Policías y jueces son los principales protagonistas.",
+        "poster": "https://image.tmdb.org/t/p/w500/pBDnKEPQuQhs7xoAPA4XxDUDqze.jpg",
+        "rating": 7.3
+      },
+      {
+        "rank": 6,
+        "id": 79744,
+        "title": "The Rookie",
+        "year": "2018",
+        "date": "2018-10-16",
+        "genre": "Crimen",
+        "overview": "Comenzar de nuevo no es fácil, especialmente para el chico de una pequeña ciudad John Nolan que, después de un incidente que cambia su vida, está persiguiendo su sueño de ser un oficial de policía de Los Ángeles. Como el novato más viejo de la fuerza, se ha encontrado con el escepticismo de algunos de los superiores que lo ven como una crisis ambulante.",
+        "poster": "https://image.tmdb.org/t/p/w500/g39Rn6PcZjK2yLzz5Z5oBKSpsZR.jpg",
+        "rating": 8.5
+      },
+      {
+        "rank": 7,
+        "id": 4614,
+        "title": "NCIS: Criminología Naval",
+        "year": "2003",
+        "date": "2003-09-23",
+        "genre": "Crimen",
+        "overview": "Un equipo de agentes especiales del Servicio de Investigación Criminal de la Marina de los Estados Unidos, liderados por el agente especial Leroy Jethro Gibbs (Mark Harmon), investiga los crímenes que se cometen dentro del Cuerpo Naval. Entre los casos está la muerte del ayudante del maletín nuclear del presidente, una situación explosiva a bordo de un buque de guerra de la Armada y la muerte de un famoso durante un show de televisión en una base del cuerpo de marines... La serie nació como un spin-off de algunos personajes presentados previamente en la serie \"JAG: Alerta roja\".",
+        "poster": "https://image.tmdb.org/t/p/w500/i5dZG5SJ7NuApNneDDeJdz3k0Dl.jpg",
+        "rating": 7.6
+      },
+      {
+        "rank": 8,
+        "id": 95479,
+        "title": "Jujutsu Kaisen",
+        "year": "2020",
+        "date": "2020-10-03",
+        "genre": "Animación",
+        "overview": "La vida de Itadori cambia para siempre cuando, para salvar a un compañero de clase, se come el dedo de Ryomen Sukuna y absorbe una poderosa maldición.",
+        "poster": "https://image.tmdb.org/t/p/w500/80eHrBl03xWcQYecoTO1LlkXpN1.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 9,
+        "id": 44006,
+        "title": "Chicago en llamas",
+        "year": "2012",
+        "date": "2012-10-10",
+        "genre": "Drama",
+        "overview": "Las decisiones de los bomberos, equipos de rescate y paramédicos de la estación de bomberos 51 hacen la diferencia entre la vida y la muerte. Pero eso no es lo único, también se crea una gran familia entre los miembros del equipo. Dirigidos por el jefe Wallace Boden, la Unidad 51 lo deja todo en cada rescate de esta noble profesión.",
+        "poster": "https://image.tmdb.org/t/p/w500/r915sk2JpthZSjHEgZKifWxgo6L.jpg",
+        "rating": 8.4
+      },
+      {
+        "rank": 10,
+        "id": 58841,
+        "title": "Policías de Chicago",
+        "year": "2014",
+        "date": "2014-01-08",
+        "genre": "Crimen",
+        "overview": "El Distrito 21 del Departamento de Policía de Chicago está compuesto de policías uniformados, que tratan con la delincuencia callejera, y la Unidad de Inteligencia, ocupada de los delitos graves como el tráfico de drogas y asesinatos de alto perfil.",
+        "poster": "https://image.tmdb.org/t/p/w500/bez40PgT36RUu4gstD2A6GSM0tP.jpg",
+        "rating": 8.4
+      }
+    ],
+    "paramount": [
+      {
+        "rank": 1,
+        "id": 4614,
+        "title": "NCIS: Criminología Naval",
+        "year": "2003",
+        "date": "2003-09-23",
+        "genre": "Crimen",
+        "overview": "Un equipo de agentes especiales del Servicio de Investigación Criminal de la Marina de los Estados Unidos, liderados por el agente especial Leroy Jethro Gibbs (Mark Harmon), investiga los crímenes que se cometen dentro del Cuerpo Naval. Entre los casos está la muerte del ayudante del maletín nuclear del presidente, una situación explosiva a bordo de un buque de guerra de la Armada y la muerte de un famoso durante un show de televisión en una base del cuerpo de marines... La serie nació como un spin-off de algunos personajes presentados previamente en la serie \"JAG: Alerta roja\".",
+        "poster": "https://image.tmdb.org/t/p/w500/i5dZG5SJ7NuApNneDDeJdz3k0Dl.jpg",
+        "rating": 7.6
+      },
+      {
+        "rank": 2,
+        "id": 4057,
+        "title": "Mentes Criminales",
+        "year": "2005",
+        "date": "2005-09-22",
+        "genre": "Crimen",
+        "overview": "Narra las investigaciones de un equipo del FBI que estudia el perfil psicológico de los criminales más importantes de los Estados Unidos para poder capturarlos. Los agentes especiales Jason Giseon (Mandy Patinkin) y Aaron Hotchner (Thomas Gibson) dirigen el equipo. Cada agente tiene su especialidad. Elle Greenway (Lola Glaudini) tiene una larga experiencia en delitos sexuales, Derek Morgan (Shemar Moore) es un experto en crímenes de carácter obsesivo. Spencer Reid (Mathew Gray Gubler) es un genio incomprendido, cuya torpeza para las relaciones sociales es tan sobresaliente como su cociente intelectual. Y, finalmente, está Jennifer, la novata.",
+        "poster": "https://image.tmdb.org/t/p/w500/gV0E4age3IdoPFInx57CDByixxc.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 3,
+        "id": 299167,
+        "title": "Rancho Dutton",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Western",
+        "overview": "Rip y Beth Dutton arriesgan todo por una nueva vida en el Sur de Texas, pero la promesa de un futuro lejos de los fantasmas de Yellowstone choca con nuevas y brutales realidades y un rancho rival que a toda costa protege su imperio.",
+        "poster": "https://image.tmdb.org/t/p/w500/4KTqlq5jwt53LoZdP8ui33TpFaq.jpg",
+        "rating": 9.3
+      },
+      {
+        "rank": 4,
+        "id": 80748,
+        "title": "F.B.I.",
+        "year": "2018",
+        "date": "2018-09-25",
+        "genre": "Crimen",
+        "overview": "Drama vertiginoso sobre el funcionamiento interno de la oficina de Nueva York del FBI. Estos agentes de primera clase, incluida la agente especial Maggie Bell (Missy Peregrym) y su compañero, el agente especial Omar Adom 'OA' Zidan (Zeeko Zaki), aportan todo su talento, intelecto y experiencia técnica para investigar con tenacidad casos de gran magnitud, incluidos terrorismo, crimen organizado y contrainteligencia, para mantener a salvo a Nueva York y al país.",
+        "poster": "https://image.tmdb.org/t/p/w500/zfKS4WL0OZ9udpNoSYZw91VB3aH.jpg",
+        "rating": 7.9
+      },
+      {
+        "rank": 5,
+        "id": 290856,
+        "title": "Marshals: Una historia de Yellowstone",
+        "year": "2026",
+        "date": "2026-03-01",
+        "genre": "Drama",
+        "overview": "Tras abandonar el rancho Yellowstone, Kayce Dutton se une a los Marshals Federales. Usa su habilidad como vaquero y agente SEAL para llevar justicia a Montana. Los Marshals son la última línea de defensa en la guerra contra la violencia regional.",
+        "poster": "https://image.tmdb.org/t/p/w500/eYY0w7tyAQrwoAT6fpw8gIxeWhv.jpg",
+        "rating": 8
+      },
+      {
+        "rank": 6,
+        "id": 2190,
+        "title": "South Park",
+        "year": "1997",
+        "date": "1997-08-13",
+        "genre": "Animación",
+        "overview": "Cuatro niños (Stan, Kyle, Cartman y Kenny) irreverentes de primaria viven grandes y surrealistas desventuras en la tranquila y disfuncional pueblo South Park, Colorado.",
+        "poster": "https://image.tmdb.org/t/p/w500/ft9gEERGJ4UhOvjY4rfA0HiCOjj.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 7,
+        "id": 126027,
+        "title": "Fantasmas",
+        "year": "2021",
+        "date": "2021-10-07",
+        "genre": "Comedia",
+        "overview": "Samantha y Jay son un par de citadinos que se mudan a una finca campestre, recién heredada, para convertirla en una posada. pero al llegar descubren que la propiedad no sólo se está cayendo a pedazos, además está habitada por varios residentes anteriores ya fallecidos. Tras un accidente, Samantha descubre que puede ver y oír a los fantasmas.",
+        "poster": "https://image.tmdb.org/t/p/w500/kFiJUxYDuFzvnVoWuTcapGgSJ0y.jpg",
+        "rating": 8
+      },
+      {
+        "rank": 8,
+        "id": 81144,
+        "title": "El Vecindario",
+        "year": "2018",
+        "date": "2018-10-01",
+        "genre": "Comedia",
+        "overview": "Una jovial familia del medio oeste trata con sus nuevos vecinos después de mudarse a Los Ángeles.",
+        "poster": "https://image.tmdb.org/t/p/w500/lyONEbUuLa6OpkhkSFpnIyqKJ2T.jpg",
+        "rating": 7.6
+      },
+      {
+        "rank": 9,
+        "id": 262388,
+        "title": "M.I.A.",
+        "year": "2026",
+        "date": "2026-05-07",
+        "genre": "Crimen",
+        "overview": "El tráfico de drogas es un asunto familiar para Etta Tiger Jonze. Pero cuando su familia es asesinada ante sus ojos, Etta se propone hacer justicia a los responsables, vengando a su familia de sangre. Al mismo tiempo, construye su propia familia elegida, iniciando su nuevo viaje de huérfana impotente a la más poderosa Queenpin criminal del sur de Florida.",
+        "poster": "https://image.tmdb.org/t/p/w500/uvocuo6mgQTtNa7O6a3MQoTfuh4.jpg",
+        "rating": 8.5
+      },
+      {
+        "rank": 10,
+        "id": 103516,
+        "title": "Star Trek: Extraños Nuevos Mundos",
+        "year": "2022",
+        "date": "2022-05-05",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "Siga a Christopher Pike, Spock y Number One en los años antes de que el Capitán Kirk abordara el U.S.S. Enterprise, mientras exploran nuevos mundos alrededor de la galaxia.",
+        "poster": "https://image.tmdb.org/t/p/w500/w6KapI2JvrCkOPmQhkwYPJNjqeo.jpg",
+        "rating": 8
+      }
+    ],
+    "disney": [
+      {
+        "rank": 1,
+        "id": 1416,
+        "title": "Anatomía según Grey",
+        "year": "2005",
+        "date": "2005-03-27",
+        "genre": "Drama",
+        "overview": "La vida de Meredith Grey no es nada fácil. Intenta tomar las riendas de su vida, aunque su trabajo sea de esos que te hacen la vida imposible. Meredith es una cirujana interna de primer año en el Hospital Grace de Seattle, el programa de prácticas más duro de la Facultad de Medicina de Harvard. Y ella lo va a comprobar. Pero no estará sola. Un elenco de compañeros de promoción tendrán que superar la misma prueba. Ahora están en el mundo real, son doctores del hospital. Y en un mundo donde la experiencia en el trabajo puede ser un factor de vida o muerte, todos ellos tendrán que lidiar con los altibajos de sus vidas personales.",
+        "poster": "https://image.tmdb.org/t/p/w500/zOHJKejyjmfu32PdMlXGZKyy3fq.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 2,
+        "id": 4057,
+        "title": "Mentes Criminales",
+        "year": "2005",
+        "date": "2005-09-22",
+        "genre": "Crimen",
+        "overview": "Narra las investigaciones de un equipo del FBI que estudia el perfil psicológico de los criminales más importantes de los Estados Unidos para poder capturarlos. Los agentes especiales Jason Giseon (Mandy Patinkin) y Aaron Hotchner (Thomas Gibson) dirigen el equipo. Cada agente tiene su especialidad. Elle Greenway (Lola Glaudini) tiene una larga experiencia en delitos sexuales, Derek Morgan (Shemar Moore) es un experto en crímenes de carácter obsesivo. Spencer Reid (Mathew Gray Gubler) es un genio incomprendido, cuya torpeza para las relaciones sociales es tan sobresaliente como su cociente intelectual. Y, finalmente, está Jennifer, la novata.",
+        "poster": "https://image.tmdb.org/t/p/w500/gV0E4age3IdoPFInx57CDByixxc.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 3,
+        "id": 456,
+        "title": "Los Simpson",
+        "year": "1989",
+        "date": "1989-12-17",
+        "genre": "Familia",
+        "overview": "La familia Simpson (Homero, Marge, Bart, Lisa y Maggie), y un reparto virtual de miles, viven aventuras cotidianas en Springfield, una ciudad estadounidense promedio.",
+        "poster": "https://image.tmdb.org/t/p/w500/9hmoEmntaYrrlb4HKSFisWUQnqy.jpg",
+        "rating": 8
+      },
+      {
+        "rank": 4,
+        "id": 1434,
+        "title": "Padre de Familia",
+        "year": "1999",
+        "date": "1999-01-31",
+        "genre": "Animación",
+        "overview": "La disfuncional familia Griffin (Los padres Peter y Lois; sus hijos Meg, Chris y Stewie; y su perro antropormófico Brian) viven aventuras cada vez más enfermizas, retorcidas, políticamente incorrecto y tremendamente dulce.",
+        "poster": "https://image.tmdb.org/t/p/w500/oalgdH3vglKvg1SB4OaMyoJ29sx.jpg",
+        "rating": 7.4
+      },
+      {
+        "rank": 5,
+        "id": 1433,
+        "title": "American Dad: Un Agente de Familia",
+        "year": "2005",
+        "date": "2005-02-06",
+        "genre": "Animación",
+        "overview": "American Dad es la serie de animación subversiva que gira en torno a Stan Smith (Seth MacFarlane), un agente de la CIA con sede en Langley Falls, Virginia, que es un indiscutible experto en armas y orgulloso hombre de familia. Stan está constantemente en alerta por actividad terrorista y llegará a extremos para proteger a su amado Estados Unidos y mantener su patria segura. Solo hay que ver el medidor de alerta terrorista de su refrigerador y su reacción inmediata de dispararle a la tostadora cada vez que salta una tostada.",
+        "poster": "https://image.tmdb.org/t/p/w500/bcQKWQWZCTU47Gzm3xtFkjYGGA7.jpg",
+        "rating": 7
+      },
+      {
+        "rank": 6,
+        "id": 44006,
+        "title": "Chicago en llamas",
+        "year": "2012",
+        "date": "2012-10-10",
+        "genre": "Drama",
+        "overview": "Las decisiones de los bomberos, equipos de rescate y paramédicos de la estación de bomberos 51 hacen la diferencia entre la vida y la muerte. Pero eso no es lo único, también se crea una gran familia entre los miembros del equipo. Dirigidos por el jefe Wallace Boden, la Unidad 51 lo deja todo en cada rescate de esta noble profesión.",
+        "poster": "https://image.tmdb.org/t/p/w500/r915sk2JpthZSjHEgZKifWxgo6L.jpg",
+        "rating": 8.4
+      },
+      {
+        "rank": 7,
+        "id": 56570,
+        "title": "Outlander",
+        "year": "2014",
+        "date": "2014-08-09",
+        "genre": "Drama",
+        "overview": "Sigue la historia de Claire Randall, una enfermera de combate casada en los años 40, que misteriosamente es arrastrada atrás en el tiempo hasta 1743, donde se lanza de inmediato a un mundo desconocido, viéndose amenazada su propia vida. Cuando se ve obligada a casarse con Jamie Fraser, un joven guerrero escocés caballeroso y romántico, Claire comienza un pasional triángulo entre dos hombres muy diferentes con dos vidas irreconciliables.",
+        "poster": "https://image.tmdb.org/t/p/w500/wwxKbrMlwMrC06B7aCIkDy3SAo6.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 8,
+        "id": 30984,
+        "title": "Bleach",
+        "year": "2004",
+        "date": "2004-10-05",
+        "genre": "Action & Adventure",
+        "overview": "La serie narra las aventuras de Ichigo Kurosaki, un adolescente que tiene la facultad de interactuar con los espíritus. Una noche, Ichigo se encuentra con una Cegador —personificación japonesa del Dios de la muerte— llamada Rukia Kuchiki, quien se sorprende que pueda verla. Sin embargo, su conversación es interrumpida por la aparición de un Hueco, un espíritu maligno. Después de que Rukia fuera gravemente herida al tratar de proteger a Ichigo, esta intenta traspasarle parte de sus poderes a Ichigo para que pueda enfrentarse al Hueco en igualdad de condiciones. No obstante, Ichigo sin darse cuenta los absorbe casi por completo y logra vencer con facilidad al espíritu.",
+        "poster": "https://image.tmdb.org/t/p/w500/e0kKmeM8R7Kersh5N2PPzIRNRhr.jpg",
+        "rating": 8.4
+      },
+      {
+        "rank": 9,
+        "id": 211288,
+        "title": "Tracker: Buscador de recompensas",
+        "year": "2024",
+        "date": "2024-02-11",
+        "genre": "Drama",
+        "overview": "Colter Shaw es un lobo solitario dedicado a la supervivencia que recorre el país en busca de recompensas, usando sus expertas habilidades de rastreo para ayudar a ciudadanos particulares y a las fuerzas del orden a resolver todo tipo de misterios, al tiempo que lidia con su propia familia dividida.",
+        "poster": "https://image.tmdb.org/t/p/w500/5PXqBrCQ0FdDDtFCVhUyLDSwZYF.jpg",
+        "rating": 7.5
+      },
+      {
+        "rank": 10,
+        "id": 75219,
+        "title": "9-1-1",
+        "year": "2018",
+        "date": "2018-01-03",
+        "genre": "Drama",
+        "overview": "Se centra en las vidas y las carreras de los que reciben las llamadas de emergencia: policías, paramédicos, bomberos, gente que arriesga su vida para salvar a otros.",
+        "poster": "https://image.tmdb.org/t/p/w500/n3IbaTXhPsnP68I5wsoKe7vchgS.jpg",
+        "rating": 8.2
+      }
+    ]
+  },
+  "estrenos": {
+    "netflix": [
+      {
+        "rank": 1,
+        "id": 279884,
+        "title": "Rafa",
+        "year": "2026",
+        "date": "2026-05-29",
+        "genre": "Documental",
+        "overview": "Mientras busca una despedida triunfal en la cancha, Rafael Nadal habla —como nunca antes— sobre qué lo convirtió en uno de los más grandes del tenis de todos los tiempos.",
+        "poster": "https://image.tmdb.org/t/p/w500/utyZY9NKMC0Ci9Rh0ohW9giFKee.jpg",
+        "rating": 9
+      },
+      {
+        "rank": 2,
+        "id": 304597,
+        "title": "Dos monedas",
+        "year": "2026",
+        "date": "2026-05-27",
+        "genre": "Animación",
+        "overview": "Cuando su amigo Jabalí se mete en líos con el crimen organizado, Zero y sus amigos intentan ayudarlo..., aunque apenas pueden lidiar con sus propias vidas.",
+        "poster": "https://image.tmdb.org/t/p/w500/dKMtEfVhzFYa5SR3NKzdZy5u6GE.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 3,
+        "id": 321594,
+        "title": "Futuro desierto",
+        "year": "2026",
+        "date": "2026-05-22",
+        "genre": "Drama",
+        "overview": "Mientras carga con el dolor de la muerte de su esposa, un psicólogo crea robots humanoides para procesar los duelos, hasta que una falla y una nueva realidad entran en escena.",
+        "poster": "https://image.tmdb.org/t/p/w500/seLCeeCuoK6vba3SRXdmaUkb5mL.jpg",
+        "rating": 7.5
+      },
+      {
+        "rank": 4,
+        "id": 290295,
+        "title": "Temporada de celo",
+        "year": "2026",
+        "date": "2026-05-22",
+        "genre": "Animación",
+        "overview": "De las retorcidas mentes que crearon «Big Mouth» llega esta serie de comedia animada para adultos sobre amor, sexo y relaciones ambientada en el mundo animal.",
+        "poster": "https://image.tmdb.org/t/p/w500/ryRnj2pDiRkb2UesLsmAKUjPHIs.jpg",
+        "rating": 7.6
+      },
+      {
+        "rank": 5,
+        "id": 321596,
+        "title": "James.",
+        "year": "2026",
+        "date": "2026-05-21",
+        "genre": "Documental",
+        "overview": "En esta serie documental, James Rodríguez, el mítico n.º 10 de Colombia, revela detalles inéditos sobre su ascenso a la élite del fútbol y la vitrina más importante del deporte.",
+        "poster": "https://image.tmdb.org/t/p/w500/be7cg7V1R8QcfRI5N1pAMwJo62r.jpg",
+        "rating": 8.8
+      },
+      {
+        "rank": 6,
+        "id": 224941,
+        "title": "The Boroughs: Jubilación rebelde",
+        "year": "2026",
+        "date": "2026-05-21",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "En una comunidad de jubilados que parece perfecta, un grupo de héroes poco convencionales deben evitar que una amenaza de otro mundo les robe lo único que no tienen: tiempo.",
+        "poster": "https://image.tmdb.org/t/p/w500/pIXvmq8Gcg9QgHqBvtY4vpVymva.jpg",
+        "rating": 7.3
+      },
+      {
+        "rank": 7,
+        "id": 320472,
+        "title": "Kylie",
+        "year": "2026",
+        "date": "2026-05-20",
+        "genre": "Documental",
+        "overview": "De actriz de telenovela a superestrella, la carrera de Kylie ha estado colmada de giros y éxitos superpegadizos. En esta serie documental sin censura, la cantante abre su corazón.",
+        "poster": "https://image.tmdb.org/t/p/w500/89qQzMmXD5r0UOOxH6ob8U6T8ei.jpg",
+        "rating": 7.8
+      },
+      {
+        "rank": 8,
+        "id": 308014,
+        "title": "Berlín y la dama del armiño",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Drama",
+        "overview": "Berlín, ansioso por dar un nuevo golpe, reúne a su banda en Sevilla y convierte a un ambicioso duque en víctima de su propio plan: robar una obra de arte de Leonardo da Vinci.",
+        "poster": "https://image.tmdb.org/t/p/w500/3uhJ3AHKxSsEWe1BUG9pV0bpqna.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 9,
+        "id": 259837,
+        "title": "The WONDERfools",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Action & Adventure",
+        "overview": "En esta comedia de acción ambientada en la previa a un cambio de siglo, un disparatado grupo recibe superpoderes y lucha contra el mal, mientras el pánico se extiende.",
+        "poster": "https://image.tmdb.org/t/p/w500/zEZuIW4UDU9OHTwN7zMf8BE5tOF.jpg",
+        "rating": 9.2
+      },
+      {
+        "rank": 10,
+        "id": 285807,
+        "title": "Némesis",
+        "year": "2026",
+        "date": "2026-05-14",
+        "genre": "Action & Adventure",
+        "overview": "Un implacable policía de Los Ángeles se obsesiona con atrapar al ladrón responsable de una serie de robos audaces. Pero en esta lucha, solo uno podrá salir victorioso.",
+        "poster": "https://image.tmdb.org/t/p/w500/rckS1DiKMVaYkkpIdE5D2wHirBv.jpg",
+        "rating": 7.1
+      }
+    ],
+    "max": [
+      {
+        "rank": 1,
+        "id": 256695,
+        "title": "Un Show Más: Las Cintas Perdidas",
+        "year": "2026",
+        "date": "2026-05-11",
+        "genre": "Animación",
+        "overview": "Mordecai y Rigby son mejores amigos, y trabajan y viven en un parque de la ciudad. Sus trabajos mundanos siempre terminan en un caos surrealista.",
+        "poster": "https://image.tmdb.org/t/p/w500/6lubCRop1vxpZ2aqw4pWO3DA6Qn.jpg",
+        "rating": 9.6
+      },
+      {
+        "rank": 2,
+        "id": 257994,
+        "title": "Hombre a medias",
+        "year": "2026",
+        "date": "2026-04-28",
+        "genre": "Drama",
+        "overview": "Cuando Ruben, el \"hermano\" de Niall con quien no tiene relación, aparece en su boda, se desata una explosión de violencia que transporta de nuevo a través de sus vidas.",
+        "poster": "https://image.tmdb.org/t/p/w500/mACHtXZphR0JXbNrcEpWjdCSul5.jpg",
+        "rating": 8.4
+      },
+      {
+        "rank": 3,
+        "id": 320619,
+        "title": "Sociedad de La Virtud: La Serie",
+        "year": "2026",
+        "date": "2026-04-24",
+        "genre": "Animación",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/sFUK0nVuUQ7JptFAfamnWl3nplz.jpg",
+        "rating": 7.4
+      },
+      {
+        "rank": 4,
+        "id": 250220,
+        "title": "The Miniature Wife",
+        "year": "2026",
+        "date": "2026-04-09",
+        "genre": "Drama",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/99SkFAS3S3iOtnplwH0byFUMiHK.jpg",
+        "rating": 7.4
+      },
+      {
+        "rank": 5,
+        "id": 283853,
+        "title": "Privilegios",
+        "year": "2026",
+        "date": "2026-03-27",
+        "genre": "Drama",
+        "overview": "La joven reclusa Adèle Charki (Manon Bresch) acepta desesperadamente un puesto de botones en el hotel de lujo parisino Citadel, como parte de un programa de reinserción dirigido por el todopoderoso director del hotel, Édouard Galzain (Melvil Poupaud). Pero poco después de llegar a su primer turno, Adèle se ve envuelta en una lucha de poder no tan secreta en la que el ambicioso personal, los huéspedes influyentes y las redes externas luchan por el control, convirtiendo el hotel en un caldo de cultivo de manipulación y traición. A medida que su relación con Édouard se transforma rápidamente en algo más siniestro, la determinación y la ambición de Adèle son cruciales para su supervivencia, mientras lucha por una oportunidad de redimir su futuro.",
+        "poster": "https://image.tmdb.org/t/p/w500/ePEXjhbI5zS84nILMXOiC9razo1.jpg",
+        "rating": 4.5
+      },
+      {
+        "rank": 6,
+        "id": 302162,
+        "title": "ちるらん 新撰組鎮魂歌 江戸青春篇",
+        "year": "2026",
+        "date": "2026-03-26",
+        "genre": "Action & Adventure",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/nggt2VQ3QXegDdKJZReSs3Dgcl8.jpg",
+        "rating": 9.9
+      },
+      {
+        "rank": 7,
+        "id": 254953,
+        "title": "Rooster",
+        "year": "2026",
+        "date": "2026-03-08",
+        "genre": "Comedia",
+        "overview": "Un aclamado escritor llamado Greg Russo se ve arrastrado al mundo académico por su hija adulta Katie, profesora en una universidad de élite cuyo marido la engaña. Él intenta apoyarla sin sobrepasarse, tratando de lidiar con esta complicada y cambiante relación, al tiempo que transita un nuevo entorno que siente fuera de su alcance.",
+        "poster": "https://image.tmdb.org/t/p/w500/aikvD4Nu7N6ekbrXNua8vJlO8JU.jpg",
+        "rating": 7.5
+      },
+      {
+        "rank": 8,
+        "id": 286702,
+        "title": "Piekło kobiet",
+        "year": "2026",
+        "date": "2026-03-06",
+        "genre": "Drama",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/ni4PIYl6P6kjQpFOzZp3fbfZf6S.jpg",
+        "rating": 7
+      },
+      {
+        "rank": 9,
+        "id": 206828,
+        "title": "DTF St. Louis",
+        "year": "2026",
+        "date": "2026-03-01",
+        "genre": "Comedia",
+        "overview": "Tres personas de mediana edad se enredan en un triángulo amoroso que conduce a la muerte prematura de una de ellas.",
+        "poster": "https://image.tmdb.org/t/p/w500/xHfafw9UmomDc7jO25s9MpiL4Zs.jpg",
+        "rating": 6.8
+      },
+      {
+        "rank": 10,
+        "id": 312073,
+        "title": "Banksters",
+        "year": "2026",
+        "date": "2026-02-20",
+        "genre": "Crimen",
+        "overview": "Yusuf, un modélico aprendiz de banquero, es detenido en medio de un partido de fútbol. El cargo: seis atracos a bancos en el plazo de un año, con un botín total de más de un millón de euros. Se enfrenta a diez años de prisión, a menos que delate a sus cómplices y devuelva el dinero. Pero le han robado su parte y Yusuf permanece en silencio. ¿Quién le ha delatado, y solo a él?",
+        "poster": "https://image.tmdb.org/t/p/w500/3hGT2xZdWiG0bSnjUG5cRd0wXkd.jpg",
+        "rating": 6
+      }
+    ],
+    "apple": [
+      {
+        "rank": 1,
+        "id": 252107,
+        "title": "Star City",
+        "year": "2026",
+        "date": "2026-05-28",
+        "genre": "Drama",
+        "overview": "Vive un emocionante capítulo inspirado por For All Mankind. Mismo universo alternativo, diferente perspectiva: la de la Unión Soviética. Ve detrás de la Cortina de Hierro con los cosmonautas, ingenieros y oficiales que lo arriesgaron todo en la carrera a la Luna.",
+        "poster": "https://image.tmdb.org/t/p/w500/qP4Jb4Cozz36XiGj1sV4Vvzto4j.jpg",
+        "rating": 6.2
+      },
+      {
+        "rank": 2,
+        "id": 285404,
+        "title": "Máximo placer garantizado",
+        "year": "2026",
+        "date": "2026-05-19",
+        "genre": "Comedia",
+        "overview": "Una mamá recién divorciada cae en una peligrosa maraña de chantaje, asesinato y fútbol juvenil.",
+        "poster": "https://image.tmdb.org/t/p/w500/nzT8zBGRlusc3yVJnHDOJvWslPh.jpg",
+        "rating": 4.9
+      },
+      {
+        "rank": 3,
+        "id": 270476,
+        "title": "La maldición de Widow's Bay",
+        "year": "2026",
+        "date": "2026-04-28",
+        "genre": "Drama",
+        "overview": "El alcalde de un pueblo en una isla de Nueva Inglaterra decide convertirla en la próxima sensación turística, a pesar de las advertencias locales de que está maldita.",
+        "poster": "https://image.tmdb.org/t/p/w500/hAI5wOXpKdbTRnjSZMw9FpfKlMS.jpg",
+        "rating": 8.3
+      },
+      {
+        "rank": 4,
+        "id": 314916,
+        "title": "Amor incondicional",
+        "year": "2026",
+        "date": "2026-04-27",
+        "genre": "Drama",
+        "overview": "Unas vacaciones de madre e hija dan un giro devastador cuando arrestan a Gali por posesión de drogas. Su madre, Orna, se rehúsa a aceptar los cargos y en una arriesgada búsqueda por la libertad, termina enredada en los secretos de Gali.",
+        "poster": "https://image.tmdb.org/t/p/w500/99pLTiCdYKOEwXDCmmuieHoYN25.jpg",
+        "rating": 6.9
+      },
+      {
+        "rank": 5,
+        "id": 245318,
+        "title": "Margo tiene problemas de dinero",
+        "year": "2026",
+        "date": "2026-04-14",
+        "genre": "Drama",
+        "overview": "Margo Millet, aspirante a escritora, se embaraza y se ve obligada a dejar la universidad y enfrentar la ruina económica. Pero cuando aparece su padre distanciado, un ex luchador profesional, Margo encuentra una forma inesperada de capitalizar su talento para contar historias.",
+        "poster": "https://image.tmdb.org/t/p/w500/zqUvfOQtaffnkQL0ZVKPD7Z1KIR.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 6,
+        "id": 108181,
+        "title": "Mujeres imperfectas",
+        "year": "2026",
+        "date": "2026-03-17",
+        "genre": "Drama",
+        "overview": "Tras un asesinato que destruye las vidas de tres amigos, su vínculo de décadas se pone a prueba cuando una investigación revela verdades impactantes.",
+        "poster": "https://image.tmdb.org/t/p/w500/najFLDmQhH0qg9mygSxgTtWhJIX.jpg",
+        "rating": 6.2
+      },
+      {
+        "rank": 7,
+        "id": 315800,
+        "title": "Twisted Yoga: La secta del silencio",
+        "year": "2026",
+        "date": "2026-03-13",
+        "genre": "Documental",
+        "overview": "Exalumnos de una escuela de yoga tántrico cuentan cómo pasaron de buscar bienestar y comunidad a temer haber entrado a una secta, y cómo buscan justicia por los presuntos abusos y manipulaciones sufridos a manos de un gurú autoproclamado.",
+        "poster": "https://image.tmdb.org/t/p/w500/cypCnESQQPJ5yKm5mpZg3mPbMW9.jpg",
+        "rating": 7.1
+      },
+      {
+        "rank": 8,
+        "id": 257992,
+        "title": "La caza",
+        "year": "2026",
+        "date": "2026-03-04",
+        "genre": "Drama",
+        "overview": "Cuando unos amigos en un viaje de caza tienen un enfrentamiento mortal con otros cazadores, juran mantenerlo en secreto. Pero cuando aparece la paranoia, y un grupo despiadado busca venganza, los amigos deben confrontar su moralidad, a sus familias, y sus instintos salvajes.",
+        "poster": "https://image.tmdb.org/t/p/w500/xeNRby1qEtbvXdf2OQrQcMfMDTI.jpg",
+        "rating": 7.2
+      },
+      {
+        "rank": 9,
+        "id": 230936,
+        "title": "Salvajes por naturaleza",
+        "year": "2025",
+        "date": "2025-12-19",
+        "genre": "Documental",
+        "overview": "De sus primeros pasos a sus primeras presas, sigue a seis crías de animales poco comunes mientras aprenden a sobrevivir y traen esperanza al futuro de su especie en la naturaleza.",
+        "poster": "https://image.tmdb.org/t/p/w500/vKHV0xxSSheJSN3zWVsGsJmgInV.jpg",
+        "rating": 8.1
+      }
+    ],
+    "prime": [
+      {
+        "rank": 1,
+        "id": 220102,
+        "title": "Spider-Noir",
+        "year": "2026",
+        "date": "2026-05-25",
+        "genre": "Crimen",
+        "overview": "Al detective privado Ben Reilly lo contratan para un par de casos sencillos... hasta que unos mafiosos, unos monstruos y una femme fatale misteriosa tejen una red que lo obliga a encarar su antigua vida como el único superhéroe de Nueva York: La Araña.",
+        "poster": "https://image.tmdb.org/t/p/w500/4Pec5a1At5UMeADkgcxwf6nLqau.jpg",
+        "rating": 8.8
+      },
+      {
+        "rank": 2,
+        "id": 273240,
+        "title": "Off Campus",
+        "year": "2026",
+        "date": "2026-05-13",
+        "genre": "Drama",
+        "overview": "Hannah Wells acepta darle clases particulares a Garrett Graham, el capitán del equipo de hockey, para conquistar al chico que le gusta. Lo que empieza como un simple acuerdo se convierte en una conexión real mientras ambos enfrentan su pasado. Mientras tanto, sus amigos Logan, Dean, Tucker y Allie viven sus propias aventuras entre romances y la vida universitaria.",
+        "poster": "https://image.tmdb.org/t/p/w500/pI4sEVVbswtyOL2uaFxZs2tPOnQ.jpg",
+        "rating": 9
+      },
+      {
+        "rank": 3,
+        "id": 321267,
+        "title": "The Grand-ish Tour",
+        "year": "2026",
+        "date": "2026-05-01",
+        "genre": "Reality",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/cPvIgIgysI3S067aA670pMYAjI4.jpg",
+        "rating": 7.4
+      },
+      {
+        "rank": 4,
+        "id": 259702,
+        "title": "La Casa de los Espiritus",
+        "year": "2026",
+        "date": "2026-04-29",
+        "genre": "Drama",
+        "overview": "Una saga familiar magnífica que narra la épica historia de una familia orgullosa y apasionada, amores secretos y una revolución sangrienta. Las pasiones, las luchas y los secretos de la familia Trueba abarcan un siglo de cambios sociales violentos, culminando en una crisis que lanzan al orgulloso y tiránico patriarca y a su querida nieta en direcciones opuestas.",
+        "poster": "https://image.tmdb.org/t/p/w500/jj0XnxksBKyQ7zQp7O4TFw5PIVx.jpg",
+        "rating": 8.9
+      },
+      {
+        "rank": 5,
+        "id": 258842,
+        "title": "Cochinas",
+        "year": "2026",
+        "date": "2026-04-24",
+        "genre": "Comedia",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/mwHiEXTdby9chLpuNrWGSUt8C8p.jpg",
+        "rating": 7.8
+      },
+      {
+        "rank": 6,
+        "id": 255760,
+        "title": "Kevin",
+        "year": "2026",
+        "date": "2026-04-20",
+        "genre": "Animación",
+        "overview": "Tras la inesperada ruptura de sus dueños, Kevin llega a un refugio en Astoria, Queens. Entre un caótico grupo de inadaptados, vivirá una historia divertida y entrañable sobre pertenencia y descubrir lo que realmente quiere en la vida.",
+        "poster": "https://image.tmdb.org/t/p/w500/ryvkioE754XooFO16s9SZyHZulu.jpg",
+        "rating": 5.8
+      },
+      {
+        "rank": 7,
+        "id": 314784,
+        "title": "Amor sin variables",
+        "year": "2026",
+        "date": "2026-04-17",
+        "genre": "Drama",
+        "overview": "Eui-ju, estudiante tímida de día y novelista romántica de noche, se inspira cuando aparecen cuatro profesores atractivos: Woo-su, Da-ju, Gi-jeon y Dong-ju. Los convierte en protagonistas de su nueva novela, que se vuelve viral de la noche a la mañana. Pero Woo-su descubre su secreto y le propone un trato. ¿Podrá terminar la historia sin salir lastimada?",
+        "poster": "https://image.tmdb.org/t/p/w500/97PM3x5ejUtWRYbkHYNL8u0BYHM.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 8,
+        "id": 295751,
+        "title": "一畳間まんきつ暮らし！",
+        "year": "2026",
+        "date": "2026-04-12",
+        "genre": "Animación",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/wOTg5dWnh2R1r1Y6581siGMw0aB.jpg",
+        "rating": 6
+      },
+      {
+        "rank": 9,
+        "id": 300131,
+        "title": "Kill Blue",
+        "year": "2026",
+        "date": "2026-04-11",
+        "genre": "Animación",
+        "overview": "Jūzō Ōgami, un asesino legendario de 39 años, es atacado por una misteriosa avispa y despierta con el cuerpo de un adolescente de 13. Ahora debe infiltrarse en una escuela secundaria llena de caos y compañeros excéntricos mientras busca recuperar su forma original… antes de ser eliminado.",
+        "poster": "https://image.tmdb.org/t/p/w500/1hzamo8nOZmurGQQ7P2uqpsGHek.jpg",
+        "rating": 8.9
+      },
+      {
+        "rank": 10,
+        "id": 295357,
+        "title": "北斗の拳 -FIST OF THE NORTH STAR-",
+        "year": "2026",
+        "date": "2026-04-11",
+        "genre": "Action & Adventure",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/lvcRbGKXBGdpdyM2nqcbtjoabRd.jpg",
+        "rating": 8.5
+      }
+    ],
+    "paramount": [
+      {
+        "rank": 1,
+        "id": 299167,
+        "title": "Rancho Dutton",
+        "year": "2026",
+        "date": "2026-05-15",
+        "genre": "Western",
+        "overview": "Rip y Beth Dutton arriesgan todo por una nueva vida en el Sur de Texas, pero la promesa de un futuro lejos de los fantasmas de Yellowstone choca con nuevas y brutales realidades y un rancho rival que a toda costa protege su imperio.",
+        "poster": "https://image.tmdb.org/t/p/w500/4KTqlq5jwt53LoZdP8ui33TpFaq.jpg",
+        "rating": 9.3
+      },
+      {
+        "rank": 2,
+        "id": 262388,
+        "title": "M.I.A.",
+        "year": "2026",
+        "date": "2026-05-07",
+        "genre": "Crimen",
+        "overview": "El tráfico de drogas es un asunto familiar para Etta Tiger Jonze. Pero cuando su familia es asesinada ante sus ojos, Etta se propone hacer justicia a los responsables, vengando a su familia de sangre. Al mismo tiempo, construye su propia familia elegida, iniciando su nuevo viaje de huérfana impotente a la más poderosa Queenpin criminal del sur de Florida.",
+        "poster": "https://image.tmdb.org/t/p/w500/uvocuo6mgQTtNa7O6a3MQoTfuh4.jpg",
+        "rating": 8.5
+      },
+      {
+        "rank": 3,
+        "id": 225891,
+        "title": "Madison",
+        "year": "2026",
+        "date": "2026-03-14",
+        "genre": "Drama",
+        "overview": "Tras una tragedia, una adinerada familia neoyorquina se traslada al idílico estado de Montana rural, explorando la conexión humana en medio de un profundo dolor.",
+        "poster": "https://image.tmdb.org/t/p/w500/nZVRyqVbDqfLSOrLcsGGTUHccZ8.jpg",
+        "rating": 8.1
+      },
+      {
+        "rank": 4,
+        "id": 290856,
+        "title": "Marshals: Una historia de Yellowstone",
+        "year": "2026",
+        "date": "2026-03-01",
+        "genre": "Drama",
+        "overview": "Tras abandonar el rancho Yellowstone, Kayce Dutton se une a los Marshals Federales. Usa su habilidad como vaquero y agente SEAL para llevar justicia a Montana. Los Marshals son la última línea de defensa en la guerra contra la violencia regional.",
+        "poster": "https://image.tmdb.org/t/p/w500/eYY0w7tyAQrwoAT6fpw8gIxeWhv.jpg",
+        "rating": 8
+      },
+      {
+        "rank": 5,
+        "id": 307913,
+        "title": "Canada Shore",
+        "year": "2026",
+        "date": "2026-01-22",
+        "genre": "Reality",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/lUn56AxVbCqak4CURJMPSyskxS1.jpg",
+        "rating": 7
+      },
+      {
+        "rank": 6,
+        "id": 223530,
+        "title": "Star Trek: Academia de la Flota Estelar",
+        "year": "2026",
+        "date": "2026-01-15",
+        "genre": "Sci-Fi & Fantasy",
+        "overview": "Un grupo de jóvenes cadetes se unen para perseguir un sueño en común de esperanza y optimismo. Bajo la supervisión de sus instructores, descubrirán lo que se necesita para ser un oficial de la Flota Estelar.",
+        "poster": "https://image.tmdb.org/t/p/w500/vmo8SYv8AacIViGZ6hj0d3mxuYN.jpg",
+        "rating": 5.5
+      },
+      {
+        "rank": 7,
+        "id": 296523,
+        "title": "Joven secuestrada",
+        "year": "2026",
+        "date": "2026-01-08",
+        "genre": "Drama",
+        "overview": "Un maestro secuestra a Lily, una gemela. Tras años cautiva, escapa y enfrenta nuevos retos en un mundo transformado. Su familia busca sanar mientras el captor sigue libre.",
+        "poster": "https://image.tmdb.org/t/p/w500/rsjOTVvak7CdBh2hDF3rmdH5GIh.jpg",
+        "rating": 6.6
+      }
+    ],
+    "disney": [
+      {
+        "rank": 1,
+        "id": 321960,
+        "title": "The Nightmare Upstairs: What Happened to Ty and Bryn?",
+        "year": "2026",
+        "date": "2026-05-19",
+        "genre": "Documental",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/ijUqXJ8SpOyZo3BvfXqooHyQb7S.jpg",
+        "rating": 6.6
+      },
+      {
+        "rank": 2,
+        "id": 278113,
+        "title": "Tierra de oro",
+        "year": "2026",
+        "date": "2026-04-29",
+        "genre": "Drama",
+        "overview": "Una mujer de un pequeño pueblo descubre lingotes de oro de contrabando y debe huir de peligrosos delincuentes, lo que la obliga a regresar al lugar que juró evitar.",
+        "poster": "https://image.tmdb.org/t/p/w500/A55hvXauo57l8HYo4AjYeFfn0W4.jpg",
+        "rating": 8
+      },
+      {
+        "rank": 3,
+        "id": 279471,
+        "title": "Malcolm in the Middle: La vida sigue siendo injusta",
+        "year": "2026",
+        "date": "2026-04-10",
+        "genre": "Comedia",
+        "overview": "Han pasado veinte años, y Malcolm y su familia siguen sin aprender nada.",
+        "poster": "https://image.tmdb.org/t/p/w500/65VaeGPDrKYU8TIyMjnDmeFUqY0.jpg",
+        "rating": 8.1
+      },
+      {
+        "rank": 4,
+        "id": 278573,
+        "title": "La corona perfecta",
+        "year": "2026",
+        "date": "2026-04-10",
+        "genre": "Comedia",
+        "overview": "En una Corea moderna con una monarquía constitucional, una heredera de Chaebol y un príncipe impotente contraen un matrimonio por contrato, descubriendo el amor y el coraje mientras enfrentan barreras sociales y cicatrices personales.",
+        "poster": "https://image.tmdb.org/t/p/w500/51EIbzw2pvsi73UXGtuHaZGJfQa.jpg",
+        "rating": 8.7
+      },
+      {
+        "rank": 5,
+        "id": 287527,
+        "title": "Los testamentos: De las hijas de Gilead",
+        "year": "2026",
+        "date": "2026-04-08",
+        "genre": "Drama",
+        "overview": "\"Los testamentos\", la continuación de \"El cuento de la criada\", es un drama sobre el paso a la adultez ambientado en Gilead. La historia sigue a dos adolescentes: la devota y obediente Agnes Mackenzie y Daisy, una conversa recién llegada de fuera de las fronteras de Gilead.",
+        "poster": "https://image.tmdb.org/t/p/w500/i3buwvLYhVYpt6169Yqvcdt1wKQ.jpg",
+        "rating": 8.2
+      },
+      {
+        "rank": 6,
+        "id": 289219,
+        "title": "Star Wars: Maul - Señor de las sombras",
+        "year": "2026",
+        "date": "2026-04-06",
+        "genre": "Action & Adventure",
+        "overview": "Maul se alza de nuevo para liderar las facciones del hampa, conspirando para reconstruir su sindicato criminal y entrenar a un nuevo aprendiz en un planeta no tocado por el Imperio Galáctico.",
+        "poster": "https://image.tmdb.org/t/p/w500/9T4ECKFMBWqT7msxdaCGtsa3g5R.jpg",
+        "rating": 8.6
+      },
+      {
+        "rank": 7,
+        "id": 295999,
+        "title": "MAO",
+        "year": "2026",
+        "date": "2026-04-04",
+        "genre": "Animación",
+        "overview": "Una colegiala con poderes sobrenaturales tiene una misteriosa conexión con Mao, un exorcista del siglo anterior.",
+        "poster": "https://image.tmdb.org/t/p/w500/kdti4Dm7XPV0Os2Jjzd188AWTQ3.jpg",
+        "rating": 8.9
+      },
+      {
+        "rank": 8,
+        "id": 313721,
+        "title": "Dear Killer Nannies: Criado por sicarios",
+        "year": "2026",
+        "date": "2026-04-01",
+        "genre": "Drama",
+        "overview": "Una inspiración en la niñez y la adolescencia de Juan Pablo Escobar, hijo del narcoterrorista colombiano Pablo Escobar Gaviria.",
+        "poster": "https://image.tmdb.org/t/p/w500/rNjB5TBYUBOxXR2GjR02uukSwBw.jpg",
+        "rating": 7.9
+      },
+      {
+        "rank": 9,
+        "id": 255522,
+        "title": "Si es martes, es asesinato",
+        "year": "2026",
+        "date": "2026-03-31",
+        "genre": "Comedia",
+        "overview": "Cuenta la historia de un grupo de turistas durante un viaje organizado a Lisboa. Son un grupo de lo más diverso: Jóvenes, parejas, solteros, adultos... y apenas tienen cosas en común. Pero, cuando uno de los turistas aparece muerto la mañana posterior a su llegada, cuatro de ellos, fans de las novelas policiacas y de misterio, comienzan a investigar si alguno de ellos puede ser el asesino.",
+        "poster": "https://image.tmdb.org/t/p/w500/8Yc9eR3DOGw4jokqHjA7vS1CERC.jpg",
+        "rating": 7.8
+      },
+      {
+        "rank": 10,
+        "id": 218274,
+        "title": "Secrets of the Bees",
+        "year": "2026",
+        "date": "2026-03-31",
+        "genre": "Documental",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/k2snA5sP2zXtrwKcN0s7gBNeTbl.jpg",
+        "rating": 9
+      }
+    ]
+  }
+}
