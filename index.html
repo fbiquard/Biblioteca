@@ -3,86 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>TopSeries · Lo mejor del streaming</title>
-  <meta name="description" content="Las series mejor rankeadas por Rotten Tomatoes en Netflix, Max, Apple TV+, Prime Video, Paramount+ y Disney+. Armá tu wishlist y marcá lo que ya viste." />
+  <title>TopSeries · Lo que se ve en Argentina</title>
+  <meta name="description" content="El Top 10 y los estrenos de Netflix, Max, Apple TV+, Prime Video, Paramount+ y Disney+ en Argentina. Armá tu wishlist y marcá lo que ya viste." />
   <style>
     :root {
-      --bg: #0d0c0f; --surface: #16151a; --card: #1d1b22; --card-hover: #25222c; --border: #322f3a;
-      --text-primary: #f2eef7; --text-secondary: #a39db0; --text-muted: #6b6577;
-      --accent: #fa3e3e; --accent-light: #ff6b6b; --accent-dim: rgba(250,62,62,0.14);
-      --gold: #f5c518; --green: #46d369; --radius: 16px;
+      --bg:#0d0c0f; --surface:#16151a; --card:#1d1b22; --border:#322f3a;
+      --text-primary:#f2eef7; --text-secondary:#a39db0; --text-muted:#6b6577;
+      --accent:#fa3e3e; --accent-light:#ff6b6b; --accent-dim:rgba(250,62,62,0.14);
+      --green:#46d369; --radius:16px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text-primary); font-family: -apple-system, "SF Pro Display", "Segoe UI", "Helvetica Neue", sans-serif; min-height: 100vh; }
+    * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    body { background:var(--bg); color:var(--text-primary); font-family:-apple-system,"SF Pro Display","Segoe UI","Helvetica Neue",sans-serif; min-height:100vh; }
 
-    .app-header { position: sticky; top: 0; z-index: 100; background: rgba(13,12,15,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
-    .header-top { padding: env(safe-area-inset-top, 14px) 20px 12px; }
-    .header-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .logo { display: flex; align-items: center; gap: 11px; }
-    .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, #fa3e3e, #ff8a3e); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 14px rgba(250,62,62,0.3); }
-    .logo-text h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
-    .logo-text span { font-size: 12px; color: var(--text-muted); }
-    .header-counts { display: flex; gap: 8px; }
-    .count-pill { display: flex; align-items: center; gap: 6px; padding: 8px 13px; background: var(--card); border: 1px solid var(--border); border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-secondary); white-space: nowrap; transition: border-color .2s, color .2s; }
-    .count-pill:active { transform: scale(0.96); }
-    .count-pill .n { color: var(--text-primary); font-weight: 800; }
-    @media (hover: hover) { .count-pill:hover { border-color: var(--accent); color: var(--text-primary); } }
+    .app-header { position:sticky; top:0; z-index:100; background:rgba(13,12,15,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .header-top { padding:env(safe-area-inset-top,14px) 20px 12px; }
+    .header-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .logo { display:flex; align-items:center; gap:11px; }
+    .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,#fa3e3e,#ff8a3e); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 14px rgba(250,62,62,0.3); }
+    .logo-text h1 { font-size:19px; font-weight:800; letter-spacing:-0.4px; }
+    .logo-text span { font-size:12px; color:var(--text-muted); }
+    .header-counts { display:flex; gap:8px; }
+    .count-pill { display:flex; align-items:center; gap:6px; padding:8px 13px; background:var(--card); border:1px solid var(--border); border-radius:50px; font-size:13px; font-weight:600; cursor:pointer; color:var(--text-secondary); white-space:nowrap; transition:border-color .2s,color .2s; }
+    .count-pill.active { border-color:var(--accent); color:var(--text-primary); }
+    .count-pill:active { transform:scale(0.96); }
+    .count-pill .n { color:var(--text-primary); font-weight:800; }
+    @media (hover:hover){ .count-pill:hover{ border-color:var(--accent); color:var(--text-primary); } }
 
-    .filters { max-width: 1080px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; padding: 2px 20px 14px; scrollbar-width: none; }
-    .filters::-webkit-scrollbar { display: none; }
-    .chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px; padding: 8px 15px; background: var(--card); border: 1px solid var(--border); border-radius: 50px; font-size: 13.5px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all .18s; }
-    .chip:active { transform: scale(0.95); }
-    .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .chip.active { background: var(--text-primary); color: #14121a; border-color: var(--text-primary); }
-    .chip.active.acc { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toggle-wrap { max-width:1100px; margin:0 auto; padding:2px 20px 10px; }
+    .segmented { display:inline-flex; background:var(--card); border:1px solid var(--border); border-radius:50px; padding:4px; gap:4px; }
+    .seg { display:inline-flex; align-items:center; gap:7px; padding:8px 18px; border-radius:50px; font-size:14px; font-weight:700; color:var(--text-secondary); cursor:pointer; border:none; background:transparent; transition:all .18s; }
+    .seg.active { background:var(--text-primary); color:#14121a; }
+    .seg:active { transform:scale(0.96); }
 
-    .main { max-width: 1080px; margin: 0 auto; padding: 22px 20px 80px; }
-    .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
-    .section-head h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-    .section-head .sub { font-size: 13px; color: var(--text-muted); }
+    .filters { max-width:1100px; margin:0 auto; display:flex; gap:8px; overflow-x:auto; padding:2px 20px 14px; scrollbar-width:none; }
+    .filters::-webkit-scrollbar { display:none; }
+    .chip { flex-shrink:0; display:inline-flex; align-items:center; gap:7px; padding:8px 15px; background:var(--card); border:1px solid var(--border); border-radius:50px; font-size:13.5px; font-weight:600; color:var(--text-secondary); cursor:pointer; transition:all .18s; }
+    .chip:active { transform:scale(0.95); }
+    .chip .dot { width:8px; height:8px; border-radius:50%; }
+    .chip.active { background:var(--text-primary); color:#14121a; border-color:var(--text-primary); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s, border-color .2s; }
-    @media (hover: hover) { .card:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(0,0,0,0.55); border-color: #4a4556; } }
-    .poster { width: 100%; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 56px; position: relative; }
-    .poster::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.55)); }
-    .poster .emoji { position: relative; z-index: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
-    .rank-badge { position: absolute; top: 10px; left: 10px; z-index: 2; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.14); border-radius: 50px; padding: 4px 10px 4px 8px; font-size: 12px; font-weight: 800; }
-    .rt-badge { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.62); backdrop-filter: blur(6px); border-radius: 50px; padding: 4px 10px; font-size: 12.5px; font-weight: 800; }
-    .rt-badge.fresh { color: #ff6b4a; } .rt-badge.certified { color: var(--gold); }
-    .plat-badge { position: absolute; bottom: 10px; left: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border-radius: 50px; padding: 4px 11px 4px 9px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.2px; }
-    .plat-badge .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .main { max-width:1100px; margin:0 auto; padding:20px 20px 80px; }
+    .section-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px; gap:12px; flex-wrap:wrap; }
+    .section-head h2 { font-size:22px; font-weight:800; letter-spacing:-0.5px; }
+    .section-head .sub { font-size:12.5px; color:var(--text-muted); }
+    .back-btn { display:inline-flex; align-items:center; gap:7px; background:var(--card); border:1px solid var(--border); color:var(--text-secondary); border-radius:50px; padding:8px 15px; font-size:13.5px; font-weight:600; cursor:pointer; margin-bottom:16px; }
+    .back-btn:active { transform:scale(0.96); }
 
-    .card-body { padding: 15px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 9px; }
-    .card-meta { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
-    .card-meta .genre { color: var(--accent-light); }
-    .card-title { font-size: 17px; font-weight: 800; line-height: 1.3; letter-spacing: -0.3px; }
-    .card-syn { font-size: 13px; color: var(--text-secondary); line-height: 1.55; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .card-actions { display: flex; gap: 8px; margin-top: 4px; }
-    .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 10px; border-radius: 11px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); cursor: pointer; transition: all .16s; }
-    .btn:active { transform: scale(0.96); }
-    .btn.wish:not(.on) { }
-    .btn.wish.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn.seen.on { background: rgba(70,211,105,0.16); border-color: var(--green); color: var(--green); }
-    @media (hover: hover) { .btn:hover { border-color: #56505f; } .btn.wish.on:hover { border-color: var(--accent); } }
-    .btn-del { flex: 0 0 auto; width: 44px; padding: 11px 0; background: var(--surface); border: 1px solid var(--border); border-radius: 11px; color: var(--text-muted); cursor: pointer; font-size: 15px; transition: all .16s; }
-    @media (hover: hover) { .btn-del:hover { color: var(--accent); border-color: var(--accent); } }
-    .btn-del:active { transform: scale(0.94); }
+    .banner { background:var(--accent-dim); border:1px solid rgba(250,62,62,0.3); color:var(--accent-light); border-radius:12px; padding:11px 15px; font-size:13px; margin-bottom:18px; line-height:1.5; }
 
-    .status-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 50px; width: fit-content; }
-    .status-tag.wishT { background: var(--accent-dim); color: var(--accent-light); }
-    .status-tag.seenT { background: rgba(70,211,105,0.14); color: var(--green); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:16px; }
+    .pcard { display:flex; flex-direction:column; gap:9px; }
+    .pwrap { position:relative; width:100%; aspect-ratio:2/3; border-radius:14px; overflow:hidden; border:1px solid var(--border); background:var(--card); display:flex; align-items:center; justify-content:center; }
+    .pwrap img { width:100%; height:100%; object-fit:cover; display:block; }
+    .pwrap .ph { font-size:46px; }
+    .pwrap::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,0.05) 45%,rgba(0,0,0,0.55)); pointer-events:none; }
+    @media (hover:hover){ .pcard:hover .pwrap { border-color:#4a4556; } }
 
-    .empty { text-align: center; padding: 70px 20px; color: var(--text-muted); }
-    .empty .e-icon { font-size: 54px; margin-bottom: 16px; }
-    .empty h3 { font-size: 18px; color: var(--text-secondary); font-weight: 700; margin-bottom: 8px; }
-    .empty p { font-size: 14px; max-width: 320px; margin: 0 auto; line-height: 1.55; }
+    .rank { position:absolute; top:8px; left:8px; z-index:2; min-width:30px; height:30px; padding:0 8px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.62); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,0.16); border-radius:9px; font-size:15px; font-weight:800; }
+    .plat { position:absolute; bottom:8px; left:8px; z-index:2; display:inline-flex; align-items:center; gap:6px; background:rgba(0,0,0,0.58); backdrop-filter:blur(6px); border-radius:50px; padding:4px 10px 4px 8px; font-size:11px; font-weight:700; }
+    .plat .dot { width:8px; height:8px; border-radius:50%; }
+    .ribbon { position:absolute; top:8px; right:8px; z-index:2; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:9px; font-size:14px; backdrop-filter:blur(6px); }
+    .ribbon.w { background:var(--accent); }
+    .ribbon.s { background:var(--green); color:#10210f; }
 
-    .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(20px); z-index: 400; background: #2a2731; border: 1px solid var(--border); color: var(--text-primary); padding: 13px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 40px rgba(0,0,0,0.6); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; display: flex; align-items: center; gap: 9px; max-width: 90vw; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .ptitle { font-size:14px; font-weight:700; line-height:1.3; letter-spacing:-0.2px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .pmeta { font-size:11.5px; color:var(--text-muted); font-weight:600; margin-top:-3px; }
+    .pmeta .yr { color:var(--accent-light); }
+    .pacts { display:flex; gap:7px; margin-top:1px; }
+    .ab { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:9px 6px; border-radius:9px; font-size:12px; font-weight:700; border:1px solid var(--border); background:var(--surface); color:var(--text-primary); cursor:pointer; transition:all .15s; }
+    .ab:active { transform:scale(0.95); }
+    .ab.w.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .ab.s.on { background:rgba(70,211,105,0.16); border-color:var(--green); color:var(--green); }
+    .ab.del { flex:0 0 auto; width:38px; color:var(--text-muted); }
+    @media (hover:hover){ .ab:hover{ border-color:#56505f; } .ab.del:hover{ color:var(--accent); border-color:var(--accent); } }
 
-    .footer-note { max-width: 1080px; margin: 0 auto; padding: 0 20px 50px; font-size: 12px; color: var(--text-muted); line-height: 1.6; text-align: center; }
-    .footer-note a { color: var(--text-secondary); }
+    .empty { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-muted); }
+    .empty .e-icon { font-size:52px; margin-bottom:14px; }
+    .empty h3 { font-size:18px; color:var(--text-secondary); font-weight:700; margin-bottom:8px; }
+    .empty p { font-size:14px; max-width:320px; margin:0 auto; line-height:1.55; }
+
+    .toast { position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%) translateY(20px); z-index:400; background:#2a2731; border:1px solid var(--border); color:var(--text-primary); padding:13px 20px; border-radius:50px; font-size:14px; font-weight:600; box-shadow:0 10px 40px rgba(0,0,0,0.6); opacity:0; pointer-events:none; transition:opacity .25s,transform .25s; display:flex; align-items:center; gap:9px; max-width:90vw; }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    .footer-note { max-width:1100px; margin:0 auto; padding:0 20px 50px; font-size:12px; color:var(--text-muted); line-height:1.6; text-align:center; }
   </style>
 </head>
 <body>
@@ -91,246 +94,301 @@
   <div class="header-top">
     <div class="header-inner">
       <div class="logo">
-        <div class="logo-icon">🍅</div>
-        <div class="logo-text"><h1>TopSeries</h1><span>Lo mejor rankeado del streaming</span></div>
+        <div class="logo-icon">🍿</div>
+        <div class="logo-text"><h1>TopSeries</h1><span>Lo que se ve en Argentina</span></div>
       </div>
       <div class="header-counts">
-        <button class="count-pill" onclick="setView('wishlist')">❤️ Wishlist <span class="n" id="cntWish">0</span></button>
-        <button class="count-pill" onclick="setView('seen')">✅ Vistas <span class="n" id="cntSeen">0</span></button>
+        <button class="count-pill" id="pillWish" onclick="setMode('wishlist')">❤️ <span class="n" id="cntWish">0</span></button>
+        <button class="count-pill" id="pillSeen" onclick="setMode('seen')">✅ <span class="n" id="cntSeen">0</span></button>
       </div>
+    </div>
+  </div>
+  <div class="toggle-wrap" id="toggleWrap">
+    <div class="segmented">
+      <button class="seg" id="segTop" onclick="setTab('top10')">🔥 Top 10</button>
+      <button class="seg" id="segEst" onclick="setTab('estrenos')">🆕 Estrenos</button>
     </div>
   </div>
   <div class="filters" id="filters"></div>
 </header>
 
 <main class="main">
+  <div id="backRow"></div>
+  <div id="banner"></div>
   <div class="section-head">
-    <h2 id="secTitle">Top series</h2>
+    <h2 id="secTitle">Top 10</h2>
     <span class="sub" id="secSub"></span>
   </div>
   <div class="grid" id="grid"></div>
 </main>
 
-<div class="footer-note">
-  Puntajes Tomatometer aproximados de Rotten Tomatoes a modo de referencia. Tu wishlist y tus series vistas se guardan en este dispositivo.
-</div>
-
+<div class="footer-note" id="footerNote"></div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ---------- Plataformas ---------- */
+/* ===== Plataformas (orden y estilo) ===== */
 const PLATFORMS = {
-  netflix:   { name: "Netflix",     color: "#e50914", short: "Netflix" },
-  max:       { name: "Max",         color: "#5b2db8", short: "Max" },
-  apple:     { name: "Apple TV+",   color: "#aab0bb", short: "Apple TV+" },
-  prime:     { name: "Prime Video", color: "#1ba8e0", short: "Prime" },
-  paramount: { name: "Paramount+",  color: "#0064ff", short: "Paramount+" },
-  disney:    { name: "Disney+",     color: "#1f6fe5", short: "Disney+" }
+  netflix:   { name:"Netflix",     color:"#e50914" },
+  max:       { name:"Max",         color:"#5b2db8" },
+  apple:     { name:"Apple TV+",   color:"#aab0bb" },
+  prime:     { name:"Prime Video", color:"#1ba8e0" },
+  paramount: { name:"Paramount+",  color:"#0064ff" },
+  disney:    { name:"Disney+",     color:"#1f6fe5" }
 };
 
-/* ---------- Dataset curado: series mejor rankeadas por RT, por plataforma ---------- */
-const SERIES = [
-  // NETFLIX
-  { id:"baby-reindeer", t:"Baby Reindeer", p:"netflix", rt:98, yr:2024, g:"Drama / Thriller", e:"🦌", grad:"linear-gradient(135deg,#3a1c10,#7a3d1f,#c2703a)", s:"Un comediante en apuros desentraña la espiral de su acosadora y un trauma enterrado. Intensa, incómoda y basada en hechos reales." },
-  { id:"beef", t:"BEEF", p:"netflix", rt:98, yr:2023, g:"Comedia negra", e:"🚗", grad:"linear-gradient(135deg,#3a0d2a,#7a1f4d,#c23a6e)", s:"Un incidente de furia al volante enreda a dos desconocidos en una venganza que consume sus vidas. Ali Wong y Steven Yeun, brillantes." },
-  { id:"queens-gambit", t:"Gambito de dama", p:"netflix", rt:96, yr:2020, g:"Drama", e:"♟️", grad:"linear-gradient(135deg,#1c2230,#34425e,#5c7299)", s:"Una huérfana prodigio del ajedrez escala hasta la cima mundial mientras lucha contra sus adicciones en plena Guerra Fría." },
-  { id:"squid-game", t:"El juego del calamar", p:"netflix", rt:95, yr:2021, g:"Thriller", e:"🦑", grad:"linear-gradient(135deg,#0d3a33,#0f7a63,#16c29a)", s:"Cientos de personas endeudadas compiten en juegos infantiles mortales por un premio millonario. El fenómeno global de Corea." },
-  { id:"dark", t:"Dark", p:"netflix", rt:95, yr:2017, g:"Sci-Fi", e:"🕳️", grad:"linear-gradient(135deg,#10131c,#262c45,#454d78)", s:"La desaparición de unos niños revela viajes en el tiempo que conectan a cuatro familias a lo largo de generaciones. Un puzzle alemán." },
-  { id:"mindhunter", t:"Mindhunter", p:"netflix", rt:97, yr:2017, g:"Crimen", e:"🧠", grad:"linear-gradient(135deg,#161616,#2e2e2e,#555)", s:"Dos agentes del FBI entrevistan a asesinos seriales para entender la mente criminal y fundar el perfilado moderno." },
-  { id:"one-day", t:"One Day", p:"netflix", rt:95, yr:2024, g:"Romance", e:"💌", grad:"linear-gradient(135deg,#2a1530,#5a2d63,#9a55a3)", s:"Dos amigos se reencuentran el mismo día cada año durante dos décadas. Una historia de amor que te rompe el corazón con paciencia." },
+/* ===== Datos de ejemplo (se usan hasta que el robot genere data/series.json) ===== */
+const SAMPLE = [
+  { id:"baby-reindeer", t:"Baby Reindeer", p:"netflix", yr:2024, g:"Drama", e:"🦌", grad:"linear-gradient(135deg,#3a1c10,#c2703a)", s:"Un comediante desentraña la espiral de su acosadora y un trauma enterrado." },
+  { id:"beef", t:"BEEF", p:"netflix", yr:2023, g:"Comedia negra", e:"🚗", grad:"linear-gradient(135deg,#3a0d2a,#c23a6e)", s:"Un incidente de furia al volante enreda a dos desconocidos en una venganza." },
+  { id:"queens-gambit", t:"Gambito de dama", p:"netflix", yr:2020, g:"Drama", e:"♟️", grad:"linear-gradient(135deg,#1c2230,#5c7299)", s:"Una huérfana prodigio del ajedrez escala hasta la cima mundial." },
+  { id:"squid-game", t:"El juego del calamar", p:"netflix", yr:2021, g:"Thriller", e:"🦑", grad:"linear-gradient(135deg,#0d3a33,#16c29a)", s:"Cientos de personas endeudadas compiten en juegos infantiles mortales." },
+  { id:"dark", t:"Dark", p:"netflix", yr:2017, g:"Sci-Fi", e:"🕳️", grad:"linear-gradient(135deg,#10131c,#454d78)", s:"La desaparición de unos niños revela viajes en el tiempo entre cuatro familias." },
+  { id:"mindhunter", t:"Mindhunter", p:"netflix", yr:2017, g:"Crimen", e:"🧠", grad:"linear-gradient(135deg,#161616,#555)", s:"Dos agentes del FBI entrevistan a asesinos seriales para fundar el perfilado." },
+  { id:"one-day", t:"One Day", p:"netflix", yr:2024, g:"Romance", e:"💌", grad:"linear-gradient(135deg,#2a1530,#9a55a3)", s:"Dos amigos se reencuentran el mismo día cada año durante dos décadas." },
 
-  // MAX
-  { id:"last-of-us", t:"The Last of Us", p:"max", rt:96, yr:2023, g:"Drama / Apocalíptico", e:"🍄", grad:"linear-gradient(135deg,#10231a,#244a33,#46805a)", s:"Un contrabandista escolta a una adolescente inmune a través de un EE.UU. devastado por un hongo. La mejor adaptación de un videojuego." },
-  { id:"barry", t:"Barry", p:"max", rt:99, yr:2018, g:"Comedia negra", e:"🎭", grad:"linear-gradient(135deg,#2a1f0d,#5e451f,#9c7636)", s:"Un sicario descubre la actuación y sueña con dejar el crimen. Bill Hader equilibra la comedia más oscura con tragedia pura." },
-  { id:"succession", t:"Succession", p:"max", rt:94, yr:2018, g:"Drama", e:"🦅", grad:"linear-gradient(135deg,#161a22,#2c3340,#4c5667)", s:"Los hijos de un magnate de los medios se devoran entre sí por el control del imperio familiar. Ácida, shakespeariana, adictiva." },
-  { id:"chernobyl", t:"Chernobyl", p:"max", rt:96, yr:2019, g:"Drama histórico", e:"☢️", grad:"linear-gradient(135deg,#1c2410,#3e5020,#6e8a38)", s:"La reconstrucción del peor desastre nuclear de la historia y de las mentiras que lo agravaron. Asfixiante y monumental." },
-  { id:"the-wire", t:"The Wire", p:"max", rt:94, yr:2002, g:"Crimen", e:"📟", grad:"linear-gradient(135deg,#1a1a22,#33333f,#555566)", s:"Policías y traficantes en Baltimore, vistos como engranajes de instituciones que fallan. Para muchos, la mejor serie jamás hecha." },
-  { id:"white-lotus", t:"The White Lotus", p:"max", rt:91, yr:2021, g:"Comedia / Drama", e:"🌺", grad:"linear-gradient(135deg,#10322e,#1f6359,#36a394)", s:"Huéspedes ricos y empleados resentidos chocan en un resort de lujo donde siempre aparece un cadáver. Sátira social deliciosa." },
-  { id:"house-dragon", t:"House of the Dragon", p:"max", rt:92, yr:2022, g:"Fantasía", e:"🐉", grad:"linear-gradient(135deg,#2a0d0d,#5e1f1f,#9c3636)", s:"La casa Targaryen se desangra en una guerra civil por el Trono de Hierro, 200 años antes de Game of Thrones." },
+  { id:"last-of-us", t:"The Last of Us", p:"max", yr:2023, g:"Apocalíptico", e:"🍄", grad:"linear-gradient(135deg,#10231a,#46805a)", s:"Un contrabandista escolta a una adolescente inmune por un EE.UU. devastado." },
+  { id:"barry", t:"Barry", p:"max", yr:2018, g:"Comedia negra", e:"🎭", grad:"linear-gradient(135deg,#2a1f0d,#9c7636)", s:"Un sicario descubre la actuación y sueña con dejar el crimen." },
+  { id:"succession", t:"Succession", p:"max", yr:2018, g:"Drama", e:"🦅", grad:"linear-gradient(135deg,#161a22,#4c5667)", s:"Los hijos de un magnate de los medios se devoran por el control del imperio." },
+  { id:"chernobyl", t:"Chernobyl", p:"max", yr:2019, g:"Histórico", e:"☢️", grad:"linear-gradient(135deg,#1c2410,#6e8a38)", s:"La reconstrucción del peor desastre nuclear de la historia." },
+  { id:"the-wire", t:"The Wire", p:"max", yr:2002, g:"Crimen", e:"📟", grad:"linear-gradient(135deg,#1a1a22,#555566)", s:"Policías y traficantes en Baltimore como engranajes de instituciones que fallan." },
+  { id:"white-lotus", t:"The White Lotus", p:"max", yr:2021, g:"Drama", e:"🌺", grad:"linear-gradient(135deg,#10322e,#36a394)", s:"Huéspedes ricos y empleados resentidos chocan en un resort de lujo." },
+  { id:"house-dragon", t:"House of the Dragon", p:"max", yr:2022, g:"Fantasía", e:"🐉", grad:"linear-gradient(135deg,#2a0d0d,#9c3636)", s:"La casa Targaryen se desangra en una guerra civil por el Trono de Hierro." },
 
-  // APPLE TV+
-  { id:"severance", t:"Severance", p:"apple", rt:97, yr:2022, g:"Sci-Fi / Thriller", e:"🧩", grad:"linear-gradient(135deg,#0d1e2a,#1f4458,#3a7d9c)", s:"Empleados separan quirúrgicamente sus recuerdos laborales de los personales. Un misterio corporativo hipnótico y perturbador." },
-  { id:"slow-horses", t:"Slow Horses", p:"apple", rt:97, yr:2022, g:"Espionaje", e:"🐴", grad:"linear-gradient(135deg,#22201a,#474236,#736a55)", s:"Espías caídos en desgracia bajo el mando de un jefe repugnante terminan resolviendo casos que nadie quiere. Gary Oldman, impagable." },
-  { id:"pachinko", t:"Pachinko", p:"apple", rt:98, yr:2022, g:"Drama histórico", e:"🌾", grad:"linear-gradient(135deg,#2a1d10,#5e4220,#9c7636)", s:"Cuatro generaciones de una familia coreana sobreviven al exilio en Japón. Épica, íntima y de una belleza arrolladora." },
-  { id:"ted-lasso", t:"Ted Lasso", p:"apple", rt:91, yr:2020, g:"Comedia", e:"⚽", grad:"linear-gradient(135deg,#103021,#1f6340,#36a368)", s:"Un entrenador de fútbol americano dirige un club inglés sin saber nada del deporte, pero con optimismo a prueba de balas." },
-  { id:"for-all-mankind", t:"For All Mankind", p:"apple", rt:94, yr:2019, g:"Sci-Fi", e:"🚀", grad:"linear-gradient(135deg,#161a2a,#2c335e,#4c569c)", s:"¿Y si la URSS hubiera llegado primero a la Luna? Una carrera espacial alternativa que no se detiene jamás." },
-  { id:"bad-sisters", t:"Bad Sisters", p:"apple", rt:96, yr:2022, g:"Comedia negra", e:"🔪", grad:"linear-gradient(135deg,#10231e,#214a3f,#3a8070)", s:"Cuatro hermanas conspiran para librar a la quinta de su marido insoportable. Thriller irlandés tronchante y retorcido." },
-  { id:"the-studio", t:"The Studio", p:"apple", rt:96, yr:2025, g:"Comedia", e:"🎬", grad:"linear-gradient(135deg,#2a1810,#5e3620,#9c5e36)", s:"Un nuevo jefe de estudio intenta salvar el cine mientras todo se desmorona a su alrededor. Seth Rogen en una sátira frenética de Hollywood." },
+  { id:"severance", t:"Severance", p:"apple", yr:2022, g:"Sci-Fi", e:"🧩", grad:"linear-gradient(135deg,#0d1e2a,#3a7d9c)", s:"Empleados separan quirúrgicamente sus recuerdos laborales de los personales." },
+  { id:"slow-horses", t:"Slow Horses", p:"apple", yr:2022, g:"Espionaje", e:"🐴", grad:"linear-gradient(135deg,#22201a,#736a55)", s:"Espías caídos en desgracia bajo el mando de un jefe repugnante." },
+  { id:"pachinko", t:"Pachinko", p:"apple", yr:2022, g:"Histórico", e:"🌾", grad:"linear-gradient(135deg,#2a1d10,#9c7636)", s:"Cuatro generaciones de una familia coreana sobreviven al exilio en Japón." },
+  { id:"ted-lasso", t:"Ted Lasso", p:"apple", yr:2020, g:"Comedia", e:"⚽", grad:"linear-gradient(135deg,#103021,#36a368)", s:"Un entrenador dirige un club inglés con optimismo a prueba de balas." },
+  { id:"for-all-mankind", t:"For All Mankind", p:"apple", yr:2019, g:"Sci-Fi", e:"🚀", grad:"linear-gradient(135deg,#161a2a,#4c569c)", s:"¿Y si la URSS hubiera llegado primero a la Luna? Una carrera espacial alternativa." },
+  { id:"bad-sisters", t:"Bad Sisters", p:"apple", yr:2022, g:"Comedia negra", e:"🔪", grad:"linear-gradient(135deg,#10231e,#3a8070)", s:"Cuatro hermanas conspiran para librar a la quinta de su marido insoportable." },
+  { id:"the-studio", t:"The Studio", p:"apple", yr:2025, g:"Comedia", e:"🎬", grad:"linear-gradient(135deg,#2a1810,#9c5e36)", s:"Un nuevo jefe de estudio intenta salvar el cine mientras todo se desmorona." },
 
-  // PRIME VIDEO
-  { id:"fleabag", t:"Fleabag", p:"prime", rt:100, yr:2016, g:"Comedia / Drama", e:"🦊", grad:"linear-gradient(135deg,#2a0d1a,#5e1f3a,#9c365e)", s:"Una mujer caótica narra su vida a cámara mientras esconde un duelo. Phoebe Waller-Bridge en estado puro. Perfecta." },
-  { id:"invincible", t:"Invincible", p:"prime", rt:99, yr:2021, g:"Animación / Superhéroes", e:"🦸", grad:"linear-gradient(135deg,#10203a,#1f447a,#3a72c2)", s:"Un adolescente hereda los poderes de su padre, el héroe más poderoso del planeta… y un secreto brutal. Animación adulta y sangrienta." },
-  { id:"the-boys", t:"The Boys", p:"prime", rt:93, yr:2019, g:"Superhéroes", e:"💥", grad:"linear-gradient(135deg,#2a0d0d,#5e1f1f,#c23a3a)", s:"En un mundo donde los superhéroes son celebridades corruptas, un grupo de civiles decide hacerles frente. Violenta y satírica." },
-  { id:"fallout", t:"Fallout", p:"prime", rt:93, yr:2024, g:"Sci-Fi / Aventura", e:"☢️", grad:"linear-gradient(135deg,#2a230d,#5e4f1f,#9c8636)", s:"Una habitante de un refugio sale al yermo nuclear y descubre un mundo brutal y absurdo. La adaptación del videojuego que sí funciona." },
-  { id:"mrs-maisel", t:"La maravillosa Sra. Maisel", p:"prime", rt:90, yr:2017, g:"Comedia", e:"🎤", grad:"linear-gradient(135deg,#2a102a,#5e1f5e,#9c369c)", s:"Una ama de casa de los años 50 descubre su talento para el stand-up tras la ruptura de su matrimonio. Vibrante y veloz." },
-  { id:"reacher", t:"Reacher", p:"prime", rt:88, yr:2022, g:"Acción / Crimen", e:"👊", grad:"linear-gradient(135deg,#1a1a1a,#333,#5e5e5e)", s:"Un expolicía militar gigantesco llega a un pueblo y desata una conspiración a puñetazos. Acción pulp tremendamente entretenida." },
+  { id:"fleabag", t:"Fleabag", p:"prime", yr:2016, g:"Comedia", e:"🦊", grad:"linear-gradient(135deg,#2a0d1a,#9c365e)", s:"Una mujer caótica narra su vida a cámara mientras esconde un duelo." },
+  { id:"invincible", t:"Invincible", p:"prime", yr:2021, g:"Animación", e:"🦸", grad:"linear-gradient(135deg,#10203a,#3a72c2)", s:"Un adolescente hereda los poderes de su padre, el héroe más poderoso, y un secreto brutal." },
+  { id:"the-boys", t:"The Boys", p:"prime", yr:2019, g:"Superhéroes", e:"💥", grad:"linear-gradient(135deg,#2a0d0d,#c23a3a)", s:"En un mundo de superhéroes corruptos, unos civiles deciden hacerles frente." },
+  { id:"fallout", t:"Fallout", p:"prime", yr:2024, g:"Aventura", e:"☢️", grad:"linear-gradient(135deg,#2a230d,#9c8636)", s:"Una habitante de un refugio sale al yermo nuclear y descubre un mundo brutal." },
+  { id:"mrs-maisel", t:"La Sra. Maisel", p:"prime", yr:2017, g:"Comedia", e:"🎤", grad:"linear-gradient(135deg,#2a102a,#9c369c)", s:"Una ama de casa de los 50 descubre su talento para el stand-up." },
+  { id:"reacher", t:"Reacher", p:"prime", yr:2022, g:"Acción", e:"👊", grad:"linear-gradient(135deg,#1a1a1a,#5e5e5e)", s:"Un expolicía militar gigantesco llega a un pueblo y desata una conspiración." },
 
-  // PARAMOUNT+
-  { id:"strange-new-worlds", t:"Star Trek: Strange New Worlds", p:"paramount", rt:98, yr:2022, g:"Sci-Fi", e:"🖖", grad:"linear-gradient(135deg,#0d1e2a,#1f4a6e,#3a86c2)", s:"La nave Enterprise del capitán Pike explora lo desconocido en aventuras autoconclusivas. El Star Trek más optimista en años." },
-  { id:"evil", t:"Evil", p:"paramount", rt:98, yr:2019, g:"Terror / Drama", e:"😈", grad:"linear-gradient(135deg,#2a0d1a,#5e1f33,#9c365e)", s:"Una psicóloga escéptica y un sacerdote investigan supuestos milagros y posesiones. Terror inteligente con humor afilado." },
-  { id:"good-fight", t:"The Good Fight", p:"paramount", rt:99, yr:2017, g:"Drama legal", e:"⚖️", grad:"linear-gradient(135deg,#161a22,#2c3340,#4c5667)", s:"Una abogada veterana reconstruye su carrera en un bufete de Chicago en plena era política convulsa. Spin-off audaz y mordaz." },
-  { id:"1883", t:"1883", p:"paramount", rt:87, yr:2021, g:"Western", e:"🐎", grad:"linear-gradient(135deg,#2a1d10,#5e4220,#9c7636)", s:"La familia Dutton cruza las llanuras hacia Montana en una odisea brutal. La precuela del universo Yellowstone." },
-  { id:"tulsa-king", t:"Tulsa King", p:"paramount", rt:80, yr:2022, g:"Crimen / Comedia", e:"🤠", grad:"linear-gradient(135deg,#2a160d,#5e3320,#9c5636)", s:"Un capo de la mafia recién salido de prisión monta un negocio desde cero en Oklahoma. Stallone manda en clave de comedia criminal." },
-  { id:"halo", t:"Halo", p:"paramount", rt:73, yr:2022, g:"Sci-Fi / Acción", e:"🪖", grad:"linear-gradient(135deg,#0d2a26,#1f5e54,#36a394)", s:"El Jefe Maestro lidera la guerra de la humanidad contra el Covenant alienígena. La gran adaptación del shooter de Xbox." },
+  { id:"strange-new-worlds", t:"Star Trek: Strange New Worlds", p:"paramount", yr:2022, g:"Sci-Fi", e:"🖖", grad:"linear-gradient(135deg,#0d1e2a,#3a86c2)", s:"La Enterprise del capitán Pike explora lo desconocido en aventuras autoconclusivas." },
+  { id:"evil", t:"Evil", p:"paramount", yr:2019, g:"Terror", e:"😈", grad:"linear-gradient(135deg,#2a0d1a,#9c365e)", s:"Una psicóloga escéptica y un sacerdote investigan milagros y posesiones." },
+  { id:"good-fight", t:"The Good Fight", p:"paramount", yr:2017, g:"Legal", e:"⚖️", grad:"linear-gradient(135deg,#161a22,#4c5667)", s:"Una abogada veterana reconstruye su carrera en un bufete de Chicago." },
+  { id:"1883", t:"1883", p:"paramount", yr:2021, g:"Western", e:"🐎", grad:"linear-gradient(135deg,#2a1d10,#9c7636)", s:"La familia Dutton cruza las llanuras hacia Montana en una odisea brutal." },
+  { id:"tulsa-king", t:"Tulsa King", p:"paramount", yr:2022, g:"Crimen", e:"🤠", grad:"linear-gradient(135deg,#2a160d,#9c5636)", s:"Un capo recién salido de prisión monta un negocio desde cero en Oklahoma." },
+  { id:"halo", t:"Halo", p:"paramount", yr:2022, g:"Acción", e:"🪖", grad:"linear-gradient(135deg,#0d2a26,#36a394)", s:"El Jefe Maestro lidera la guerra de la humanidad contra el Covenant." },
 
-  // DISNEY+
-  { id:"shogun", t:"Shōgun", p:"disney", rt:99, yr:2024, g:"Drama histórico", e:"🏯", grad:"linear-gradient(135deg,#2a0d0d,#5e1f1f,#9c3636)", s:"Un navegante inglés naufraga en el Japón feudal en plena lucha por el poder. Épica política de una ambición y belleza colosales." },
-  { id:"andor", t:"Andor", p:"disney", rt:96, yr:2022, g:"Sci-Fi", e:"🛰️", grad:"linear-gradient(135deg,#161a22,#2c3540,#4c5a67)", s:"El nacimiento de la rebelión contra el Imperio, contado como un thriller de espionaje adulto. El Star Wars más maduro." },
-  { id:"only-murders", t:"Only Murders in the Building", p:"disney", rt:98, yr:2021, g:"Comedia / Misterio", e:"🔎", grad:"linear-gradient(135deg,#2a1d0d,#5e4220,#9c7636)", s:"Tres vecinos obsesionados con el true crime investigan un asesinato en su edificio y montan un podcast. Encantadora y ocurrente." },
-  { id:"the-bear", t:"The Bear", p:"disney", rt:99, yr:2022, g:"Drama / Comedia", e:"🐻", grad:"linear-gradient(135deg,#2a160d,#5e3320,#c25e36)", s:"Un chef de alta cocina hereda el caótico local de sándwiches de su familia. Ansiosa, intensa y deliciosamente humana." },
-  { id:"wandavision", t:"WandaVision", p:"disney", rt:91, yr:2021, g:"Superhéroes", e:"📺", grad:"linear-gradient(135deg,#2a0d1f,#5e1f44,#9c3672)", s:"Wanda y Visión viven dentro de sitcoms de distintas décadas mientras una realidad inquietante se filtra. Marvel se atreve a experimentar." },
-  { id:"mandalorian", t:"The Mandalorian", p:"disney", rt:92, yr:2019, g:"Sci-Fi / Western", e:"🪖", grad:"linear-gradient(135deg,#22201a,#474236,#9c8c6e)", s:"Un cazarrecompensas solitario protege a un misterioso niño en los confines de la galaxia. El western espacial que revivió Star Wars." }
+  { id:"shogun", t:"Shōgun", p:"disney", yr:2024, g:"Histórico", e:"🏯", grad:"linear-gradient(135deg,#2a0d0d,#9c3636)", s:"Un navegante inglés naufraga en el Japón feudal en plena lucha por el poder." },
+  { id:"andor", t:"Andor", p:"disney", yr:2022, g:"Sci-Fi", e:"🛰️", grad:"linear-gradient(135deg,#161a22,#4c5a67)", s:"El nacimiento de la rebelión contra el Imperio, como un thriller de espionaje adulto." },
+  { id:"only-murders", t:"Only Murders in the Building", p:"disney", yr:2021, g:"Misterio", e:"🔎", grad:"linear-gradient(135deg,#2a1d0d,#9c7636)", s:"Tres vecinos obsesionados con el true crime investigan un asesinato y montan un podcast." },
+  { id:"the-bear", t:"The Bear", p:"disney", yr:2022, g:"Drama", e:"🐻", grad:"linear-gradient(135deg,#2a160d,#c25e36)", s:"Un chef de alta cocina hereda el caótico local de sándwiches de su familia." },
+  { id:"wandavision", t:"WandaVision", p:"disney", yr:2021, g:"Superhéroes", e:"📺", grad:"linear-gradient(135deg,#2a0d1f,#9c3672)", s:"Wanda y Visión viven dentro de sitcoms mientras una realidad inquietante se filtra." },
+  { id:"mandalorian", t:"The Mandalorian", p:"disney", yr:2019, g:"Western", e:"🪖", grad:"linear-gradient(135deg,#22201a,#9c8c6e)", s:"Un cazarrecompensas solitario protege a un misterioso niño en los confines de la galaxia." }
 ];
 
-/* ---------- Estado ---------- */
-const LS = { wish:"topseries_wishlist", seen:"topseries_seen" };
+function buildSample(){
+  const o = { updated_at:null, region:"AR", platforms:{}, top10:{}, estrenos:{} };
+  for (const [pid,p] of Object.entries(PLATFORMS)){
+    o.platforms[pid] = { name:p.name, color:p.color };
+    const items = SAMPLE.filter(s => s.p === pid);
+    const mk = (s,i) => ({ rank:i+1, id:s.id, title:s.t, year:s.yr, date:"", genre:s.g, overview:s.s, poster:null, emoji:s.e, grad:s.grad, rating:null });
+    o.top10[pid]   = items.slice().sort((a,b)=> (b.yr+ (b.id.length%7)) - (a.yr+(a.id.length%7)) ).map(mk);
+    o.estrenos[pid]= items.slice().sort((a,b)=> b.yr - a.yr).map(mk);
+  }
+  return o;
+}
+
+/* ===== Estado ===== */
+const LS = { wish:"ts_wishlist_v2", seen:"ts_seen_v2" };
 function load(k){ try { return JSON.parse(localStorage.getItem(k)) || []; } catch(e){ return []; } }
-function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function persist(){ localStorage.setItem(LS.wish, JSON.stringify(wish)); localStorage.setItem(LS.seen, JSON.stringify(seen)); }
 let wish = load(LS.wish);
 let seen = load(LS.seen);
-let view = "all"; // all | <platformId> | wishlist | seen
 
-/* ---------- Helpers ---------- */
-function rtClass(rt){ return rt >= 90 ? "certified" : (rt >= 60 ? "fresh" : ""); }
-function rtIcon(rt){ return rt >= 60 ? "🍅" : "🤢"; }
-function inWish(id){ return wish.includes(id); }
-function inSeen(id){ return seen.includes(id); }
+let DATA = null, IS_SAMPLE = false;
+let mode = "browse";        // browse | wishlist | seen
+let tab = "top10";          // top10 | estrenos
+let platform = "netflix";
 
-/* ---------- Render filtros ---------- */
-function renderFilters(){
-  const box = document.getElementById("filters");
-  let html = `<button class="chip ${view==='all'?'active acc':''}" onclick="setView('all')">⭐ Top general</button>`;
-  for (const [pid, pl] of Object.entries(PLATFORMS)){
-    html += `<button class="chip ${view===pid?'active':''}" onclick="setView('${pid}')"><span class="dot" style="background:${pl.color}"></span>${pl.name}</button>`;
-  }
-  html += `<button class="chip ${view==='wishlist'?'active':''}" onclick="setView('wishlist')">❤️ Mi wishlist</button>`;
-  html += `<button class="chip ${view==='seen'?'active':''}" onclick="setView('seen')">✅ Ya vistas</button>`;
-  box.innerHTML = html;
+/* ===== Helpers ===== */
+const idOf = x => String(x.id);
+const inWish = id => wish.some(x => idOf(x) === String(id));
+const inSeen = id => seen.some(x => idOf(x) === String(id));
+
+function init(){
+  fetch("./data/series.json", { cache:"no-store" })
+    .then(r => { if(!r.ok) throw new Error("no data"); return r.json(); })
+    .then(j => { DATA = j; IS_SAMPLE = false; render(); })
+    .catch(() => { DATA = buildSample(); IS_SAMPLE = true; render(); });
 }
 
-/* ---------- Render grilla ---------- */
-function currentList(){
-  let list;
-  if (view === "all") list = SERIES.slice();
-  else if (view === "wishlist") list = SERIES.filter(s => inWish(s.id));
-  else if (view === "seen") list = SERIES.filter(s => inSeen(s.id));
-  else list = SERIES.filter(s => s.p === view);
-  return list.sort((a,b) => b.rt - a.rt);
+function placeholderHTML(item){
+  const grad = item.grad || "linear-gradient(135deg,#262335,#3a3550)";
+  const inner = item.emoji ? `<span class="ph">${item.emoji}</span>` : `<span class="ph">${(item.title||'?').slice(0,1)}</span>`;
+  return `<div class="pwrap" style="background:${grad}">__BADGES__${inner}</div>`;
 }
 
+/* ===== Render ===== */
 function render(){
-  renderFilters();
   document.getElementById("cntWish").textContent = wish.length;
   document.getElementById("cntSeen").textContent = seen.length;
+  document.getElementById("pillWish").classList.toggle("active", mode==="wishlist");
+  document.getElementById("pillSeen").classList.toggle("active", mode==="seen");
 
-  const list = currentList();
-  const titles = { all:"Top series del streaming", wishlist:"Mi wishlist", seen:"Series que ya vi" };
-  let title = titles[view] || `Top en ${PLATFORMS[view] ? PLATFORMS[view].name : ''}`;
+  const browse = (mode === "browse");
+  document.getElementById("toggleWrap").style.display = browse ? "" : "none";
+  document.getElementById("filters").style.display = browse ? "" : "none";
+  document.getElementById("segTop").classList.toggle("active", tab==="top10");
+  document.getElementById("segEst").classList.toggle("active", tab==="estrenos");
+
+  // chips de plataforma
+  if (browse){
+    let html = "";
+    for (const [pid,pl] of Object.entries(PLATFORMS)){
+      html += `<button class="chip ${platform===pid?'active':''}" onclick="setPlatform('${pid}')"><span class="dot" style="background:${pl.color}"></span>${pl.name}</button>`;
+    }
+    document.getElementById("filters").innerHTML = html;
+  }
+
+  // back / banner
+  document.getElementById("backRow").innerHTML = browse ? "" :
+    `<button class="back-btn" onclick="setMode('browse')">← Volver al inicio</button>`;
+
+  let bannerHTML = "";
+  if (browse && IS_SAMPLE){
+    bannerHTML = `📊 Mostrando <strong>datos de ejemplo</strong>. Cuando el robot de actualización corra por primera vez, vas a ver el Top 10 y los estrenos reales de Argentina.`;
+  }
+  document.getElementById("banner").innerHTML = bannerHTML ? `<div class="banner">${bannerHTML}</div>` : "";
+
+  // lista + títulos
+  let list, title, sub = "";
+  if (mode === "wishlist"){ list = wish.slice().reverse(); title = "Mi wishlist ❤️"; }
+  else if (mode === "seen"){ list = seen.slice().reverse(); title = "Ya las vi ✅"; }
+  else {
+    list = (DATA[tab] && DATA[tab][platform]) ? DATA[tab][platform] : [];
+    const plName = PLATFORMS[platform].name;
+    title = (tab === "top10" ? `🔥 Top 10 · ${plName}` : `🆕 Estrenos · ${plName}`);
+    if (DATA.updated_at){
+      const d = new Date(DATA.updated_at);
+      sub = "Actualizado " + d.toLocaleDateString("es-AR",{day:"numeric",month:"long"});
+    } else sub = "Datos de ejemplo";
+  }
   document.getElementById("secTitle").textContent = title;
-  document.getElementById("secSub").textContent = list.length ? `${list.length} ${list.length===1?'serie':'series'} · ordenadas por Tomatometer` : "";
+  document.getElementById("secSub").textContent = sub;
 
   const grid = document.getElementById("grid");
-
   if (!list.length){
-    const empties = {
-      wishlist: { i:"❤️", h:"Tu wishlist está vacía", p:"Explorá las plataformas y tocá “Wishlist” en las series que querés ver." },
-      seen:     { i:"🍿", h:"Todavía no marcaste series vistas", p:"Cuando termines una, tocá “Ya la vi” para llevar el registro." }
-    };
-    const em = empties[view] || { i:"🎬", h:"No hay series para mostrar", p:"Probá con otro filtro." };
-    grid.style.display = "block";
+    const em = mode==="wishlist"
+      ? { i:"❤️", h:"Tu wishlist está vacía", p:"Tocá el corazón en las series que querés ver." }
+      : mode==="seen"
+      ? { i:"🍿", h:"Todavía no marcaste vistas", p:"Cuando termines una, tocá el ✓ para registrarla." }
+      : { i:"🎬", h:"Sin datos para mostrar", p:"Probá con otra plataforma o pestaña." };
     grid.innerHTML = `<div class="empty"><div class="e-icon">${em.i}</div><h3>${em.h}</h3><p>${em.p}</p></div>`;
     return;
   }
-  grid.style.display = "grid";
 
-  grid.innerHTML = list.map((s, idx) => {
-    const pl = PLATFORMS[s.p];
-    const w = inWish(s.id), v = inSeen(s.id);
-    const showRank = (view === "all" || PLATFORMS[view]);
-    const isListView = (view === "wishlist" || view === "seen");
-
-    let statusTag = "";
-    if (view === "wishlist") statusTag = `<span class="status-tag wishT">❤️ En tu wishlist</span>`;
-    if (view === "seen") statusTag = `<span class="status-tag seenT">✅ Ya la viste</span>`;
-
-    let actions;
-    if (isListView){
-      const otherBtn = view === "wishlist"
-        ? `<button class="btn seen ${v?'on':''}" onclick="toggleSeen('${s.id}', event)">${v?'✓ Vista':'Marcar vista'}</button>`
-        : `<button class="btn wish ${w?'on':''}" onclick="toggleWish('${s.id}', event)">${w?'❤️ En wishlist':'+ Wishlist'}</button>`;
-      actions = `${otherBtn}<button class="btn-del" title="Quitar" onclick="removeFrom('${view}','${s.id}', event)">🗑️</button>`;
-    } else {
-      actions = `
-        <button class="btn wish ${w?'on':''}" onclick="toggleWish('${s.id}', event)">${w?'❤️ En wishlist':'+ Wishlist'}</button>
-        <button class="btn seen ${v?'on':''}" onclick="toggleSeen('${s.id}', event)">${v?'✓ Vista':'Ya la vi'}</button>`;
-    }
-
-    return `
-    <div class="card">
-      <div class="poster" style="background:${s.grad}">
-        ${showRank ? `<div class="rank-badge">#${idx+1}</div>` : ``}
-        <div class="rt-badge ${rtClass(s.rt)}">${rtIcon(s.rt)} ${s.rt}%</div>
-        <span class="emoji">${s.e}</span>
-        <span class="plat-badge"><span class="dot" style="background:${pl.color}"></span>${pl.name}</span>
-      </div>
-      <div class="card-body">
-        ${statusTag}
-        <div class="card-meta"><span class="genre">${s.g}</span> · <span>${s.yr}</span></div>
-        <div class="card-title">${s.t}</div>
-        <div class="card-syn">${s.s}</div>
-        <div class="card-actions">${actions}</div>
-      </div>
-    </div>`;
-  }).join("");
+  grid.innerHTML = list.map(item => cardHTML(item, browse ? platform : item.p, browse)).join("");
 }
 
-/* ---------- Acciones ---------- */
-function setView(v){ view = v; window.scrollTo({top:0,behavior:"smooth"}); render(); }
+function cardHTML(item, pid, browse){
+  const pl = PLATFORMS[pid] || { name:"", color:"#888" };
+  const id = idOf(item);
+  const w = inWish(id), s = inSeen(id);
+
+  const rankBadge = browse ? `<div class="rank">#${item.rank}</div>` : "";
+  const platBadge = `<span class="plat"><span class="dot" style="background:${pl.color}"></span>${pl.name}</span>`;
+  const ribbon = (mode==="wishlist") ? `<div class="ribbon w">❤️</div>` : (mode==="seen") ? `<div class="ribbon s">✓</div>` : "";
+  const badges = rankBadge + platBadge + ribbon;
+
+  let cover;
+  if (item.poster){
+    cover = `<div class="pwrap">${badges}<img loading="lazy" src="${item.poster}" alt="${escAttr(item.title)}" onerror="this.style.display='none'"></div>`;
+  } else {
+    cover = placeholderHTML(item).replace("__BADGES__", badges);
+  }
+
+  const meta = [item.genre, item.year].filter(Boolean);
+  const metaHTML = meta.length ? `<div class="pmeta"><span class="yr">${item.year||""}</span>${item.genre? " · "+item.genre : ""}</div>` : "";
+
+  let acts;
+  if (mode === "browse"){
+    acts = `<button class="ab w ${w?'on':''}" onclick="toggleWish('${id}',event)">${w?'❤️':'🤍'} <span>${w?'Guardada':'Wishlist'}</span></button>
+            <button class="ab s ${s?'on':''}" onclick="toggleSeen('${id}',event)">${s?'✓':'＋'} <span>${s?'Vista':'Ya la vi'}</span></button>`;
+  } else if (mode === "wishlist"){
+    acts = `<button class="ab s ${s?'on':''}" onclick="toggleSeen('${id}',event)">${s?'✓ Vista':'Ya la vi'}</button>
+            <button class="ab del" title="Quitar" onclick="removeFrom('wishlist','${id}',event)">🗑️</button>`;
+  } else {
+    acts = `<button class="ab w ${w?'on':''}" onclick="toggleWish('${id}',event)">${w?'❤️ Guardada':'Wishlist'}</button>
+            <button class="ab del" title="Quitar" onclick="removeFrom('seen','${id}',event)">🗑️</button>`;
+  }
+
+  return `<div class="pcard">${cover}
+    <div class="ptitle">${escHTML(item.title)}</div>
+    ${metaHTML}
+    <div class="pacts">${acts}</div>
+  </div>`;
+}
+
+function escHTML(t){ return String(t||"").replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function escAttr(t){ return String(t||"").replace(/"/g,'&quot;'); }
+
+/* ===== Buscar un item por id en los datos actuales (para snapshot) ===== */
+function findItem(id){
+  for (const tb of ["top10","estrenos"]){
+    for (const pid of Object.keys(DATA[tb]||{})){
+      const hit = (DATA[tb][pid]||[]).find(x => idOf(x) === String(id));
+      if (hit) return { item:hit, pid };
+    }
+  }
+  // si no está en los datos vivos, buscar en wish/seen ya guardados
+  const saved = wish.find(x=>idOf(x)===String(id)) || seen.find(x=>idOf(x)===String(id));
+  if (saved) return { item:saved, pid:saved.p };
+  return null;
+}
+function snapshot(id){
+  const f = findItem(id); if (!f) return null;
+  const pl = PLATFORMS[f.pid] || {};
+  return { ...f.item, p:f.pid, platformName:pl.name, color:pl.color };
+}
+
+/* ===== Acciones ===== */
+function setMode(m){ mode = m; scrollTop(); render(); }
+function setTab(t){ tab = t; mode = "browse"; scrollTop(); render(); }
+function setPlatform(p){ platform = p; mode = "browse"; scrollTop(); render(); }
+function scrollTop(){ window.scrollTo({ top:0, behavior:"smooth" }); }
 
 function toggleWish(id, ev){
   if (ev) ev.stopPropagation();
-  const s = SERIES.find(x=>x.id===id);
-  if (inWish(id)){ wish = wish.filter(x=>x!==id); toast(`“${s.t}” fuera de tu wishlist`); }
-  else {
-    wish.push(id);
-    seen = seen.filter(x=>x!==id); // si la querés ver, no estaba "vista"
-    toast(`“${s.t}” agregada a tu wishlist ❤️`);
-  }
-  save(LS.wish, wish); save(LS.seen, seen); render();
+  const snap = snapshot(id);
+  if (inWish(id)){ wish = wish.filter(x=>idOf(x)!==String(id)); toast(`Quitada de tu wishlist`); }
+  else { if(!snap) return; wish.push(snap); seen = seen.filter(x=>idOf(x)!==String(id)); toast(`“${snap.title}” a tu wishlist ❤️`); }
+  persist(); render();
 }
-
 function toggleSeen(id, ev){
   if (ev) ev.stopPropagation();
-  const s = SERIES.find(x=>x.id===id);
-  if (inSeen(id)){ seen = seen.filter(x=>x!==id); toast(`“${s.t}” ya no figura como vista`); }
-  else {
-    seen.push(id);
-    wish = wish.filter(x=>x!==id); // si ya la viste, sale de la wishlist
-    toast(`“${s.t}” marcada como vista ✅`);
-  }
-  save(LS.seen, seen); save(LS.wish, wish); render();
+  const snap = snapshot(id);
+  if (inSeen(id)){ seen = seen.filter(x=>idOf(x)!==String(id)); toast(`Ya no figura como vista`); }
+  else { if(!snap) return; seen.push(snap); wish = wish.filter(x=>idOf(x)!==String(id)); toast(`“${snap.title}” marcada como vista ✅`); }
+  persist(); render();
 }
-
 function removeFrom(listName, id, ev){
   if (ev) ev.stopPropagation();
-  const s = SERIES.find(x=>x.id===id);
-  if (listName === "wishlist"){ wish = wish.filter(x=>x!==id); save(LS.wish, wish); toast(`“${s.t}” eliminada de la wishlist`); }
-  else { seen = seen.filter(x=>x!==id); save(LS.seen, seen); toast(`“${s.t}” eliminada de vistas`); }
-  render();
+  if (listName==="wishlist") wish = wish.filter(x=>idOf(x)!==String(id));
+  else seen = seen.filter(x=>idOf(x)!==String(id));
+  persist(); toast("Eliminada"); render();
 }
 
-/* ---------- Toast ---------- */
+/* ===== Toast ===== */
 let toastTimer;
 function toast(msg){
   const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
+  t.textContent = msg; t.classList.add("show");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=> t.classList.remove("show"), 2200);
 }
 
-/* ---------- Init ---------- */
-render();
+document.getElementById("footerNote").textContent =
+  "Datos de TMDB · disponibilidad y popularidad para Argentina. Tu wishlist y tus vistas se guardan en este dispositivo.";
+
+init();
 </script>
 </body>
 </html>
