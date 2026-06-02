@@ -20,8 +20,6 @@ jobs:
           node-version: '20'
 
       - name: Generar data/series.json
-        env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: node scripts/build-series.mjs
 
       - name: Commitear si hubo cambios
