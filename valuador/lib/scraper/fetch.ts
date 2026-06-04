@@ -64,21 +64,30 @@ export async function fetchHtml(targetUrl: string): Promise<string> {
   return html;
 }
 
-/** Construye la URL del proveedor con render de JS y bypass anti-bot. */
+/**
+ * Construye la URL del proveedor.
+ *
+ * Zonaprop/Argenprop renderizan en su servidor: el HTML crudo ya trae precio,
+ * m² y las tarjetas. Por eso NO pedimos render de JS por defecto (es más rápido,
+ * gasta menos créditos y evita la intermitencia de esperar el render). Se puede
+ * forzar con SCRAPER_RENDER=true si alguna página lo necesitara.
+ */
 function buildRequestUrl(targetUrl: string): string {
   if (PROVIDER !== 'direct' && !API_KEY) {
     throw new AnalysisError('SCRAPER_NOT_CONFIGURED');
   }
   const enc = encodeURIComponent(targetUrl);
+  const render = String(process.env.SCRAPER_RENDER).toLowerCase() === 'true';
 
   switch (PROVIDER) {
     case 'scraperapi':
-      // ultra_premium activa el pool con bypass de anti-bots tipo DataDome.
-      return `https://api.scraperapi.com/?api_key=${API_KEY}&url=${enc}&render=true&country_code=ar&ultra_premium=true`;
+      // country_code / ultra_premium son features de pago que el plan gratis
+      // rechaza (403/500): NO se usan. El proxy estándar alcanza.
+      return `https://api.scraperapi.com/?api_key=${API_KEY}&url=${enc}${render ? '&render=true' : ''}`;
     case 'scrapingbee':
-      return `https://app.scrapingbee.com/api/v1/?api_key=${API_KEY}&url=${enc}&render_js=true&stealth_proxy=true&country_code=ar`;
+      return `https://app.scrapingbee.com/api/v1/?api_key=${API_KEY}&url=${enc}${render ? '&render_js=true' : '&render_js=false'}`;
     case 'zenrows':
-      return `https://api.zenrows.com/v1/?apikey=${API_KEY}&url=${enc}&js_render=true&antibot=true&proxy_country=ar`;
+      return `https://api.zenrows.com/v1/?apikey=${API_KEY}&url=${enc}${render ? '&js_render=true' : ''}`;
     case 'direct':
     default:
       return targetUrl;

@@ -25,6 +25,7 @@ export async function analyzeProperty(rawUrl: string): Promise<AnalysisResult> {
     const { comparables, searchUrl } = await scrapeZonapropBenchmark({
       propertyType: property.propertyType,
       neighborhood: property.neighborhood,
+      city: property.city,
       surfaceM2: property.surfaceM2,
     });
 
@@ -38,6 +39,7 @@ export async function analyzeProperty(rawUrl: string): Promise<AnalysisResult> {
       analyzedAt: new Date().toISOString(),
     };
   } catch (err) {
+    if (process.env.DEBUG_SCRAPE) console.error('[analyze] error:', err);
     throw toAnalysisError(err);
   }
 }

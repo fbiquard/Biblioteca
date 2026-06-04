@@ -16,8 +16,10 @@ export interface ScrapedProperty {
   /** Superficie total en m². */
   surfaceM2: number;
   propertyType: PropertyType | null;
-  /** Barrio / localidad detectada (ej. "Tigre", "Nordelta"). */
+  /** Barrio / localidad detectada (ej. "Nordelta", "Troncos del Talar"). */
   neighborhood: string | null;
+  /** Ciudad / partido (ej. "Tigre"). Plan B del benchmark si el barrio falla. */
+  city?: string | null;
   /** Texto de ubicación completo, tal como aparece en la publicación. */
   locationRaw: string | null;
   /** Días que lleva publicada, si se pudo determinar. */

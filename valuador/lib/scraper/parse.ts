@@ -39,7 +39,9 @@ export function parseNumber(raw: string): number | null {
  */
 export function parseSurfaceM2(text: string | null | undefined): number | null {
   if (!text) return null;
-  const matches = [...text.matchAll(/(\d{1,5})(?:[.,]\d+)?\s*m(?:²|2)\b/gi)];
+  // OJO: sin \b al final. El "²" no es carácter de palabra, así que "\bm²\b"
+  // nunca matchearía "87 m²" (sí "87 m2"). Zonaprop usa "m²".
+  const matches = [...text.matchAll(/(\d{1,5})(?:[.,]\d+)?\s*m(?:²|2)(?![a-z\d])/gi)];
   if (matches.length === 0) return null;
   // El primer valor suele ser superficie total en las cards de Zonaprop.
   const values = matches.map((m) => Number(m[1])).filter((n) => n > 0 && n < 100000);
