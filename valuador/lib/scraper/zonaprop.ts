@@ -1,7 +1,7 @@
-import type { Page } from 'playwright';
+import * as cheerio from 'cheerio';
 import { AnalysisError } from '../errors';
 import type { ComparableProperty, PropertyType, ScrapedProperty } from '../types';
-import { gotoAndGetHtml } from './browser';
+import { fetchHtml } from './fetch';
 import {
   parseDaysPublished,
   parsePropertyType,
@@ -12,74 +12,53 @@ import {
 
 const BENCHMARK_SAMPLE_SIZE = Number(process.env.BENCHMARK_SAMPLE_SIZE ?? 20);
 
-interface RawDetail {
-  priceText: string | null;
-  titleText: string | null;
-  locationText: string | null;
-  featuresText: string | null;
-  bodyText: string;
-}
-
 /** Extrae los datos de una publicación individual de Zonaprop. */
-export async function scrapeZonapropProperty(page: Page, url: string): Promise<ScrapedProperty> {
-  await gotoAndGetHtml(page, url);
+export async function scrapeZonapropProperty(url: string): Promise<ScrapedProperty> {
+  const html = await fetchHtml(url);
+  const $ = cheerio.load(html);
 
-  // Esperamos a que renderice el precio o al menos el título.
-  await page
-    .waitForSelector('[data-qa="adPrice"], h1', { timeout: 15000 })
-    .catch(() => {
-      /* seguimos con fallback por HTML */
-    });
+  const txt = (sel: string) => $(sel).first().text().replace(/\s+/g, ' ').trim() || null;
+  const bodyText = $('body').text();
 
-  const raw = await page.evaluate((): RawDetail => {
-    const text = (sel: string): string | null =>
-      document.querySelector(sel)?.textContent?.trim() ?? null;
-    return {
-      priceText: text('[data-qa="adPrice"]') ?? text('.price-value') ?? text('.price-items'),
-      titleText: text('h1'),
-      locationText:
-        text('[data-qa="LOCATION"]') ??
-        text('.title-location') ??
-        text('h2.title-location') ??
-        text('.section-location-property'),
-      featuresText:
-        text('#section-icon-features-property') ??
-        text('[data-qa="section-icon-features"]') ??
-        text('.section-icon-features'),
-      bodyText: document.body?.innerText ?? '',
-    };
-  });
+  const priceText =
+    txt('[data-qa="adPrice"]') ?? txt('.price-value') ?? txt('.price-items');
+  const titleText = txt('h1');
+  const locationText =
+    txt('[data-qa="LOCATION"]') ??
+    txt('.title-location') ??
+    txt('h2.title-location') ??
+    txt('.section-location-property');
+  const featuresText =
+    txt('#section-icon-features-property') ??
+    txt('[data-qa="section-icon-features"]') ??
+    txt('.section-icon-features');
 
-  const priceUsd = parseUsdPrice(raw.priceText) ?? parseUsdPrice(firstPriceLine(raw.bodyText));
+  const priceUsd = parseUsdPrice(priceText) ?? parseUsdPrice(firstPriceLine(bodyText));
   if (priceUsd == null) {
-    // ¿Hay precio pero en pesos? -> NOT_USD; si no hay nada -> PARSE_ERROR.
-    if (/(\$|pesos|ars)/i.test(raw.priceText ?? raw.bodyText.slice(0, 2000))) {
+    if (/(\$|pesos|ars)/i.test(priceText ?? bodyText.slice(0, 2000))) {
       throw new AnalysisError('NOT_USD');
     }
     throw new AnalysisError('PARSE_ERROR', 'No se encontró precio en la publicación de Zonaprop.');
   }
 
   const surfaceM2 =
-    parseSurfaceM2(raw.featuresText) ?? parseSurfaceM2(raw.titleText) ?? parseSurfaceM2(raw.bodyText);
+    parseSurfaceM2(featuresText) ?? parseSurfaceM2(titleText) ?? parseSurfaceM2(bodyText);
   if (surfaceM2 == null) {
     throw new AnalysisError('PARSE_ERROR', 'No se encontró la superficie en m².');
   }
 
-  const locationRaw = raw.locationText ?? raw.titleText ?? null;
-  const neighborhood = neighborhoodFromUrlOrText(url, locationRaw);
-  const propertyType = parsePropertyType(raw.titleText ?? url);
-  const daysPublished = parseDaysPublished(raw.bodyText);
+  const locationRaw = locationText ?? titleText ?? null;
 
   return {
     portal: 'zonaprop',
     url,
-    title: raw.titleText,
+    title: titleText,
     priceUsd,
     surfaceM2,
-    propertyType,
-    neighborhood,
+    propertyType: parsePropertyType(titleText ?? url),
+    neighborhood: neighborhoodFromUrlOrText(url, locationRaw),
     locationRaw,
-    daysPublished,
+    daysPublished: parseDaysPublished(bodyText),
   };
 }
 
@@ -94,50 +73,42 @@ interface BenchmarkInput {
  * en Zonaprop, como muestra comparativa para el benchmark.
  */
 export async function scrapeZonapropBenchmark(
-  page: Page,
   input: BenchmarkInput,
 ): Promise<{ comparables: ComparableProperty[]; searchUrl: string }> {
   const searchUrl = buildSearchUrl(input);
-  await gotoAndGetHtml(page, searchUrl);
-
-  await page
-    .waitForSelector('[data-qa="posting PROPERTY"], .postings-container', { timeout: 15000 })
-    .catch(() => {});
-
-  const rawCards = await page.evaluate((limit: number) => {
-    const cards = Array.from(document.querySelectorAll('[data-qa="posting PROPERTY"]')).slice(
-      0,
-      limit,
-    );
-    return cards.map((card) => {
-      const q = (sel: string) =>
-        card.querySelector(sel)?.textContent?.replace(/\s+/g, ' ').trim() ?? null;
-      const link = card.querySelector('a[href]') as HTMLAnchorElement | null;
-      return {
-        priceText: q('[data-qa="POSTING_CARD_PRICE"]'),
-        featuresText: q('[data-qa="POSTING_CARD_FEATURES"]'),
-        locationText:
-          q('[data-qa="POSTING_CARD_LOCATION"]') ?? q('.postingLocations-module__location-text'),
-        href: link?.getAttribute('href') ?? null,
-        cardText: (card as HTMLElement).innerText?.replace(/\s+/g, ' ').trim() ?? '',
-      };
-    });
-  }, BENCHMARK_SAMPLE_SIZE);
+  const html = await fetchHtml(searchUrl);
+  const $ = cheerio.load(html);
 
   const comparables: ComparableProperty[] = [];
-  for (const c of rawCards) {
-    const priceUsd = parseUsdPrice(c.priceText);
-    const surfaceM2 = parseSurfaceM2(c.featuresText);
-    if (priceUsd == null || surfaceM2 == null || surfaceM2 <= 0) continue;
-    comparables.push({
-      priceUsd,
-      surfaceM2,
-      pricePerM2: priceUsd / surfaceM2,
-      url: c.href ? new URL(c.href, 'https://www.zonaprop.com.ar').toString() : null,
-      locationRaw: c.locationText,
-      daysPublished: parseDaysPublished(c.cardText),
+
+  $('[data-qa="posting PROPERTY"]')
+    .slice(0, BENCHMARK_SAMPLE_SIZE)
+    .each((_, el) => {
+      const card = $(el);
+      const cardTxt = (sel: string) =>
+        card.find(sel).first().text().replace(/\s+/g, ' ').trim() || null;
+
+      const priceText = cardTxt('[data-qa="POSTING_CARD_PRICE"]');
+      const featuresText = cardTxt('[data-qa="POSTING_CARD_FEATURES"]');
+      const locationText =
+        cardTxt('[data-qa="POSTING_CARD_LOCATION"]') ??
+        cardTxt('.postingLocations-module__location-text');
+      const href = card.find('a[href]').first().attr('href') ?? null;
+      const cardText = card.text().replace(/\s+/g, ' ').trim();
+
+      const priceUsd = parseUsdPrice(priceText);
+      const surfaceM2 = parseSurfaceM2(featuresText);
+      if (priceUsd == null || surfaceM2 == null || surfaceM2 <= 0) return;
+
+      comparables.push({
+        priceUsd,
+        surfaceM2,
+        pricePerM2: priceUsd / surfaceM2,
+        url: href ? new URL(href, 'https://www.zonaprop.com.ar').toString() : null,
+        locationRaw: locationText,
+        daysPublished: parseDaysPublished(cardText),
+      });
     });
-  }
 
   return { comparables, searchUrl };
 }
@@ -145,7 +116,6 @@ export async function scrapeZonapropBenchmark(
 /** Construye la URL de búsqueda SEO de Zonaprop para la subzona. */
 function buildSearchUrl(input: BenchmarkInput): string {
   const tipo = input.propertyType === 'casa' ? 'casas' : 'departamentos';
-  // Si no detectamos barrio, caemos al partido de Tigre (MVP zona norte).
   const zona = input.neighborhood ? slugifyNeighborhood(input.neighborhood) : 'tigre';
   return `https://www.zonaprop.com.ar/${tipo}-venta-${zona}.html`;
 }
@@ -159,14 +129,12 @@ function firstPriceLine(body: string): string | null {
   return line ?? null;
 }
 
-/** Detecta barrio desde el slug de la URL o desde el texto de ubicación. */
+/** Detecta barrio desde el texto de ubicación o desde el slug de la URL. */
 function neighborhoodFromUrlOrText(url: string, locationText: string | null): string | null {
   if (locationText) {
-    // La ubicación suele venir como "Nordelta, Tigre" o "Tigre, Buenos Aires".
     const segment = locationText.split(',')[0]?.trim();
     if (segment && segment.length > 1) return segment;
   }
-  // Fallback: extraer del slug de la URL de detalle de Zonaprop.
   const m = url.match(/venta-en-([a-z0-9-]+?)-\d|en-venta-([a-z0-9-]+)/i);
   const slug = m?.[1] ?? m?.[2];
   if (slug) return slug.replace(/-/g, ' ');

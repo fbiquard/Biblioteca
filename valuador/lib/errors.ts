@@ -10,6 +10,7 @@ export type AnalysisErrorCode =
   | 'NOT_USD' // el precio no está en dólares (no comparable)
   | 'NO_BENCHMARK' // no se encontraron comparables suficientes
   | 'TIMEOUT' // se agotó el tiempo de navegación
+  | 'SCRAPER_NOT_CONFIGURED' // falta la API key del servicio de scraping
   | 'UNKNOWN';
 
 const USER_MESSAGES: Record<AnalysisErrorCode, string> = {
@@ -29,6 +30,8 @@ const USER_MESSAGES: Record<AnalysisErrorCode, string> = {
     'No encontramos suficientes propiedades similares en la zona para comparar. Probá con otra propiedad o zona.',
   TIMEOUT:
     'El portal tardó demasiado en responder. Revisá tu conexión y volvé a intentar.',
+  SCRAPER_NOT_CONFIGURED:
+    'Falta configurar el servicio de lectura de páginas. Cargá la variable SCRAPER_API_KEY (ver README).',
   UNKNOWN: 'Ocurrió un error inesperado al analizar la propiedad. Intentá de nuevo.',
 };
 
@@ -41,6 +44,7 @@ const HTTP_STATUS: Record<AnalysisErrorCode, number> = {
   NOT_USD: 422,
   NO_BENCHMARK: 422,
   TIMEOUT: 504,
+  SCRAPER_NOT_CONFIGURED: 500,
   UNKNOWN: 500,
 };
 

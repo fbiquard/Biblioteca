@@ -1,7 +1,7 @@
-import type { Page } from 'playwright';
+import * as cheerio from 'cheerio';
 import { AnalysisError } from '../errors';
 import type { ScrapedProperty } from '../types';
-import { gotoAndGetHtml } from './browser';
+import { fetchHtml } from './fetch';
 import {
   parseDaysPublished,
   parsePropertyType,
@@ -9,65 +9,48 @@ import {
   parseUsdPrice,
 } from './parse';
 
-interface RawDetail {
-  priceText: string | null;
-  titleText: string | null;
-  locationText: string | null;
-  featuresText: string | null;
-  bodyText: string;
-}
-
 /** Extrae los datos de una publicación individual de Argenprop. */
-export async function scrapeArgenpropProperty(page: Page, url: string): Promise<ScrapedProperty> {
-  await gotoAndGetHtml(page, url);
+export async function scrapeArgenpropProperty(url: string): Promise<ScrapedProperty> {
+  const html = await fetchHtml(url);
+  const $ = cheerio.load(html);
 
-  await page
-    .waitForSelector('.titlebar__price, h1', { timeout: 15000 })
-    .catch(() => {});
+  const txt = (sel: string) => $(sel).first().text().replace(/\s+/g, ' ').trim() || null;
+  const bodyText = $('body').text();
 
-  const raw = await page.evaluate((): RawDetail => {
-    const text = (sel: string): string | null =>
-      document.querySelector(sel)?.textContent?.replace(/\s+/g, ' ').trim() ?? null;
-    return {
-      priceText:
-        text('.titlebar__price') ?? text('[class*="price"]') ?? text('.precio-valor'),
-      titleText: text('h1') ?? text('.titlebar__address'),
-      locationText:
-        text('.titlebar__address') ?? text('[class*="location"]') ?? text('.section-location'),
-      featuresText:
-        text('.property-features') ??
-        text('.section-icon-features') ??
-        text('[class*="feature"]'),
-      bodyText: document.body?.innerText ?? '',
-    };
-  });
+  const priceText =
+    txt('.titlebar__price') ?? txt('[class*="price"]') ?? txt('.precio-valor');
+  const titleText = txt('h1') ?? txt('.titlebar__address');
+  const locationText =
+    txt('.titlebar__address') ?? txt('[class*="location"]') ?? txt('.section-location');
+  const featuresText =
+    txt('.property-features') ?? txt('.section-icon-features') ?? txt('[class*="feature"]');
 
-  const priceUsd = parseUsdPrice(raw.priceText) ?? parseUsdPrice(raw.bodyText.slice(0, 3000));
+  const priceUsd = parseUsdPrice(priceText) ?? parseUsdPrice(bodyText.slice(0, 3000));
   if (priceUsd == null) {
-    if (/(\$|pesos|ars)/i.test(raw.priceText ?? raw.bodyText.slice(0, 2000))) {
+    if (/(\$|pesos|ars)/i.test(priceText ?? bodyText.slice(0, 2000))) {
       throw new AnalysisError('NOT_USD');
     }
     throw new AnalysisError('PARSE_ERROR', 'No se encontró precio en la publicación de Argenprop.');
   }
 
   const surfaceM2 =
-    parseSurfaceM2(raw.featuresText) ?? parseSurfaceM2(raw.titleText) ?? parseSurfaceM2(raw.bodyText);
+    parseSurfaceM2(featuresText) ?? parseSurfaceM2(titleText) ?? parseSurfaceM2(bodyText);
   if (surfaceM2 == null) {
     throw new AnalysisError('PARSE_ERROR', 'No se encontró la superficie en m².');
   }
 
-  const locationRaw = raw.locationText ?? raw.titleText ?? null;
+  const locationRaw = locationText ?? titleText ?? null;
   const neighborhood = locationRaw ? locationRaw.split(',')[0]?.trim() ?? null : null;
 
   return {
     portal: 'argenprop',
     url,
-    title: raw.titleText,
+    title: titleText,
     priceUsd,
     surfaceM2,
-    propertyType: parsePropertyType(raw.titleText ?? url),
+    propertyType: parsePropertyType(titleText ?? url),
     neighborhood,
     locationRaw,
-    daysPublished: parseDaysPublished(raw.bodyText),
+    daysPublished: parseDaysPublished(bodyText),
   };
 }
