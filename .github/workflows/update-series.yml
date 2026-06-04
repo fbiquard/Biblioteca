@@ -1,9 +1,8 @@
 name: Actualizar series
 
-# Corre solo todos los lunes 09:00 UTC (~06:00 Argentina) y también a mano.
+# Automatización PAUSADA (proyecto en pausa). Ya no corre sola cada semana.
+# Queda disponible solo para ejecutarla a mano desde la pestaña Actions si hiciera falta.
 on:
-  schedule:
-    - cron: '0 9 * * 1'
   workflow_dispatch:
 
 permissions:
