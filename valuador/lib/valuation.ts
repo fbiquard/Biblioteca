@@ -12,39 +12,50 @@ import type {
 // |desvío| <= 7% => PRECIO_JUSTO. Por debajo => SUBVALUADA. Por encima => CARA.
 const FAIR_THRESHOLD = 0.07;
 
-// Filtro de comparables: superficie dentro de ±20% de la propiedad analizada.
-const SURFACE_TOLERANCE = 0.2;
+// Filtro de comparables: superficie similar. Empezamos en ±20% y, si no
+// alcanza el mínimo, ampliamos progresivamente antes de rendirnos.
+const SURFACE_TOLERANCES = [0.2, 0.35, 0.5];
 
 // Mínimo de comparables para considerar el benchmark confiable.
 const MIN_COMPARABLES = 3;
 
 /**
  * Construye el benchmark a partir de las comparables crudas, filtrando por
- * superficie similar (±20%) y descartando outliers groseros.
+ * superficie similar y descartando outliers groseros. Si con ±20% no llega al
+ * mínimo, prueba ±35% y ±50%; como último recurso usa toda la muestra.
  */
 export function buildBenchmark(
   property: ScrapedProperty,
   rawComparables: ComparableProperty[],
   searchUrl: string,
 ): Benchmark {
-  const lo = property.surfaceM2 * (1 - SURFACE_TOLERANCE);
-  const hi = property.surfaceM2 * (1 + SURFACE_TOLERANCE);
-
-  // Excluimos la propia propiedad (mismo m² y precio) si apareciera en la muestra.
-  const similar = rawComparables.filter(
+  // Descartamos la propia propiedad y precios inválidos de entrada.
+  const usable = rawComparables.filter(
     (c) =>
-      c.surfaceM2 >= lo &&
-      c.surfaceM2 <= hi &&
       c.pricePerM2 > 0 &&
       !(c.surfaceM2 === property.surfaceM2 && c.priceUsd === property.priceUsd),
   );
 
-  const filtered = removeOutliers(similar);
+  // Probamos tolerancias crecientes hasta alcanzar el mínimo de comparables.
+  let filtered: ComparableProperty[] = [];
+  for (const tol of SURFACE_TOLERANCES) {
+    const lo = property.surfaceM2 * (1 - tol);
+    const hi = property.surfaceM2 * (1 + tol);
+    const inRange = usable.filter((c) => c.surfaceM2 >= lo && c.surfaceM2 <= hi);
+    const cleaned = removeOutliers(inRange);
+    if (cleaned.length > filtered.length) filtered = cleaned;
+    if (filtered.length >= MIN_COMPARABLES) break;
+  }
+
+  // Último recurso: usar toda la muestra (sin filtro de superficie).
+  if (filtered.length < MIN_COMPARABLES && usable.length >= MIN_COMPARABLES) {
+    filtered = removeOutliers(usable);
+  }
 
   if (filtered.length < MIN_COMPARABLES) {
     throw new AnalysisError(
       'NO_BENCHMARK',
-      `Solo se encontraron ${filtered.length} comparables similares (mínimo ${MIN_COMPARABLES}).`,
+      `Solo se encontraron ${filtered.length} comparables (mínimo ${MIN_COMPARABLES}).`,
     );
   }
 
