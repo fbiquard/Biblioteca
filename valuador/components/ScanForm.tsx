@@ -14,17 +14,22 @@ export function ScanForm({ onScan, loading }: Props) {
   const [propertyType, setPropertyType] = useState<PropertyType>('departamento');
   const [ambientes, setAmbientes] = useState<string>(''); // '' = cualquiera
   const [ref, setRef] = useState<string>('');
+  const [minPrice, setMinPrice] = useState<string>('');
+  const [maxPrice, setMaxPrice] = useState<string>('');
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (loading) return;
     const refNum = Number(ref);
     if (!zona.trim() || !Number.isFinite(refNum) || refNum <= 0) return;
+    const toNum = (s: string) => (s && Number(s) > 0 ? Number(s) : null);
     onScan({
       zona: zona.trim(),
       propertyType,
       ambientes: ambientes ? Number(ambientes) : null,
       refPricePerM2: refNum,
+      minPrice: toNum(minPrice),
+      maxPrice: toNum(maxPrice),
     });
   }
 
@@ -82,6 +87,32 @@ export function ScanForm({ onScan, loading }: Props) {
             value={ref}
             onChange={(e) => setRef(e.target.value)}
             placeholder={propertyType === 'casa' ? 'Ej: 700' : 'Ej: 2200'}
+            disabled={loading}
+            className={inputClass}
+          />
+        </Field>
+      </div>
+
+      {/* Rango de precio total (USD) — opcional */}
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Precio mín. (USD)">
+          <input
+            type="number"
+            inputMode="numeric"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            placeholder="Sin mínimo"
+            disabled={loading}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Precio máx. (USD)">
+          <input
+            type="number"
+            inputMode="numeric"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="Sin máximo"
             disabled={loading}
             className={inputClass}
           />

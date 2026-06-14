@@ -41,7 +41,15 @@ function parseFilters(body: unknown): ScanFilters {
     throw new AnalysisError('INVALID_URL', 'Ingresá un precio/m² de referencia válido.');
   }
 
-  return { zona, propertyType, ambientes, refPricePerM2 };
+  const minPrice = positiveOrNull(b.minPrice);
+  const maxPrice = positiveOrNull(b.maxPrice);
+
+  return { zona, propertyType, ambientes, refPricePerM2, minPrice, maxPrice };
+}
+
+function positiveOrNull(v: unknown): number | null {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : null;
 }
 
 function errorResponse(err: AnalysisError) {

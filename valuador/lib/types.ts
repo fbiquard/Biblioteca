@@ -108,6 +108,10 @@ export interface ScanFilters {
   ambientes: number | null;
   /** Precio por m² de referencia (USD) que define la oportunidad. */
   refPricePerM2: number;
+  /** Precio total mínimo en USD (null = sin mínimo). */
+  minPrice: number | null;
+  /** Precio total máximo en USD (null = sin máximo). */
+  maxPrice: number | null;
 }
 
 /** Una publicación que está por debajo del precio/m² de referencia. */

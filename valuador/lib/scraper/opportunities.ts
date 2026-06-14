@@ -36,12 +36,15 @@ export async function scanOpportunities(filters: ScanFilters): Promise<ScanResul
 
   const ref = filters.refPricePerM2;
   const floor = ref * OUTLIER_FLOOR;
+  const min = filters.minPrice ?? 0;
+  const max = filters.maxPrice ?? Infinity;
   const seen = new Set<string>();
   const cards = [...zona.cards, ...argen.cards];
 
   const opportunities: Opportunity[] = [];
   for (const c of cards) {
     if (c.pricePerM2 > ref || c.pricePerM2 < floor) continue; // fuera de rango / outlier
+    if (c.priceUsd < min || c.priceUsd > max) continue; // fuera del rango de precio total
     const key = dedupeKey(c);
     if (seen.has(key)) continue;
     seen.add(key);
