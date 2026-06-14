@@ -85,6 +85,13 @@ export function parsePropertyType(text: string | null | undefined): PropertyType
   return null;
 }
 
+/** Extrae la cantidad de ambientes de un texto tipo "3 amb." */
+export function parseAmbientes(text: string | null | undefined): number | null {
+  if (!text) return null;
+  const m = text.match(/(\d+)\s*amb/i);
+  return m ? Number(m[1]) : null;
+}
+
 /**
  * Normaliza un nombre de barrio/localidad a un slug usable en URLs de Zonaprop.
  * "Nordelta, Tigre" -> "nordelta". "Tigre" -> "tigre".

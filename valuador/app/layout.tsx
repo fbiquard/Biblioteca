@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Valuador · ¿Está subvaluada?',
+  title: 'Radar de oportunidades inmobiliarias',
   description:
-    'Pegá el link de una propiedad de Zonaprop o Argenprop y descubrí si está subvaluada, en precio justo o cara respecto al mercado real de su subzona en zona norte de Buenos Aires.',
+    'Cargá zona, tipo, ambientes y tu precio/m² de referencia. Escaneamos Zonaprop y te traemos los avisos por debajo del mercado en zona norte de Buenos Aires.',
 };
 
 export const viewport: Viewport = {

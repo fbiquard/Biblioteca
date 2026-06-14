@@ -97,3 +97,38 @@ export interface HistoryEntry {
   verdict: VerdictLabel;
   analyzedAt: string;
 }
+
+// ===== Buscador de oportunidades (input del inmobiliario) =====
+
+export interface ScanFilters {
+  /** Zona / barrio / localidad (ej. "Tigre", "Nordelta"). */
+  zona: string;
+  propertyType: PropertyType;
+  /** Cantidad de ambientes; null = cualquiera. */
+  ambientes: number | null;
+  /** Precio por m² de referencia (USD) que define la oportunidad. */
+  refPricePerM2: number;
+}
+
+/** Una publicación que está por debajo del precio/m² de referencia. */
+export interface Opportunity {
+  url: string | null;
+  locationRaw: string | null;
+  priceUsd: number;
+  surfaceM2: number;
+  pricePerM2: number;
+  ambientes: number | null;
+  /** Cuánto por debajo de la referencia: (ref - precioM2) / ref. */
+  discountPct: number;
+  daysPublished: number | null;
+}
+
+export interface ScanResult {
+  filters: ScanFilters;
+  /** Total de avisos escaneados (antes de filtrar por referencia). */
+  scannedCount: number;
+  /** Avisos por debajo de la referencia, ordenados por mayor descuento. */
+  opportunities: Opportunity[];
+  searchUrl: string;
+  scannedAt: string;
+}
