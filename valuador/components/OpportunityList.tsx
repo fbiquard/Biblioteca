@@ -44,12 +44,27 @@ export function OpportunityList({ result }: { result: ScanResult }) {
                 <span className="text-[10px] text-neutral-500">vs ref.</span>
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-semibold text-neutral-100">
-                  {op.locationRaw ?? 'Ubicación N/D'}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                      op.portal === 'zonaprop'
+                        ? 'bg-amber-400/15 text-amber-300'
+                        : 'bg-sky-400/15 text-sky-300'
+                    }`}
+                    title={op.portal === 'zonaprop' ? 'Zonaprop' : 'Argenprop'}
+                  >
+                    {op.portal === 'zonaprop' ? 'ZP' : 'AP'}
+                  </span>
+                  <span className="truncate text-sm font-semibold text-neutral-100">
+                    {op.locationRaw ?? 'Ubicación N/D'}
+                  </span>
                 </div>
                 <div className="mt-0.5 flex flex-wrap gap-x-3 text-xs text-neutral-400">
                   <span className="font-medium text-neutral-200">{formatUsd(op.priceUsd)}</span>
-                  <span>{formatM2(op.surfaceM2)}</span>
+                  <span>
+                    {formatM2(op.surfaceM2)}
+                    {op.surfaceKind === 'total' ? ' tot.' : ' cub.'}
+                  </span>
                   {op.ambientes ? <span>{op.ambientes} amb.</span> : null}
                   <span className="text-verdict-under">{formatPricePerM2(op.pricePerM2)}</span>
                 </div>

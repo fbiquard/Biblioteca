@@ -1,103 +1,131 @@
 import * as cheerio from 'cheerio';
-import type { Opportunity, ScanFilters, ScanResult } from '../types';
+import type { Opportunity, PropertyType, ScanFilters, ScanResult } from '../types';
 import { fetchHtml } from './fetch';
 import {
   parseAmbientes,
   parseDaysPublished,
-  parseSurfaceM2,
+  parseSurfaces,
   parseUsdPrice,
   slugifyNeighborhood,
+  surfaceForPricePerM2,
 } from './parse';
 
-// Páginas de resultados a escanear por búsqueda (cada una ~25-30 avisos).
+// Páginas a escanear por portal (cada una ~20-30 avisos).
 const MAX_PAGES = Number(process.env.SCAN_MAX_PAGES ?? 3);
+// Descuento extremo respecto a la referencia que casi siempre es un error de
+// dato (terreno cargado como m², typo): por debajo de ref*FLOOR lo descartamos.
+const OUTLIER_FLOOR = 0.4;
 
-interface RawCard {
-  url: string | null;
-  locationRaw: string | null;
-  priceUsd: number;
-  surfaceM2: number;
-  pricePerM2: number;
-  ambientes: number | null;
-  daysPublished: number | null;
-}
+interface RawCard extends Omit<Opportunity, 'discountPct'> {}
 
 /**
- * Escanea Zonaprop con los criterios del inmobiliario y devuelve los avisos
- * cuyo precio/m² está por debajo del precio/m² de referencia (oportunidades).
+ * Escanea Zonaprop y Argenprop con los criterios del inmobiliario y devuelve
+ * los avisos cuyo precio/m² está por debajo de la referencia (oportunidades).
  */
 export async function scanOpportunities(filters: ScanFilters): Promise<ScanResult> {
-  const tipoPlural = filters.propertyType === 'casa' ? 'casas' : 'departamentos';
-  const zonaSlug = slugifyNeighborhood(filters.zona) || 'tigre';
+  // Escaneamos ambos portales en paralelo (cada uno tolera su propio fallo).
+  const [zona, argen] = await Promise.all([
+    scanPortal('zonaprop', filters),
+    scanPortal('argenprop', filters),
+  ]);
 
-  const seen = new Set<string>();
-  const cards: RawCard[] = [];
-  let firstUrl = '';
-
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const url = buildSearchUrl(tipoPlural, zonaSlug, filters.ambientes, page);
-    if (page === 1) firstUrl = url;
-
-    let html: string;
-    try {
-      html = await fetchHtml(url);
-    } catch (err) {
-      // La primera página define si la búsqueda es válida; las siguientes
-      // pueden no existir y simplemente cortamos.
-      if (page === 1) throw err;
-      break;
-    }
-
-    const pageCards = parseCards(html);
-    if (pageCards.length === 0) break; // no hay más resultados
-
-    for (const c of pageCards) {
-      const key = c.url ?? `${c.priceUsd}-${c.surfaceM2}-${c.locationRaw}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      cards.push(c);
-    }
+  // Si NINGÚN portal devolvió nada y el principal falló, propagamos el error.
+  if (zona.cards.length === 0 && argen.cards.length === 0 && zona.error) {
+    throw zona.error;
   }
 
   const ref = filters.refPricePerM2;
-  const opportunities: Opportunity[] = cards
-    .filter((c) => c.pricePerM2 <= ref)
-    .map((c) => ({
-      url: c.url,
-      locationRaw: c.locationRaw,
-      priceUsd: c.priceUsd,
-      surfaceM2: c.surfaceM2,
+  const floor = ref * OUTLIER_FLOOR;
+  const seen = new Set<string>();
+  const cards = [...zona.cards, ...argen.cards];
+
+  const opportunities: Opportunity[] = [];
+  for (const c of cards) {
+    if (c.pricePerM2 > ref || c.pricePerM2 < floor) continue; // fuera de rango / outlier
+    const key = dedupeKey(c);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    opportunities.push({
+      ...c,
       pricePerM2: Math.round(c.pricePerM2),
-      ambientes: c.ambientes,
       discountPct: Math.round(((ref - c.pricePerM2) / ref) * 10000) / 10000,
-      daysPublished: c.daysPublished,
-    }))
-    .sort((a, b) => b.discountPct - a.discountPct);
+    });
+  }
+  opportunities.sort((a, b) => b.discountPct - a.discountPct);
 
   return {
     filters,
     scannedCount: cards.length,
     opportunities,
-    searchUrl: firstUrl,
+    searchUrl: zona.searchUrl || argen.searchUrl,
     scannedAt: new Date().toISOString(),
   };
 }
 
-/** Arma la URL SEO de búsqueda de Zonaprop. */
-function buildSearchUrl(
-  tipoPlural: string,
-  zonaSlug: string,
-  ambientes: number | null,
+// ---------------- por portal ----------------
+
+interface PortalScan {
+  cards: RawCard[];
+  searchUrl: string;
+  error: unknown | null;
+}
+
+async function scanPortal(
+  portal: 'zonaprop' | 'argenprop',
+  filters: ScanFilters,
+): Promise<PortalScan> {
+  const zonaSlug = slugifyNeighborhood(filters.zona) || 'tigre';
+  const cards: RawCard[] = [];
+  let searchUrl = '';
+  let error: unknown | null = null;
+
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const url =
+      portal === 'zonaprop'
+        ? zonapropUrl(filters.propertyType, zonaSlug, filters.ambientes, page)
+        : argenpropUrl(filters.propertyType, zonaSlug, filters.ambientes, page);
+    if (page === 1) searchUrl = url;
+
+    const parse = (html: string) =>
+      portal === 'zonaprop'
+        ? parseZonapropCards(html)
+        : parseArgenpropCards(html);
+
+    let pageCards: RawCard[] = [];
+    try {
+      pageCards = parse(await fetchHtml(url));
+      // Argenprop a veces devuelve una página vacía en el primer hit: 1 reintento.
+      if (pageCards.length === 0 && page === 1) {
+        pageCards = parse(await fetchHtml(url));
+      }
+    } catch (err) {
+      if (page === 1) error = err;
+      break;
+    }
+
+    if (pageCards.length === 0) break;
+    cards.push(...pageCards);
+  }
+
+  return { cards, searchUrl, error };
+}
+
+// ---------------- Zonaprop ----------------
+
+function zonapropUrl(
+  type: PropertyType,
+  zona: string,
+  amb: number | null,
   page: number,
 ): string {
-  let path = `${tipoPlural}-venta-${zonaSlug}`;
-  if (ambientes && ambientes > 0) path += `-${ambientes}-ambientes`;
+  const tipo = type === 'casa' ? 'casas' : 'departamentos';
+  let path = `${tipo}-venta-${zona}`;
+  if (amb && amb > 0) path += `-${amb}-ambientes`;
   if (page > 1) path += `-pagina-${page}`;
   return `https://www.zonaprop.com.ar/${path}.html`;
 }
 
-/** Parsea TODAS las tarjetas de una página de resultados de Zonaprop. */
-function parseCards(html: string): RawCard[] {
+function parseZonapropCards(html: string): RawCard[] {
   const $ = cheerio.load(html);
   const out: RawCard[] = [];
 
@@ -108,24 +136,86 @@ function parseCards(html: string): RawCard[] {
 
     const featuresText = get('[data-qa="POSTING_CARD_FEATURES"]');
     const priceUsd = parseUsdPrice(get('[data-qa="POSTING_CARD_PRICE"]'));
-    const surfaceM2 = parseSurfaceM2(featuresText);
-    if (priceUsd == null || surfaceM2 == null || surfaceM2 <= 0) return;
+    const surface = surfaceForPricePerM2(parseSurfaces(featuresText));
+    if (priceUsd == null || surface == null) return;
 
     const href =
       card.attr('data-to-posting') ?? card.find('a[href]').first().attr('href') ?? null;
 
     out.push({
+      portal: 'zonaprop',
       url: href ? new URL(href, 'https://www.zonaprop.com.ar').toString() : null,
-      locationRaw:
-        get('[data-qa="POSTING_CARD_LOCATION"]') ??
-        get('.postingLocations-module__location-text'),
+      locationRaw: get('[data-qa="POSTING_CARD_LOCATION"]'),
       priceUsd,
-      surfaceM2,
-      pricePerM2: priceUsd / surfaceM2,
+      surfaceM2: surface.value,
+      surfaceKind: surface.kind,
+      pricePerM2: priceUsd / surface.value,
       ambientes: parseAmbientes(featuresText),
       daysPublished: parseDaysPublished(card.text().replace(/\s+/g, ' ')),
     });
   });
 
   return out;
+}
+
+// ---------------- Argenprop ----------------
+
+function argenpropUrl(
+  type: PropertyType,
+  zona: string,
+  amb: number | null,
+  page: number,
+): string {
+  const tipo = type === 'casa' ? 'casas' : 'departamentos';
+  const params: string[] = [];
+  if (amb && amb > 0) params.push(`ambientes-${amb}`);
+  if (page > 1) params.push(`pagina-${page}`);
+  const query = params.length ? `?${params.join('&')}` : '';
+  return `https://www.argenprop.com/${tipo}/venta/${zona}${query}`;
+}
+
+function parseArgenpropCards(html: string): RawCard[] {
+  const $ = cheerio.load(html);
+  const out: RawCard[] = [];
+
+  $('a.card').each((_, el) => {
+    const card = $(el);
+    const get = (sel: string) =>
+      card.find(sel).first().text().replace(/\s+/g, ' ').trim() || null;
+
+    const featuresText = get('.card__main-features');
+    const priceUsd = parseUsdPrice(get('.card__price'));
+    const surface = surfaceForPricePerM2(parseSurfaces(featuresText));
+    if (priceUsd == null || surface == null) return;
+
+    const href = card.attr('href') ?? null;
+
+    out.push({
+      portal: 'argenprop',
+      url: href ? new URL(href, 'https://www.argenprop.com').toString() : null,
+      locationRaw: get('.card__title--primary') ?? get('.card__address'),
+      priceUsd,
+      surfaceM2: surface.value,
+      surfaceKind: surface.kind,
+      pricePerM2: priceUsd / surface.value,
+      ambientes: parseAmbientes(featuresText),
+      daysPublished: parseDaysPublished(card.text().replace(/\s+/g, ' ')),
+    });
+  });
+
+  return out;
+}
+
+/** Clave de deduplicación. Ignora el query string (cambia por página/posición). */
+function dedupeKey(c: RawCard): string {
+  if (c.url) {
+    try {
+      const u = new URL(c.url);
+      return u.origin + u.pathname;
+    } catch {
+      return c.url.split('?')[0];
+    }
+  }
+  const loc = (c.locationRaw ?? '').toLowerCase().slice(0, 12);
+  return `${c.priceUsd}-${c.surfaceM2}-${loc}`;
 }

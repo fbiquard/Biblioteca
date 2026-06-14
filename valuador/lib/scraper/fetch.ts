@@ -121,6 +121,7 @@ export function detectBlockOrNotFound(html: string): void {
     lower.includes('verifying you are human') ||
     lower.includes('please enable javascript and cookies') ||
     lower.includes('attention required! | cloudflare') ||
+    lower.includes('awswafcookiedomainlist') ||
     (lower.includes('<title>un momento') && lower.length < 5000)
   ) {
     throw new AnalysisError('BLOCKED');

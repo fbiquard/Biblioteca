@@ -71,13 +71,17 @@ export function ScanForm({ onScan, loading }: Props) {
         </Field>
 
         {/* Precio m2 referencia */}
-        <Field label="Tu precio/m² ref. (USD)">
+        <Field
+          label={
+            propertyType === 'casa' ? 'Tu precio/m² TERRENO (USD)' : 'Tu precio/m² ref. (USD)'
+          }
+        >
           <input
             type="number"
             inputMode="numeric"
             value={ref}
             onChange={(e) => setRef(e.target.value)}
-            placeholder="Ej: 2200"
+            placeholder={propertyType === 'casa' ? 'Ej: 700' : 'Ej: 2200'}
             disabled={loading}
             className={inputClass}
           />

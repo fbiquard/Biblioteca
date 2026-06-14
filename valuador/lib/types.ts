@@ -112,10 +112,14 @@ export interface ScanFilters {
 
 /** Una publicación que está por debajo del precio/m² de referencia. */
 export interface Opportunity {
+  portal: Portal;
   url: string | null;
   locationRaw: string | null;
   priceUsd: number;
+  /** Superficie usada para el precio/m² (cubierta cuando es posible). */
   surfaceM2: number;
+  /** Si el m² usado es cubierto o total (en casas, total = terreno). */
+  surfaceKind: 'cubierto' | 'total';
   pricePerM2: number;
   ambientes: number | null;
   /** Cuánto por debajo de la referencia: (ref - precioM2) / ref. */

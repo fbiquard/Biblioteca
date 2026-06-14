@@ -92,6 +92,48 @@ export function parseAmbientes(text: string | null | undefined): number | null {
   return m ? Number(m[1]) : null;
 }
 
+export interface Surfaces {
+  /** Superficie cubierta / construida (la relevante para precio/m²). */
+  covered: number | null;
+  /** Superficie total (en casas suele ser el TERRENO). */
+  total: number | null;
+}
+
+/**
+ * Distingue superficie cubierta vs total a partir de textos tipo
+ * "46 m² cubie." / "834 m² tot." / "87 m²". El label viene DESPUÉS del m².
+ */
+export function parseSurfaces(text: string | null | undefined): Surfaces {
+  const res: Surfaces = { covered: null, total: null };
+  if (!text) return res;
+  let bare: number | null = null;
+
+  for (const m of text.matchAll(/(\d{1,5})(?:[.,]\d+)?\s*m(?:²|2)\.?\s*(cub\w*|tot\w*)?/gi)) {
+    const n = Number(m[1]);
+    if (!(n > 0 && n < 100000)) continue;
+    const label = (m[2] ?? '').toLowerCase();
+    if (label.startsWith('cub')) res.covered = res.covered ?? n;
+    else if (label.startsWith('tot')) res.total = res.total ?? n;
+    else bare = bare ?? n;
+  }
+  // Un "X m²" sin etiqueta lo tratamos como total (caso típico de Zonaprop).
+  if (res.total == null && bare != null) res.total = bare;
+  return res;
+}
+
+/**
+ * Devuelve la superficie a usar para el precio/m². Prioriza la CUBIERTA
+ * (construida) y, si no está, cae al total. Se devuelve `kind` para que la UI
+ * aclare cuál se usó: en casas, "total" suele ser el TERRENO, no lo construido.
+ */
+export function surfaceForPricePerM2(
+  surfaces: Surfaces,
+): { value: number; kind: 'cubierto' | 'total' } | null {
+  if (surfaces.covered != null) return { value: surfaces.covered, kind: 'cubierto' };
+  if (surfaces.total != null) return { value: surfaces.total, kind: 'total' };
+  return null;
+}
+
 /**
  * Normaliza un nombre de barrio/localidad a un slug usable en URLs de Zonaprop.
  * "Nordelta, Tigre" -> "nordelta". "Tigre" -> "tigre".
