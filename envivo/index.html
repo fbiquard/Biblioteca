@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>¿Dónde hay música en vivo? · Buenos Aires</title>
+    <meta
+      name="description"
+      content="Lugares de música en vivo en Buenos Aires (CABA y Zona Norte): clubes, milongas, centros culturales y salas. Datos oficiales abiertos."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0a0a0a;
+        --card: #161616;
+        --line: #262626;
+        --txt: #ededed;
+        --mut: #9a9a9a;
+        --accent: #f472b6;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--txt);
+        background-image: radial-gradient(40rem 24rem at 50% -8%, rgba(244, 114, 182, 0.1), transparent);
+      }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 28px 16px 64px; }
+      header { text-align: center; margin-bottom: 20px; }
+      h1 { font-size: 1.7rem; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
+      h1 span { color: var(--accent); }
+      .sub { color: var(--mut); font-size: 0.9rem; margin-top: 6px; }
+      input[type="search"] {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #111;
+        color: var(--txt);
+        font-size: 1rem;
+        outline: none;
+      }
+      input[type="search"]:focus { border-color: var(--accent); }
+      .filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+      .chip {
+        border: 1px solid var(--line);
+        background: #131313;
+        color: var(--mut);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .chip.on { border-color: var(--accent); color: var(--accent); background: rgba(244, 114, 182, 0.1); }
+      .count { color: var(--mut); font-size: 0.82rem; margin: 4px 2px 12px; }
+      .card {
+        border: 1px solid var(--line);
+        background: var(--card);
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 10px;
+      }
+      .card h2 { font-size: 1.02rem; margin: 0 0 4px; }
+      .meta { color: var(--mut); font-size: 0.82rem; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 6px;
+        background: rgba(244, 114, 182, 0.12);
+        color: var(--accent);
+      }
+      .badge.zn { background: rgba(96, 165, 250, 0.14); color: #7cc0ff; }
+      .links { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+      .links a {
+        font-size: 0.8rem;
+        text-decoration: none;
+        color: var(--txt);
+        border: 1px solid var(--line);
+        padding: 6px 10px;
+        border-radius: 9px;
+        background: #1c1c1c;
+      }
+      .links a:hover { border-color: var(--accent); }
+      .empty { text-align: center; color: var(--mut); padding: 40px 0; }
+      footer { text-align: center; color: #6b6b6b; font-size: 0.72rem; margin-top: 28px; line-height: 1.5; }
+      .tip {
+        border: 1px solid var(--line);
+        background: rgba(244, 114, 182, 0.06);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 0.8rem;
+        color: var(--mut);
+        margin-bottom: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>¿Dónde hay <span>música en vivo</span>?</h1>
+        <div class="sub">Lugares reales de Buenos Aires · datos oficiales abiertos</div>
+      </header>
+
+      <div class="tip">
+        💡 Elegí un lugar y mirá su <b>Instagram</b> para ver qué toca esta semana. (La agenda
+        "qué toca hoy" llega en la próxima etapa.)
+      </div>
+
+      <input id="q" type="search" placeholder="Buscar por nombre o barrio…" autocomplete="off" />
+
+      <div class="filters" id="tipos"></div>
+      <div class="filters" id="zonas"></div>
+
+      <div class="count" id="count">Cargando lugares…</div>
+      <div id="list"></div>
+
+      <footer id="foot"></footer>
+    </div>
+
+    <script>
+      const state = { all: [], q: '', tipo: 'Todos', zona: 'Todos' };
+
+      const TIPOS = ['Todos', 'Música en vivo', 'Milonga / Tango', 'Centro cultural', 'Teatro / Sala', 'Anfiteatro', 'Bar cultural'];
+      const ZONAS = ['Todos', 'CABA', 'Zona Norte'];
+
+      function chips(containerId, values, key) {
+        const c = document.getElementById(containerId);
+        c.innerHTML = '';
+        values.forEach((v) => {
+          const el = document.createElement('button');
+          el.className = 'chip' + (state[key] === v ? ' on' : '');
+          el.textContent = v;
+          el.onclick = () => { state[key] = v; render(); };
+          c.appendChild(el);
+        });
+      }
+
+      function mapsUrl(v) {
+        if (v.lat && v.lng) return `https://www.google.com/maps/search/?api=1&query=${v.lat},${v.lng}`;
+        const q = encodeURIComponent(`${v.nombre} ${v.direccion} Buenos Aires`);
+        return `https://www.google.com/maps/search/?api=1&query=${q}`;
+      }
+
+      function norm(s) {
+        return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+
+      function render() {
+        chips('tipos', TIPOS, 'tipo');
+        chips('zonas', ZONAS, 'zona');
+        const q = norm(state.q);
+        const list = state.all.filter((v) => {
+          if (state.tipo !== 'Todos' && v.tipo !== state.tipo) return false;
+          if (state.zona !== 'Todos' && v.zona !== state.zona) return false;
+          if (q && !norm(v.nombre + ' ' + v.localidad).includes(q)) return false;
+          return true;
+        });
+
+        document.getElementById('count').textContent = `${list.length} lugar${list.length === 1 ? '' : 'es'}`;
+
+        const el = document.getElementById('list');
+        if (!list.length) {
+          el.innerHTML = '<div class="empty">No encontramos lugares con esos filtros.</div>';
+          return;
+        }
+        el.innerHTML = list
+          .map((v) => {
+            const links = [];
+            if (v.instagram) links.push(`<a href="${v.instagram}" target="_blank" rel="noreferrer">📸 Instagram</a>`);
+            if (v.web) links.push(`<a href="${v.web}" target="_blank" rel="noreferrer">🌐 Web</a>`);
+            links.push(`<a href="${mapsUrl(v)}" target="_blank" rel="noreferrer">📍 Mapa</a>`);
+            const zb = v.zona === 'Zona Norte' ? ' zn' : '';
+            return `
+              <div class="card">
+                <h2>${v.nombre}</h2>
+                <div class="meta">
+                  <span class="badge">${v.tipo}</span>
+                  <span class="badge${zb}">${v.zona}</span>
+                  <span>${[v.localidad, v.direccion].filter(Boolean).join(' · ')}</span>
+                </div>
+                <div class="links">${links.join('')}</div>
+              </div>`;
+          })
+          .join('');
+      }
+
+      fetch('./venues.json')
+        .then((r) => r.json())
+        .then((data) => {
+          state.all = data.venues || [];
+          document.getElementById('foot').innerHTML =
+            `${data.total} lugares · fuentes: ${(data.fuentes || []).join(', ')} · actualizado ${data.actualizado}<br>` +
+            `Datos públicos. La info puede tener errores u omisiones — confirmá siempre con el lugar.`;
+          render();
+        })
+        .catch(() => {
+          document.getElementById('count').textContent = '';
+          document.getElementById('list').innerHTML =
+            '<div class="empty">No se pudo cargar la lista. Probá recargar.</div>';
+        });
+    </script>
+  </body>
+</html>
