@@ -31,7 +31,7 @@ const els = {
   loading: $("loadingState"), empty: $("emptyState"), importing: $("importingState"),
   noMatch: $("noMatchState"), sections: $("sections"), controls: $("controls"),
   aliasChip: $("aliasChip"), aliasWho: $("aliasWho"), openAddBtn: $("openAddBtn"),
-  statusFilter: $("statusFilter"), catFilter: $("catFilter"), platFilter: $("platFilter"), feedSearch: $("feedSearch"),
+  statusFilter: $("statusFilter"), typeFilter: $("typeFilter"), catFilter: $("catFilter"), platFilter: $("platFilter"), feedSearch: $("feedSearch"),
   importBtn: $("importBtn"), emptyAddBtn: $("emptyAddBtn"), importBar: $("importBar"), importLbl: $("importLbl"),
   // alias modal
   aliasOverlay: $("aliasOverlay"), aliasCloseBtn: $("aliasCloseBtn"), aliasInput: $("aliasInput"),
@@ -53,7 +53,7 @@ const els = {
 let db = null;
 let titles = [];                 // docs de Firestore
 let alias = "";
-let uiFilter = { status: "pending", cat: "all", plat: "all", text: "" };
+let uiFilter = { status: "pending", type: "all", cat: "all", plat: "all", text: "" };
 let addSel = { item: null, category: null, platforms: new Set() };
 let editSel = { id: null, category: null, platforms: new Set() };
 
@@ -300,6 +300,7 @@ function populateFilters() {
 function matchesFilters(t) {
   if (uiFilter.status === "pending" && alias && t.seenBy.includes(alias)) return false;
   if (uiFilter.status === "seen" && !(alias && t.seenBy.includes(alias))) return false;
+  if (uiFilter.type !== "all" && t.mediaType !== uiFilter.type) return false;
   if (uiFilter.cat !== "all" && t.category !== uiFilter.cat) return false;
   if (uiFilter.plat !== "all") {
     const plats = t.platforms.length ? t.platforms : ["Por confirmar"];
@@ -666,6 +667,7 @@ function wireEvents() {
     els.statusFilter.querySelectorAll(".seg").forEach(s => s.classList.remove("active"));
     seg.classList.add("active"); uiFilter.status = seg.dataset.status; renderFeed();
   }));
+  els.typeFilter.addEventListener("change", () => { uiFilter.type = els.typeFilter.value; renderFeed(); });
   els.catFilter.addEventListener("change", () => { uiFilter.cat = els.catFilter.value; renderFeed(); });
   els.platFilter.addEventListener("change", () => { uiFilter.plat = els.platFilter.value; renderFeed(); });
   els.feedSearch.addEventListener("input", () => { uiFilter.text = els.feedSearch.value.trim(); renderFeed(); });
