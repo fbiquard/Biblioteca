@@ -249,6 +249,8 @@ function cardHTML(t) {
       <div class="card-body">
         <div class="card-title">${escapeHtml(t.title)}</div>
         ${t.year ? `<div class="card-year">${t.year}${t.mediaType === "tv" ? " · Serie" : ""}</div>` : ""}
+        ${t.director ? `<div class="card-crew"><span class="lbl">Dir.</span> ${escapeHtml(t.director)}</div>` : ""}
+        ${t.cast ? `<div class="card-crew cast">${escapeHtml(t.cast)}</div>` : ""}
         <div class="platforms">${plats}</div>
         <div class="card-foot">
           <div class="seen-line">${seenLine}</div>
