@@ -85,6 +85,11 @@
     .btn-seen { width:100%; padding:8px; border-radius:9px; border:1px solid var(--border); background:var(--surface); color:var(--text-secondary); font-size:12.5px; font-weight:700; transition:all .15s; }
     .btn-seen:hover { border-color:var(--green); color:var(--green); }
     .btn-seen.on { background:var(--green-dim); border-color:var(--green); color:var(--green); }
+    .foot-actions { display:flex; gap:8px; align-items:stretch; }
+    .foot-actions .btn-seen { flex:1; }
+    .btn-edit { width:40px; flex-shrink:0; border:1px solid var(--border); background:var(--surface); border-radius:9px; font-size:14px; color:var(--text-secondary); transition:border-color .15s; }
+    .btn-edit:hover { border-color:var(--accent); }
+    .edit-title { font-size:15px; font-weight:800; margin-bottom:16px; color:var(--text-primary); line-height:1.3; }
 
     /* ---------- States ---------- */
     .state { text-align:center; padding:64px 20px; color:var(--text-secondary); }
@@ -296,6 +301,30 @@
           <button class="btn-publish" id="addBtn" disabled>Agregar a la lista</button>
           <div class="modal-msg" id="addMsg"></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: editar título -->
+  <div class="modal-overlay" id="editOverlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2>Editar título</h2>
+        <button class="modal-close" id="editCloseBtn" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="edit-title" id="editTitleName"></div>
+        <div class="field">
+          <label class="field-label">Categoría</label>
+          <div class="chips-select" id="editCatChips"></div>
+          <input type="text" class="text-input" id="editCatCustom" placeholder="…o escribí una categoría nueva" style="margin-top:9px;" />
+        </div>
+        <div class="field">
+          <label class="field-label">¿En qué plataforma? <span class="opt">(elegí las que apliquen)</span></label>
+          <div class="chips-select" id="editPlatChips"></div>
+        </div>
+        <button class="btn-publish" id="editSaveBtn">Guardar cambios</button>
+        <div class="modal-msg" id="editMsg"></div>
       </div>
     </div>
   </div>

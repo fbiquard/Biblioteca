@@ -41,6 +41,10 @@ const els = {
   results: $("results"), resultsHint: $("resultsHint"), addDetails: $("addDetails"),
   catChips: $("catChips"), catCustom: $("catCustom"), platChips: $("platChips"),
   addBtn: $("addBtn"), addMsg: $("addMsg"),
+  // edit modal
+  editOverlay: $("editOverlay"), editCloseBtn: $("editCloseBtn"), editTitleName: $("editTitleName"),
+  editCatChips: $("editCatChips"), editCatCustom: $("editCatCustom"), editPlatChips: $("editPlatChips"),
+  editSaveBtn: $("editSaveBtn"), editMsg: $("editMsg"),
 };
 
 /* ---------------------------------------------------------------- Estado */
@@ -49,6 +53,7 @@ let titles = [];                 // docs de Firestore
 let alias = "";
 let uiFilter = { status: "pending", cat: "all", plat: "all", text: "" };
 let addSel = { item: null, category: null, platforms: new Set() };
+let editSel = { id: null, category: null, platforms: new Set() };
 
 function showState(el) {
   [els.config, els.error, els.loading, els.empty, els.importing, els.noMatch].forEach(e => e.style.display = "none");
@@ -95,6 +100,23 @@ async function searchTMDB(q) {
   return (data.results || [])
     .filter(r => (r.media_type === "movie" || r.media_type === "tv") && (r.title || r.name))
     .slice(0, 12).map(normalizeResult);
+}
+
+// Trae director, elenco y rating de un título ya elegido (para autocompletar al agregar).
+async function fetchCredits(mediaType, id) {
+  try {
+    const d = await tmdb(`/${mediaType}/${id}`, { append_to_response: "credits" });
+    const credits = d.credits || {};
+    let director = "";
+    if (mediaType === "tv") director = (d.created_by || []).map(c => c.name).slice(0, 2).join(", ");
+    if (!director) {
+      const dir = (credits.crew || []).find(c => c.job === "Director");
+      director = dir ? dir.name : "";
+    }
+    const cast = (credits.cast || []).slice(0, 3).map(c => c.name).join(", ");
+    const imdb = d.vote_average ? Math.round(d.vote_average * 10) / 10 : null;
+    return { director, cast, imdb };
+  } catch (e) { return { director: "", cast: "", imdb: null }; }
 }
 
 // Busca la mejor coincidencia para un item de la semilla (título + año).
@@ -254,7 +276,10 @@ function cardHTML(t) {
         <div class="platforms">${plats}</div>
         <div class="card-foot">
           <div class="seen-line">${seenLine}</div>
-          <button class="btn-seen ${seenMine ? "on" : ""}" data-id="${t.id}">${seenMine ? "✓ La vi" : "Marcar como vista"}</button>
+          <div class="foot-actions">
+            <button class="btn-seen ${seenMine ? "on" : ""}" data-id="${t.id}">${seenMine ? "✓ La vi" : "Marcar como vista"}</button>
+            <button class="btn-edit" data-edit="${t.id}" title="Editar categoría y plataforma" aria-label="Editar">✏️</button>
+          </div>
         </div>
       </div>
     </article>`;
@@ -282,6 +307,8 @@ function renderFeed() {
 
   els.sections.querySelectorAll(".btn-seen").forEach(btn =>
     btn.addEventListener("click", () => { const t = titles.find(x => x.id === btn.dataset.id); if (t) toggleSeen(t); }));
+  els.sections.querySelectorAll(".btn-edit").forEach(btn =>
+    btn.addEventListener("click", () => { const t = titles.find(x => x.id === btn.dataset.edit); if (t) openEditModal(t); }));
 
   showState(els.sections);
   els.controls.style.display = "block";
@@ -389,11 +416,13 @@ async function onAdd() {
   els.addBtn.disabled = true; els.addBtn.textContent = "Agregando…";
   try {
     const it = addSel.item;
+    const cr = await fetchCredits(it.mediaType, it.tmdbId); // director + elenco + rating
     await addTitle({
       tmdbId: it.tmdbId, mediaType: it.mediaType, title: it.title, year: it.year,
       posterPath: it.posterPath, overview: it.overview,
       category: cat, platforms: [...addSel.platforms],
-      rental: addSel.platforms.has("Alquiler"), director: "", cast: "", imdb: null,
+      rental: addSel.platforms.has("Alquiler"),
+      director: cr.director, cast: cr.cast, imdb: cr.imdb,
       addedBy: alias || "anónimo", seenBy: [],
     });
     els.addMsg.className = "modal-msg success show"; els.addMsg.textContent = "¡Agregada a la lista! 🎉";
@@ -416,6 +445,63 @@ function onSearchInput() {
     try { const items = await searchTMDB(q); if (els.tmdbSearch.value.trim() === q) renderResults(items); }
     catch (e) { els.resultsHint.textContent = "No pudimos buscar en TMDB. Revisá tu conexión o la API key."; }
   }, 350);
+}
+
+/* ======================================================================
+   Modal: editar título (categoría + plataformas)
+   ====================================================================== */
+function bindChipGroup(container, isPlatform, onCatPick) {
+  container.querySelectorAll(".chip-opt").forEach(b => b.addEventListener("click", () => {
+    if (isPlatform) {
+      const p = b.dataset.p;
+      if (editSel.platforms.has(p)) { editSel.platforms.delete(p); b.classList.remove("on"); }
+      else { editSel.platforms.add(p); b.classList.add("on"); }
+    } else {
+      els.editCatCustom.value = "";
+      container.querySelectorAll(".chip-opt").forEach(x => x.classList.remove("on"));
+      b.classList.add("on"); editSel.category = b.dataset.cat;
+    }
+  }));
+}
+
+function openEditModal(t) {
+  editSel = { id: t.id, category: t.category, platforms: new Set(t.platforms) };
+  els.editTitleName.textContent = t.title + (t.year ? ` (${t.year})` : "");
+  els.editCatCustom.value = "";
+  els.editMsg.className = "modal-msg";
+
+  const cats = distinct(x => x.category).map(([c]) => c);
+  if (!cats.includes(t.category)) cats.unshift(t.category);
+  els.editCatChips.innerHTML = cats.map(c =>
+    `<button class="chip-opt ${c === t.category ? "on" : ""}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join("");
+  bindChipGroup(els.editCatChips, false);
+
+  els.editPlatChips.innerHTML = PLATFORMS.map(p =>
+    `<button class="chip-opt plat ${editSel.platforms.has(p) ? "on" : ""}" data-p="${escapeHtml(p)}">${escapeHtml(p)}</button>`).join("");
+  bindChipGroup(els.editPlatChips, true);
+
+  els.editOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeEditModal() { els.editOverlay.classList.remove("open"); document.body.style.overflow = ""; }
+
+async function onEditSave() {
+  const cat = els.editCatCustom.value.trim() || editSel.category;
+  if (!cat) { els.editMsg.className = "modal-msg error show"; els.editMsg.textContent = "Elegí o escribí una categoría."; return; }
+  els.editSaveBtn.disabled = true; els.editSaveBtn.textContent = "Guardando…";
+  try {
+    const platforms = [...editSel.platforms];
+    const rental = editSel.platforms.has("Alquiler");
+    await FS.updateDoc(FS.doc(db, COLLECTION, editSel.id), { category: cat, platforms, rental });
+    const t = titles.find(x => x.id === editSel.id);
+    if (t) { t.category = cat; t.platforms = platforms; t.rental = rental; }
+    els.editMsg.className = "modal-msg success show"; els.editMsg.textContent = "¡Guardado! ✅";
+    renderFeed();
+    setTimeout(closeEditModal, 700);
+  } catch (e) {
+    console.error(e);
+    els.editMsg.className = "modal-msg error show"; els.editMsg.textContent = "No se pudo guardar. Revisá las reglas de Firestore.";
+  } finally { els.editSaveBtn.disabled = false; els.editSaveBtn.textContent = "Guardar cambios"; }
 }
 
 /* ======================================================================
@@ -443,6 +529,10 @@ function wireEvents() {
 
   els.importBtn.addEventListener("click", importSeed);
 
+  els.editCloseBtn.addEventListener("click", closeEditModal);
+  els.editOverlay.addEventListener("click", e => { if (e.target === els.editOverlay) closeEditModal(); });
+  els.editSaveBtn.addEventListener("click", onEditSave);
+
   els.statusFilter.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", () => {
     els.statusFilter.querySelectorAll(".seg").forEach(s => s.classList.remove("active"));
     seg.classList.add("active"); uiFilter.status = seg.dataset.status; renderFeed();
@@ -455,6 +545,7 @@ function wireEvents() {
     if (e.key !== "Escape") return;
     if (els.addOverlay.classList.contains("open")) closeAddModal();
     if (els.aliasOverlay.classList.contains("open")) closeAliasModal();
+    if (els.editOverlay.classList.contains("open")) closeEditModal();
   });
 }
 
