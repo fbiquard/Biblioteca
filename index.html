@@ -161,6 +161,34 @@
     .alias-list .who-opt { padding:7px 13px; border-radius:50px; border:1px solid var(--border); background:var(--card); color:var(--text-secondary); font-size:13px; font-weight:600; }
     .alias-list .who-opt:hover { border-color:var(--accent); color:var(--text-primary); }
 
+    /* ---------- Ficha (detalle) ---------- */
+    .card { cursor:pointer; }
+    .detail-modal { max-width:640px; padding:0; overflow:hidden; }
+    .detail-close { position:absolute; top:12px; right:12px; z-index:6; background:rgba(0,0,0,0.55); color:#fff; }
+    .detail-close:hover { color:#fff; background:rgba(0,0,0,0.75); }
+    .detail-scroll { overflow-y:auto; max-height:92vh; }
+    .detail-hero { position:relative; aspect-ratio:16/9; background:var(--card) center/cover no-repeat; }
+    .detail-hero .scrim { position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,21,26,0) 25%, rgba(22,21,26,0.55) 60%, var(--surface) 100%); }
+    .detail-hero .htext { position:absolute; left:18px; right:18px; bottom:12px; }
+    .detail-hero h2 { font-size:23px; font-weight:800; letter-spacing:-0.5px; line-height:1.15; }
+    .detail-sub { font-size:13px; color:var(--text-secondary); margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .detail-sub .dot { color:var(--text-muted); }
+    .detail-sub .rate { color:var(--gold); font-weight:700; }
+    .detail-body { padding:14px 20px 22px; display:flex; flex-direction:column; gap:14px; }
+    .detail-genres { display:flex; gap:6px; flex-wrap:wrap; }
+    .detail-overview { font-size:14.5px; line-height:1.6; color:var(--text-secondary); }
+    .detail-crew { font-size:13.5px; line-height:1.5; }
+    .detail-crew .lbl { color:var(--text-muted); font-weight:700; }
+    .detail-crew + .detail-crew { margin-top:-8px; }
+    .trailer-wrap { position:relative; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#000; }
+    .trailer-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .detail-actions { display:flex; gap:9px; flex-wrap:wrap; align-items:center; }
+    .detail-actions .btn-seen { flex:0 0 auto; padding:9px 14px; }
+    .detail-actions .btn-edit { width:auto; padding:9px 14px; }
+    .link-btn { padding:9px 13px; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:var(--text-secondary); font-size:12.5px; font-weight:700; text-decoration:none; }
+    .link-btn:hover { border-color:var(--accent); color:var(--text-primary); }
+    .detail-loading { padding:60px 20px; text-align:center; color:var(--text-secondary); }
+
     footer { text-align:center; padding:20px; color:var(--text-muted); font-size:12px; }
     footer a { color:var(--text-secondary); }
   </style>
@@ -326,6 +354,14 @@
         <button class="btn-publish" id="editSaveBtn">Guardar cambios</button>
         <div class="modal-msg" id="editMsg"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: ficha (detalle) -->
+  <div class="modal-overlay" id="detailOverlay">
+    <div class="modal detail-modal" role="dialog" aria-modal="true">
+      <button class="modal-close detail-close" id="detailCloseBtn" aria-label="Cerrar">✕</button>
+      <div class="detail-scroll" id="detailContent"></div>
     </div>
   </div>
 

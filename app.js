@@ -45,6 +45,8 @@ const els = {
   editOverlay: $("editOverlay"), editCloseBtn: $("editCloseBtn"), editTitleName: $("editTitleName"),
   editCatChips: $("editCatChips"), editCatCustom: $("editCatCustom"), editPlatChips: $("editPlatChips"),
   editSaveBtn: $("editSaveBtn"), editMsg: $("editMsg"),
+  // detail modal
+  detailOverlay: $("detailOverlay"), detailCloseBtn: $("detailCloseBtn"), detailContent: $("detailContent"),
 };
 
 /* ---------------------------------------------------------------- Estado */
@@ -117,6 +119,57 @@ async function fetchCredits(mediaType, id) {
     const imdb = d.vote_average ? Math.round(d.vote_average * 10) / 10 : null;
     return { director, cast, imdb };
   } catch (e) { return { director: "", cast: "", imdb: null }; }
+}
+
+function pickTrailer(vids) {
+  const yt = (vids || []).filter(v => v.site === "YouTube");
+  return yt.find(v => v.type === "Trailer" && v.official)
+    || yt.find(v => v.type === "Trailer")
+    || yt.find(v => v.type === "Teaser")
+    || yt[0] || null;
+}
+
+function fmtRuntime(d, mediaType) {
+  if (mediaType === "tv") {
+    const s = d.number_of_seasons;
+    const perEp = (d.episode_run_time || [])[0];
+    const parts = [];
+    if (s) parts.push(`${s} temporada${s > 1 ? "s" : ""}`);
+    if (perEp) parts.push(`${perEp} min/ep`);
+    return parts.join(" · ");
+  }
+  const m = d.runtime;
+  if (!m) return "";
+  return m >= 60 ? `${Math.floor(m / 60)} h ${m % 60} min` : `${m} min`;
+}
+
+// Trae la ficha completa de un título (en vivo, al abrir la card).
+async function fetchDetail(mediaType, id) {
+  const d = await tmdb(`/${mediaType}/${id}`, { append_to_response: "credits,videos,external_ids" });
+  let trailer = pickTrailer((d.videos && d.videos.results) || []);
+  if (!trailer) {
+    try { const v = await tmdb(`/${mediaType}/${id}/videos`, { language: "en-US" }); trailer = pickTrailer(v.results || []); } catch (e) {}
+  }
+  const credits = d.credits || {};
+  let director = "";
+  if (mediaType === "tv") director = (d.created_by || []).map(c => c.name).slice(0, 2).join(", ");
+  if (!director) { const dir = (credits.crew || []).find(c => c.job === "Director"); director = dir ? dir.name : ""; }
+  const cast = (credits.cast || []).slice(0, 6).map(c => c.name).join(", ");
+  const date = mediaType === "tv" ? d.first_air_date : d.release_date;
+  const imdbId = d.imdb_id || (d.external_ids && d.external_ids.imdb_id) || null;
+  return {
+    title: mediaType === "tv" ? (d.name || d.original_name) : (d.title || d.original_title),
+    year: date ? date.slice(0, 4) : "",
+    runtime: fmtRuntime(d, mediaType),
+    genres: (d.genres || []).map(g => g.name),
+    rating: d.vote_average ? Math.round(d.vote_average * 10) / 10 : null,
+    overview: d.overview || "",
+    director, cast,
+    backdrop: d.backdrop_path ? `${IMG_BASE}/w780${d.backdrop_path}` : (d.poster_path ? `${IMG_BASE}/w500${d.poster_path}` : null),
+    trailerKey: trailer ? trailer.key : null,
+    imdbUrl: imdbId ? `https://www.imdb.com/title/${imdbId}/` : null,
+    tmdbUrl: `https://www.themoviedb.org/${mediaType}/${id}`,
+  };
 }
 
 // Busca la mejor coincidencia para un item de la semilla (título + año).
@@ -262,7 +315,7 @@ function cardHTML(t) {
   const rental = t.rental ? `<span class="rental-badge">💲 Alquiler</span>` : "";
   const imdb = t.imdb ? `<span class="imdb-badge">★ ${t.imdb}</span>` : "";
   return `
-    <article class="card ${seenMine ? "seen-mine" : ""}">
+    <article class="card ${seenMine ? "seen-mine" : ""}" data-id="${t.id}">
       <div class="poster">
         ${img ? `<img loading="lazy" src="${img}" alt="${escapeHtml(t.title)}">` : `<div class="no-img">🎞️</div>`}
         <div class="badges-tl"><span class="cat-badge">${escapeHtml(t.category)}</span>${rental}</div>
@@ -309,6 +362,11 @@ function renderFeed() {
     btn.addEventListener("click", () => { const t = titles.find(x => x.id === btn.dataset.id); if (t) toggleSeen(t); }));
   els.sections.querySelectorAll(".btn-edit").forEach(btn =>
     btn.addEventListener("click", () => { const t = titles.find(x => x.id === btn.dataset.edit); if (t) openEditModal(t); }));
+  els.sections.querySelectorAll(".card").forEach(card =>
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".btn-seen, .btn-edit")) return; // los botones tienen su propia acción
+      const t = titles.find(x => x.id === card.dataset.id); if (t) openDetail(t);
+    }));
 
   showState(els.sections);
   els.controls.style.display = "block";
@@ -505,6 +563,65 @@ async function onEditSave() {
 }
 
 /* ======================================================================
+   Modal: ficha (detalle en vivo desde TMDB)
+   ====================================================================== */
+function closeDetail() { els.detailOverlay.classList.remove("open"); document.body.style.overflow = ""; els.detailContent.innerHTML = ""; }
+
+async function openDetail(t) {
+  els.detailOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  els.detailContent.innerHTML = `<div class="detail-loading"><div class="spinner"></div>Cargando ficha…</div>`;
+
+  if (!t.tmdbId) {
+    els.detailContent.innerHTML = `<div class="detail-loading">No hay datos de TMDB para este título.</div>`;
+    return;
+  }
+  let d;
+  try { d = await fetchDetail(t.mediaType, t.tmdbId); }
+  catch (e) {
+    els.detailContent.innerHTML = `<div class="detail-loading">No pudimos cargar la ficha. Probá de nuevo.</div>`;
+    return;
+  }
+  if (!els.detailOverlay.classList.contains("open")) return; // se cerró mientras cargaba
+
+  const overview = d.overview || t.overview || "Sin sinopsis disponible.";
+  const sub = [d.year, d.runtime, t.category].filter(Boolean)
+    .map(x => `<span>${escapeHtml(x)}</span>`).join(`<span class="dot">·</span>`);
+  const genres = d.genres.map(g => `<span class="genre-chip">${escapeHtml(g)}</span>`).join("");
+  const seenMine = alias && t.seenBy.includes(alias);
+
+  els.detailContent.innerHTML = `
+    <div class="detail-hero" style="${d.backdrop ? `background-image:url('${d.backdrop}')` : ""}">
+      <div class="scrim"></div>
+      <div class="htext">
+        <h2>${escapeHtml(d.title || t.title)}</h2>
+        <div class="detail-sub">${sub}${d.rating ? `<span class="dot">·</span><span class="rate">★ ${d.rating}</span>` : ""}</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      ${genres ? `<div class="detail-genres">${genres}</div>` : ""}
+      <div class="detail-overview">${escapeHtml(overview)}</div>
+      ${d.director ? `<div class="detail-crew"><span class="lbl">Dirección:</span> ${escapeHtml(d.director)}</div>` : ""}
+      ${d.cast ? `<div class="detail-crew"><span class="lbl">Elenco:</span> ${escapeHtml(d.cast)}</div>` : ""}
+      ${d.trailerKey ? `<div class="trailer-wrap"><iframe src="https://www.youtube.com/embed/${d.trailerKey}" title="Tráiler" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ""}
+      <div class="detail-actions">
+        <button class="btn-seen ${seenMine ? "on" : ""}" id="detailSeenBtn">${seenMine ? "✓ La vi" : "Marcar como vista"}</button>
+        <button class="btn-edit" id="detailEditBtn" style="width:auto;padding:9px 14px;">✏️ Editar</button>
+        ${d.imdbUrl ? `<a class="link-btn" href="${d.imdbUrl}" target="_blank" rel="noopener">IMDb ↗</a>` : ""}
+        <a class="link-btn" href="${d.tmdbUrl}" target="_blank" rel="noopener">TMDB ↗</a>
+      </div>
+    </div>`;
+
+  els.detailContent.querySelector("#detailSeenBtn").addEventListener("click", async () => {
+    await toggleSeen(t);
+    const nowSeen = alias && t.seenBy.includes(alias);
+    const b = els.detailContent.querySelector("#detailSeenBtn");
+    if (b) { b.classList.toggle("on", nowSeen); b.textContent = nowSeen ? "✓ La vi" : "Marcar como vista"; }
+  });
+  els.detailContent.querySelector("#detailEditBtn").addEventListener("click", () => { closeDetail(); openEditModal(t); });
+}
+
+/* ======================================================================
    Refresh + eventos
    ====================================================================== */
 async function refresh() { await loadTitles(); renderFeed(); }
@@ -533,6 +650,9 @@ function wireEvents() {
   els.editOverlay.addEventListener("click", e => { if (e.target === els.editOverlay) closeEditModal(); });
   els.editSaveBtn.addEventListener("click", onEditSave);
 
+  els.detailCloseBtn.addEventListener("click", closeDetail);
+  els.detailOverlay.addEventListener("click", e => { if (e.target === els.detailOverlay) closeDetail(); });
+
   els.statusFilter.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", () => {
     els.statusFilter.querySelectorAll(".seg").forEach(s => s.classList.remove("active"));
     seg.classList.add("active"); uiFilter.status = seg.dataset.status; renderFeed();
@@ -546,6 +666,7 @@ function wireEvents() {
     if (els.addOverlay.classList.contains("open")) closeAddModal();
     if (els.aliasOverlay.classList.contains("open")) closeAliasModal();
     if (els.editOverlay.classList.contains("open")) closeEditModal();
+    if (els.detailOverlay.classList.contains("open")) closeDetail();
   });
 }
 
