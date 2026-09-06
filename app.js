@@ -44,7 +44,7 @@ const els = {
   // edit modal
   editOverlay: $("editOverlay"), editCloseBtn: $("editCloseBtn"), editTitleName: $("editTitleName"),
   editCatChips: $("editCatChips"), editCatCustom: $("editCatCustom"), editPlatChips: $("editPlatChips"),
-  editSaveBtn: $("editSaveBtn"), editMsg: $("editMsg"),
+  editSaveBtn: $("editSaveBtn"), editMsg: $("editMsg"), editDetectBtn: $("editDetectBtn"),
   // detail modal
   detailOverlay: $("detailOverlay"), detailCloseBtn: $("detailCloseBtn"), detailContent: $("detailContent"),
 };
@@ -119,6 +119,34 @@ async function fetchCredits(mediaType, id) {
     const imdb = d.vote_average ? Math.round(d.vote_average * 10) / 10 : null;
     return { director, cast, imdb };
   } catch (e) { return { director: "", cast: "", imdb: null }; }
+}
+
+// Mapea nombres de proveedores de TMDB a nuestras plataformas canónicas.
+const PROVIDER_MAP = {
+  "netflix": "Netflix",
+  "max": "Max", "hbo max": "Max",
+  "disney plus": "Disney+", "disney+": "Disney+",
+  "amazon prime video": "Prime Video", "prime video": "Prime Video",
+  "paramount plus": "Paramount+", "paramount+": "Paramount+",
+  "apple tv plus": "Apple TV+", "apple tv+": "Apple TV+",
+};
+function mapProvider(name) {
+  const n = (name || "").toLowerCase();
+  for (const [k, v] of Object.entries(PROVIDER_MAP)) if (n === k || n.startsWith(k)) return v;
+  return null;
+}
+
+// "Dónde verla" en una región (default Argentina) desde TMDB/JustWatch.
+async function fetchProviders(mediaType, id, region = "AR") {
+  try {
+    const d = await tmdb(`/${mediaType}/${id}/watch/providers`);
+    const r = (d.results || {})[region];
+    if (!r) return { platforms: [], rental: false };
+    const flat = [...new Set((r.flatrate || []).map(p => mapProvider(p.provider_name)).filter(Boolean))];
+    const hasFlat = (r.flatrate || []).length > 0;
+    const rental = !hasFlat && (((r.rent || []).length > 0) || ((r.buy || []).length > 0));
+    return { platforms: rental ? ["Alquiler"] : flat, rental };
+  } catch (e) { return { platforms: [], rental: false }; }
 }
 
 function pickTrailer(vids) {
@@ -449,7 +477,7 @@ function renderResults(items) {
   els.results.querySelectorAll(".result").forEach(b => b.addEventListener("click", () => selectResult(items[+b.dataset.i], b)));
 }
 
-function selectResult(item, btn) {
+async function selectResult(item, btn) {
   addSel.item = item;
   els.results.querySelectorAll(".result").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
@@ -470,6 +498,13 @@ function selectResult(item, btn) {
   }));
   els.addDetails.style.display = "block";
   updateAddBtn();
+
+  // Autodetectar plataforma en Argentina (editable).
+  const pr = await fetchProviders(item.mediaType, item.tmdbId);
+  if (pr.platforms.length && addSel.item === item) {
+    addSel.platforms = new Set(pr.platforms);
+    els.platChips.querySelectorAll(".chip-opt").forEach(b => b.classList.toggle("on", addSel.platforms.has(b.dataset.p)));
+  }
 }
 
 function currentCategory() { return els.catCustom.value.trim() || addSel.category; }
@@ -530,7 +565,7 @@ function bindChipGroup(container, isPlatform, onCatPick) {
 }
 
 function openEditModal(t) {
-  editSel = { id: t.id, category: t.category, platforms: new Set(t.platforms) };
+  editSel = { id: t.id, mediaType: t.mediaType, tmdbId: t.tmdbId, category: t.category, platforms: new Set(t.platforms) };
   els.editTitleName.textContent = t.title + (t.year ? ` (${t.year})` : "");
   els.editCatCustom.value = "";
   els.editMsg.className = "modal-msg";
@@ -549,6 +584,21 @@ function openEditModal(t) {
   document.body.style.overflow = "hidden";
 }
 function closeEditModal() { els.editOverlay.classList.remove("open"); document.body.style.overflow = ""; }
+
+async function onEditDetect() {
+  if (!editSel.tmdbId) { els.editMsg.className = "modal-msg error show"; els.editMsg.textContent = "Este título no tiene datos de TMDB para detectar."; return; }
+  els.editDetectBtn.disabled = true; els.editDetectBtn.textContent = "Detectando…";
+  els.editMsg.className = "modal-msg";
+  const pr = await fetchProviders(editSel.mediaType, editSel.tmdbId);
+  if (pr.platforms.length) {
+    editSel.platforms = new Set(pr.platforms);
+    els.editPlatChips.querySelectorAll(".chip-opt").forEach(b => b.classList.toggle("on", editSel.platforms.has(b.dataset.p)));
+    els.editMsg.className = "modal-msg success show"; els.editMsg.textContent = `Detectado en AR: ${pr.platforms.join(", ")} (ajustá si hace falta)`;
+  } else {
+    els.editMsg.className = "modal-msg error show"; els.editMsg.textContent = "No encontramos plataforma en Argentina. Cargala a mano.";
+  }
+  els.editDetectBtn.disabled = false; els.editDetectBtn.textContent = "🔄 Detectar plataforma (AR)";
+}
 
 async function onEditSave() {
   const cat = els.editCatCustom.value.trim() || editSel.category;
@@ -659,6 +709,7 @@ function wireEvents() {
   els.editCloseBtn.addEventListener("click", closeEditModal);
   els.editOverlay.addEventListener("click", e => { if (e.target === els.editOverlay) closeEditModal(); });
   els.editSaveBtn.addEventListener("click", onEditSave);
+  els.editDetectBtn.addEventListener("click", onEditDetect);
 
   els.detailCloseBtn.addEventListener("click", closeDetail);
   els.detailOverlay.addEventListener("click", e => { if (e.target === els.detailOverlay) closeDetail(); });

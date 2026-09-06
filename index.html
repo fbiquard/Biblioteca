@@ -149,6 +149,9 @@
     .chip-opt { padding:7px 13px; border-radius:50px; border:1px solid var(--border); background:var(--card); color:var(--text-secondary); font-size:12.5px; font-weight:600; transition:all .15s; }
     .chip-opt.on { background:var(--accent-dim); border-color:var(--accent); color:var(--accent-light); }
     .chip-opt.plat.on { background:var(--green-dim); border-color:var(--green); color:var(--green); }
+    .btn-detect { margin-top:10px; padding:9px 14px; border-radius:9px; border:1px solid var(--border); background:var(--card); color:var(--text-secondary); font-size:12.5px; font-weight:700; }
+    .btn-detect:hover { border-color:var(--accent); color:var(--text-primary); }
+    .btn-detect:disabled { opacity:.5; cursor:default; }
 
     .btn-publish { width:100%; padding:14px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-size:15px; font-weight:800; transition:background .2s, opacity .2s; margin-top:4px; }
     .btn-publish:hover:not(:disabled) { background:var(--accent-light); }
@@ -358,6 +361,7 @@
         <div class="field">
           <label class="field-label">¿En qué plataforma? <span class="opt">(elegí las que apliquen)</span></label>
           <div class="chips-select" id="editPlatChips"></div>
+          <button type="button" class="btn-detect" id="editDetectBtn">🔄 Detectar plataforma (AR)</button>
         </div>
         <button class="btn-publish" id="editSaveBtn">Guardar cambios</button>
         <div class="modal-msg" id="editMsg"></div>
