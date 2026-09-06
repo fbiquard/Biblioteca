@@ -146,10 +146,10 @@ function fmtRuntime(d, mediaType) {
 // Trae la ficha completa de un título (en vivo, al abrir la card).
 async function fetchDetail(mediaType, id) {
   const d = await tmdb(`/${mediaType}/${id}`, { append_to_response: "credits,videos,external_ids" });
-  let trailer = pickTrailer((d.videos && d.videos.results) || []);
-  if (!trailer) {
-    try { const v = await tmdb(`/${mediaType}/${id}/videos`, { language: "en-US" }); trailer = pickTrailer(v.results || []); } catch (e) {}
-  }
+  // Preferimos el tráiler en inglés; si no hay, caemos al del idioma por defecto.
+  let trailer = null;
+  try { const v = await tmdb(`/${mediaType}/${id}/videos`, { language: "en-US" }); trailer = pickTrailer(v.results || []); } catch (e) {}
+  if (!trailer) trailer = pickTrailer((d.videos && d.videos.results) || []);
   const credits = d.credits || {};
   let director = "";
   if (mediaType === "tv") director = (d.created_by || []).map(c => c.name).slice(0, 2).join(", ");
