@@ -603,7 +603,10 @@ async function openDetail(t) {
       <div class="detail-overview">${escapeHtml(overview)}</div>
       ${d.director ? `<div class="detail-crew"><span class="lbl">Dirección:</span> ${escapeHtml(d.director)}</div>` : ""}
       ${d.cast ? `<div class="detail-crew"><span class="lbl">Elenco:</span> ${escapeHtml(d.cast)}</div>` : ""}
-      ${d.trailerKey ? `<div class="trailer-wrap"><iframe src="https://www.youtube.com/embed/${d.trailerKey}" title="Tráiler" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ""}
+      ${d.trailerKey ? `<div class="trailer-block">
+        <div class="trailer-wrap"><iframe src="https://www.youtube-nocookie.com/embed/${d.trailerKey}" title="Tráiler" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+        <a class="yt-link" href="https://www.youtube.com/watch?v=${d.trailerKey}" target="_blank" rel="noopener">▶ ¿No carga? Verlo en YouTube ↗</a>
+      </div>` : ""}
       <div class="detail-actions">
         <button class="btn-seen ${seenMine ? "on" : ""}" id="detailSeenBtn">${seenMine ? "✓ La vi" : "Marcar como vista"}</button>
         <button class="btn-edit" id="detailEditBtn" style="width:auto;padding:9px 14px;">✏️ Editar</button>
