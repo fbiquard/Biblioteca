@@ -28,7 +28,7 @@ window.APP_CONFIG = {
 
   /* 2) TMDB  -------------------------------------------------------------
      themoviedb.org → tu cuenta → Configuración → API → "API Key (v3 auth)". */
-  TMDB_API_KEY: "PEGA_AQUI_TU_TMDB_API_KEY",
+  TMDB_API_KEY: "cb4609a7adb05a389459f88b2f245661",
 
   /* 3) Opcional: idioma de títulos y sinopsis de TMDB.                     */
   TMDB_LANGUAGE: "es-ES",
