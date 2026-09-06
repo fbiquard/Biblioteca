@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Recomendadas · Lo que ve la comunidad</title>
+  <meta name="description" content="Series y películas recomendadas por la comunidad. Buscá un título, contá por qué lo recomendás y descubrí lo que ve la gente." />
+  <style>
+    :root {
+      --bg:#0d0c0f; --surface:#16151a; --card:#1d1b22; --card-hover:#25222c; --border:#322f3a;
+      --text-primary:#f2eef7; --text-secondary:#a39db0; --text-muted:#6b6577;
+      --accent:#fa3e3e; --accent-light:#ff6b6b; --accent-dim:rgba(250,62,62,0.14);
+      --movie:#ffb340; --tv:#5ac8fa; --green:#46d369; --radius:16px;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    body { background:var(--bg); color:var(--text-primary); font-family:-apple-system,"SF Pro Display","Segoe UI","Helvetica Neue",sans-serif; min-height:100vh; -webkit-font-smoothing:antialiased; }
+    button { font-family:inherit; cursor:pointer; }
+    input, textarea, select { font-family:inherit; }
+
+    /* ---------- Header ---------- */
+    .app-header { position:sticky; top:0; z-index:100; background:rgba(13,12,15,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+    .header-top { padding:env(safe-area-inset-top,14px) 20px 12px; }
+    .header-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .logo { display:flex; align-items:center; gap:11px; }
+    .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,#fa3e3e,#ff8a3e); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 14px rgba(250,62,62,0.3); }
+    .logo-text h1 { font-size:19px; font-weight:800; letter-spacing:-0.4px; }
+    .logo-text span { font-size:12px; color:var(--text-muted); }
+    .btn-add { display:flex; align-items:center; gap:7px; padding:10px 16px; background:var(--accent); color:#fff; border:none; border-radius:50px; font-size:14px; font-weight:700; box-shadow:0 4px 14px rgba(250,62,62,0.3); transition:transform .12s, background .2s; white-space:nowrap; }
+    .btn-add:hover { background:var(--accent-light); }
+    .btn-add:active { transform:scale(0.96); }
+    .btn-add .plus { font-size:18px; line-height:1; margin-top:-1px; }
+
+    /* ---------- Controls ---------- */
+    .controls { padding:0 20px 12px; }
+    .controls-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .segmented { display:inline-flex; background:var(--card); border:1px solid var(--border); border-radius:50px; padding:4px; gap:2px; }
+    .seg { padding:7px 15px; border:none; background:transparent; color:var(--text-secondary); font-size:13px; font-weight:600; border-radius:50px; transition:color .2s, background .2s; }
+    .seg.active { background:var(--accent); color:#fff; }
+    .search-wrap { position:relative; flex:1; min-width:180px; }
+    .search-wrap .icon { position:absolute; left:13px; top:50%; transform:translateY(-50%); font-size:14px; opacity:.6; pointer-events:none; }
+    .search-input { width:100%; padding:10px 14px 10px 36px; background:var(--card); border:1px solid var(--border); border-radius:50px; color:var(--text-primary); font-size:14px; outline:none; transition:border-color .2s; }
+    .search-input:focus { border-color:var(--accent); }
+    .search-input::placeholder { color:var(--text-muted); }
+    .sort-select { padding:10px 14px; background:var(--card); border:1px solid var(--border); border-radius:50px; color:var(--text-secondary); font-size:13px; font-weight:600; outline:none; }
+
+    /* ---------- Main ---------- */
+    main { max-width:1100px; margin:0 auto; padding:20px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:16px; }
+    @media (min-width:600px){ .grid { grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:20px; } }
+
+    .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column; transition:transform .15s, border-color .2s; }
+    .card:hover { border-color:#453f52; transform:translateY(-2px); }
+    .poster { position:relative; aspect-ratio:2/3; background:var(--surface); overflow:hidden; }
+    .poster img { width:100%; height:100%; object-fit:cover; display:block; }
+    .poster .no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:34px; opacity:.35; }
+    .type-badge { position:absolute; top:8px; left:8px; padding:3px 9px; border-radius:50px; font-size:11px; font-weight:700; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+    .type-badge.movie { background:rgba(255,179,64,0.22); color:var(--movie); border:1px solid rgba(255,179,64,0.4); }
+    .type-badge.tv { background:rgba(90,200,250,0.2); color:var(--tv); border:1px solid rgba(90,200,250,0.4); }
+    .reco-badge { position:absolute; top:8px; right:8px; padding:4px 9px; border-radius:50px; font-size:12px; font-weight:800; background:rgba(250,62,62,0.9); color:#fff; display:flex; align-items:center; gap:4px; box-shadow:0 2px 8px rgba(0,0,0,.3); }
+
+    .card-body { padding:12px 13px 14px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .card-title { font-size:14.5px; font-weight:700; line-height:1.25; letter-spacing:-0.2px; }
+    .card-meta { font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .genres { display:flex; flex-wrap:wrap; gap:5px; }
+    .genre-chip { font-size:10.5px; font-weight:600; color:var(--text-secondary); background:var(--surface); border:1px solid var(--border); padding:2px 8px; border-radius:50px; }
+    .comments-toggle { margin-top:auto; padding:8px 0 0; border-top:1px solid var(--border); background:none; border-left:none; border-right:none; border-bottom:none; color:var(--accent-light); font-size:12.5px; font-weight:700; text-align:left; display:flex; align-items:center; gap:5px; }
+    .comments-toggle:hover { color:var(--accent); }
+    .comments { display:none; flex-direction:column; gap:8px; padding-top:4px; }
+    .comments.open { display:flex; }
+    .comment { font-size:12.5px; color:var(--text-secondary); line-height:1.4; background:var(--surface); border-radius:10px; padding:8px 10px; border:1px solid var(--border); }
+    .comment .when { display:block; font-size:10.5px; color:var(--text-muted); margin-top:4px; }
+
+    /* ---------- States ---------- */
+    .state { text-align:center; padding:70px 20px; color:var(--text-secondary); }
+    .state .emoji { font-size:48px; margin-bottom:16px; }
+    .state h2 { font-size:19px; font-weight:800; color:var(--text-primary); margin-bottom:8px; }
+    .state p { font-size:14.5px; line-height:1.6; max-width:440px; margin:0 auto 4px; }
+    .state code { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:2px 7px; font-size:13px; color:var(--accent-light); }
+    .state .btn-add { display:inline-flex; margin-top:20px; }
+    .state.error { color:var(--text-secondary); }
+    .spinner { width:34px; height:34px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 18px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* ---------- Modal ---------- */
+    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); display:none; align-items:flex-end; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    @media (min-width:600px){ .modal-overlay { align-items:center; padding:24px; } }
+    .modal { width:100%; max-width:520px; background:var(--surface); border:1px solid var(--border); border-radius:20px 20px 0 0; max-height:90vh; display:flex; flex-direction:column; animation:slideUp .25s ease; }
+    @media (min-width:600px){ .modal { border-radius:20px; } }
+    @keyframes slideUp { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; padding:18px 20px 14px; border-bottom:1px solid var(--border); }
+    .modal-head h2 { font-size:17px; font-weight:800; }
+    .modal-close { width:32px; height:32px; border:none; background:var(--card); border-radius:50%; color:var(--text-secondary); font-size:18px; display:flex; align-items:center; justify-content:center; }
+    .modal-close:hover { color:var(--text-primary); }
+    .modal-body { padding:16px 20px 20px; overflow-y:auto; }
+
+    .field-label { font-size:12.5px; font-weight:700; color:var(--text-secondary); margin-bottom:7px; display:block; }
+    .modal-search { position:relative; margin-bottom:6px; }
+    .modal-search .icon { position:absolute; left:13px; top:14px; font-size:15px; opacity:.6; }
+    .modal-search input { width:100%; padding:12px 14px 12px 38px; background:var(--card); border:1px solid var(--border); border-radius:12px; color:var(--text-primary); font-size:15px; outline:none; transition:border-color .2s; }
+    .modal-search input:focus { border-color:var(--accent); }
+
+    .results { display:flex; flex-direction:column; gap:6px; margin-top:8px; max-height:290px; overflow-y:auto; }
+    .result { display:flex; gap:11px; padding:8px; border-radius:11px; background:transparent; border:1px solid transparent; text-align:left; width:100%; transition:background .15s, border-color .15s; }
+    .result:hover { background:var(--card); border-color:var(--border); }
+    .result.selected { background:var(--accent-dim); border-color:var(--accent); }
+    .result img, .result .no-img { width:46px; height:69px; border-radius:7px; object-fit:cover; flex-shrink:0; background:var(--card); }
+    .result .no-img { display:flex; align-items:center; justify-content:center; font-size:20px; opacity:.4; }
+    .result-info { display:flex; flex-direction:column; gap:3px; min-width:0; padding-top:2px; }
+    .result-info .t { font-size:14px; font-weight:700; line-height:1.25; }
+    .result-info .m { font-size:11.5px; color:var(--text-muted); display:flex; gap:7px; align-items:center; }
+    .result-info .m .tag { font-weight:700; }
+    .result-info .m .tag.movie { color:var(--movie); }
+    .result-info .m .tag.tv { color:var(--tv); }
+    .result-info .o { font-size:11.5px; color:var(--text-secondary); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .results-hint { font-size:12.5px; color:var(--text-muted); text-align:center; padding:18px 0; }
+
+    .comment-field { margin-top:16px; }
+    .comment-field textarea { width:100%; padding:12px 14px; background:var(--card); border:1px solid var(--border); border-radius:12px; color:var(--text-primary); font-size:14.5px; outline:none; resize:vertical; min-height:74px; line-height:1.5; transition:border-color .2s; }
+    .comment-field textarea:focus { border-color:var(--accent); }
+    .comment-field textarea::placeholder { color:var(--text-muted); }
+    .char-count { font-size:11px; color:var(--text-muted); text-align:right; margin-top:5px; }
+
+    .modal-footer { padding-top:16px; }
+    .btn-publish { width:100%; padding:14px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-size:15px; font-weight:800; transition:background .2s, opacity .2s; }
+    .btn-publish:hover:not(:disabled) { background:var(--accent-light); }
+    .btn-publish:disabled { opacity:.4; cursor:not-allowed; }
+    .modal-msg { font-size:13px; text-align:center; margin-top:12px; padding:10px; border-radius:10px; display:none; }
+    .modal-msg.show { display:block; }
+    .modal-msg.error { background:var(--accent-dim); color:var(--accent-light); }
+    .modal-msg.success { background:rgba(70,211,105,0.14); color:var(--green); }
+
+    footer { text-align:center; padding:30px 20px 40px; color:var(--text-muted); font-size:12px; }
+    footer a { color:var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-top">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">🍿</div>
+          <div class="logo-text">
+            <h1>Recomendadas</h1>
+            <span>Lo que recomienda la comunidad</span>
+          </div>
+        </div>
+        <button class="btn-add" id="openModalBtn"><span class="plus">＋</span> Recomendar</button>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="controls-inner">
+        <div class="segmented" id="typeFilter">
+          <button class="seg active" data-type="all">Todas</button>
+          <button class="seg" data-type="movie">🎬 Pelis</button>
+          <button class="seg" data-type="tv">📺 Series</button>
+        </div>
+        <div class="search-wrap">
+          <span class="icon">🔎</span>
+          <input type="text" class="search-input" id="feedSearch" placeholder="Filtrar por título…" />
+        </div>
+        <select class="sort-select" id="sortSelect">
+          <option value="top">Más recomendadas</option>
+          <option value="recent">Más recientes</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Falta configurar -->
+    <div class="state error" id="configState" style="display:none;">
+      <div class="emoji">🔧</div>
+      <h2>Falta configurar la app</h2>
+      <p>Todavía no cargaste tus llaves de <strong>Firebase</strong> y <strong>TMDB</strong> en el archivo <code>config.js</code>.</p>
+      <p>Seguí la guía paso a paso del archivo <code>README.md</code> (misma carpeta). No hace falta terminal. 🙂</p>
+    </div>
+
+    <!-- Error genérico -->
+    <div class="state error" id="errorState" style="display:none;">
+      <div class="emoji">😕</div>
+      <h2>Algo salió mal</h2>
+      <p id="errorText">No pudimos cargar las recomendaciones.</p>
+    </div>
+
+    <!-- Cargando -->
+    <div class="state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Cargando recomendaciones…</p>
+    </div>
+
+    <!-- Vacío -->
+    <div class="state" id="emptyState" style="display:none;">
+      <div class="emoji">🌱</div>
+      <h2>Todavía no hay recomendaciones</h2>
+      <p>Sé la primera persona en recomendar algo. Buscá una serie o película que te encantó y contá por qué.</p>
+      <button class="btn-add" onclick="document.getElementById('openModalBtn').click()"><span class="plus">＋</span> Recomendar la primera</button>
+    </div>
+
+    <!-- Sin resultados de filtro -->
+    <div class="state" id="noMatchState" style="display:none;">
+      <div class="emoji">🔍</div>
+      <h2>Nada por acá</h2>
+      <p>No hay recomendaciones que coincidan con el filtro.</p>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>
+    Hecho con datos de <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a> ·
+    Recomendaciones de la comunidad · <a href="../">Volver a series.biquard.com</a>
+  </footer>
+
+  <!-- Modal Recomendar -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 id="modalTitle">Recomendar algo</h2>
+        <button class="modal-close" id="closeModalBtn" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label">1 · Buscá la serie o película</label>
+        <div class="modal-search">
+          <span class="icon">🔎</span>
+          <input type="text" id="tmdbSearch" placeholder="Ej: The Bear, Duna, El Eternauta…" autocomplete="off" />
+        </div>
+        <div class="results" id="results"></div>
+        <div class="results-hint" id="resultsHint">Escribí un título para buscar.</div>
+
+        <div class="comment-field" id="commentField" style="display:none;">
+          <label class="field-label">2 · ¿Por qué lo recomendás? <span style="color:var(--text-muted);font-weight:500;">(opcional)</span></label>
+          <textarea id="commentInput" maxlength="280" placeholder="Contá qué te gustó, para quién es, sin spoilers…"></textarea>
+          <div class="char-count"><span id="charCount">0</span>/280</div>
+        </div>
+
+        <div class="modal-footer" id="modalFooter" style="display:none;">
+          <button class="btn-publish" id="publishBtn" disabled>Publicar recomendación</button>
+          <div class="modal-msg" id="modalMsg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
