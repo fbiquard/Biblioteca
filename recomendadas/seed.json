@@ -1,0 +1,1035 @@
+{
+  "titulos": [
+    {
+      "title": "Inglourious Basterds",
+      "year": 2009,
+      "category": "Bélicas",
+      "mediaType": "movie",
+      "director": "Quentin Tarantino",
+      "cast": "Brad Pitt, Christoph Waltz",
+      "imdb": 8.3,
+      "platforms": [
+        "Netflix",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Hasta el último hombre",
+      "year": 2016,
+      "category": "Bélicas",
+      "mediaType": "movie",
+      "director": "Mel Gibson",
+      "cast": "Andrew Garfield, Sam Worthington",
+      "imdb": 8.1,
+      "platforms": [
+        "Alquiler"
+      ],
+      "rental": true,
+      "platformRaw": "Alquiler (Apple TV, Amazon) — sin suscripción",
+      "status": "pendiente"
+    },
+    {
+      "title": "Fury",
+      "year": 2014,
+      "category": "Bélicas",
+      "mediaType": "movie",
+      "director": "David Ayer",
+      "cast": "Brad Pitt, Shia LaBeouf",
+      "imdb": 7.6,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "The Dirt",
+      "year": 2019,
+      "category": "Biopic",
+      "mediaType": "movie",
+      "director": "Jeff Tremaine",
+      "cast": "Douglas Booth, Colson Baker (Machine Gun Kelly)",
+      "imdb": 6.7,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "The Shawshank Redemption",
+      "year": 1994,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Frank Darabont",
+      "cast": "Tim Robbins, Morgan Freeman",
+      "imdb": 9.3,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Fight Club",
+      "year": 1999,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "David Fincher",
+      "cast": "Brad Pitt, Edward Norton",
+      "imdb": 8.8,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "Ciudad de Dios",
+      "year": 2002,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Fernando Meirelles / Kátia Lund",
+      "cast": "Alexandre Rodrigues, Leandro Firmino",
+      "imdb": 8.6,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "El Pianista",
+      "year": 2002,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Roman Polanski",
+      "cast": "Adrien Brody, Thomas Kretschmann",
+      "imdb": 8.5,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Good Will Hunting",
+      "year": 1997,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Gus Van Sant",
+      "cast": "Matt Damon, Robin Williams",
+      "imdb": 8.3,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "American Beauty",
+      "year": 1999,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Sam Mendes",
+      "cast": "Kevin Spacey, Annette Bening",
+      "imdb": 8.3,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Scent of a Woman",
+      "year": 1992,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Martin Brest",
+      "cast": "Al Pacino, Chris O'Donnell",
+      "imdb": 8.0,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Edward Scissorhands",
+      "year": 1990,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Tim Burton",
+      "cast": "Johnny Depp, Winona Ryder",
+      "imdb": 7.9,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Marty Supreme",
+      "year": 2025,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Josh Safdie",
+      "cast": "Timothée Chalamet, Gwyneth Paltrow",
+      "imdb": 7.8,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Manchester by the Sea",
+      "year": 2016,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Kenneth Lonergan",
+      "cast": "Casey Affleck, Michelle Williams",
+      "imdb": 7.8,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "One Battle After Another",
+      "year": 2025,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Paul Thomas Anderson",
+      "cast": "Leonardo DiCaprio, Sean Penn",
+      "imdb": 7.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Día de Furia",
+      "year": 1993,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Joel Schumacher",
+      "cast": "Michael Douglas, Robert Duvall",
+      "imdb": 7.6,
+      "platforms": [
+        "Alquiler"
+      ],
+      "rental": true,
+      "platformRaw": "Alquiler (Apple TV, Amazon) — sin suscripción",
+      "status": "pendiente"
+    },
+    {
+      "title": "Thelma y Louise",
+      "year": 1991,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Ridley Scott",
+      "cast": "Susan Sarandon, Geena Davis",
+      "imdb": 7.6,
+      "platforms": [
+        "Alquiler"
+      ],
+      "rental": true,
+      "platformRaw": "Alquiler (Apple TV, Amazon, Google Play) — sin suscripción",
+      "status": "pendiente"
+    },
+    {
+      "title": "A Time to Kill",
+      "year": 1996,
+      "category": "Drama",
+      "mediaType": "movie",
+      "director": "Joel Schumacher",
+      "cast": "Matthew McConaughey, Sandra Bullock",
+      "imdb": 7.4,
+      "platforms": [
+        "Netflix",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "The Dark Knight",
+      "year": 2008,
+      "category": "Superhéroes",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Christian Bale, Heath Ledger",
+      "imdb": 9.0,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "The Dark Knight Rises",
+      "year": 2012,
+      "category": "Superhéroes",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Christian Bale, Tom Hardy",
+      "imdb": 8.4,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Joker",
+      "year": 2019,
+      "category": "Superhéroes",
+      "mediaType": "movie",
+      "director": "Todd Phillips",
+      "cast": "Joaquin Phoenix, Robert De Niro",
+      "imdb": 8.3,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Batman Begins",
+      "year": 2005,
+      "category": "Superhéroes",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Christian Bale, Michael Caine",
+      "imdb": 8.2,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Deadpool",
+      "year": 2016,
+      "category": "Superhéroes",
+      "mediaType": "movie",
+      "director": "Tim Miller",
+      "cast": "Ryan Reynolds, Morena Baccarin",
+      "imdb": 8.0,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Inception",
+      "year": 2010,
+      "category": "Ciencia ficción",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Leonardo DiCaprio, Joseph Gordon-Levitt",
+      "imdb": 8.8,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Interstellar",
+      "year": 2014,
+      "category": "Ciencia ficción",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Matthew McConaughey, Anne Hathaway",
+      "imdb": 8.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Mad Max: Fury Road",
+      "year": 2015,
+      "category": "Ciencia ficción",
+      "mediaType": "movie",
+      "director": "George Miller",
+      "cast": "Tom Hardy, Charlize Theron",
+      "imdb": 8.1,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Dune",
+      "year": 2021,
+      "category": "Ciencia ficción",
+      "mediaType": "movie",
+      "director": "Denis Villeneuve",
+      "cast": "Timothée Chalamet, Rebecca Ferguson",
+      "imdb": 8.0,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Ready Player One",
+      "year": 2018,
+      "category": "Ciencia ficción",
+      "mediaType": "movie",
+      "director": "Steven Spielberg",
+      "cast": "Tye Sheridan, Olivia Cooke",
+      "imdb": 7.4,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Seven",
+      "year": 1995,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "David Fincher",
+      "cast": "Brad Pitt, Morgan Freeman",
+      "imdb": 8.6,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Silence of the Lambs",
+      "year": 1991,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Jonathan Demme",
+      "cast": "Jodie Foster, Anthony Hopkins",
+      "imdb": 8.6,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "El Secreto de sus Ojos",
+      "year": 2009,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Juan José Campanella",
+      "cast": "Ricardo Darín, Soledad Villamil",
+      "imdb": 8.2,
+      "platforms": [
+        "Netflix",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Prisoners",
+      "year": 2013,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Denis Villeneuve",
+      "cast": "Hugh Jackman, Jake Gyllenhaal",
+      "imdb": 8.1,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Sexto Sentido",
+      "year": 1999,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "M. Night Shyamalan",
+      "cast": "Bruce Willis, Haley Joel Osment",
+      "imdb": 8.1,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Gone Girl",
+      "year": 2014,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "David Fincher",
+      "cast": "Ben Affleck, Rosamund Pike",
+      "imdb": 8.1,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Nueve Reinas",
+      "year": 2000,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Fabián Bielinsky",
+      "cast": "Ricardo Darín, Gastón Pauls",
+      "imdb": 8.0,
+      "platforms": [
+        "Max",
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Max / Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Mystic River",
+      "year": 2003,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Clint Eastwood",
+      "cast": "Sean Penn, Tim Robbins",
+      "imdb": 7.9,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Misery",
+      "year": 1990,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Rob Reiner",
+      "cast": "James Caan, Kathy Bates",
+      "imdb": 7.8,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Zodiac",
+      "year": 2007,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "David Fincher",
+      "cast": "Jake Gyllenhaal, Robert Downey Jr.",
+      "imdb": 7.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Training Day",
+      "year": 2001,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Antoine Fuqua",
+      "cast": "Denzel Washington, Ethan Hawke",
+      "imdb": 7.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Sleepy Hollow",
+      "year": 1999,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Tim Burton",
+      "cast": "Johnny Depp, Christina Ricci",
+      "imdb": 7.3,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "Insomnia",
+      "year": 2002,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Christopher Nolan",
+      "cast": "Al Pacino, Robin Williams",
+      "imdb": 7.2,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Red Dragon",
+      "year": 2002,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Brett Ratner",
+      "cast": "Edward Norton, Anthony Hopkins",
+      "imdb": 7.2,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Basic Instinct",
+      "year": 1992,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Paul Verhoeven",
+      "cast": "Michael Douglas, Sharon Stone",
+      "imdb": 7.0,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Internal Affairs",
+      "year": 1990,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Mike Figgis",
+      "cast": "Richard Gere, Andy García",
+      "imdb": 6.9,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Hannibal",
+      "year": 2001,
+      "category": "Suspenso",
+      "mediaType": "movie",
+      "director": "Ridley Scott",
+      "cast": "Anthony Hopkins, Julianne Moore",
+      "imdb": 6.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Django Unchained",
+      "year": 2012,
+      "category": "Western",
+      "mediaType": "movie",
+      "director": "Quentin Tarantino",
+      "cast": "Jamie Foxx, Christoph Waltz",
+      "imdb": 8.4,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Pulp Fiction",
+      "year": 1994,
+      "category": "Thriller",
+      "mediaType": "movie",
+      "director": "Quentin Tarantino",
+      "cast": "John Travolta, Samuel L. Jackson",
+      "imdb": 8.9,
+      "platforms": [
+        "Paramount+",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Paramount / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Parasite",
+      "year": 2019,
+      "category": "Thriller",
+      "mediaType": "movie",
+      "director": "Bong Joon-ho",
+      "cast": "Song Kang-ho, Lee Sun-kyun",
+      "imdb": 8.5,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "Shutter Island",
+      "year": 2010,
+      "category": "Thriller",
+      "mediaType": "movie",
+      "director": "Martin Scorsese",
+      "cast": "Leonardo DiCaprio, Mark Ruffalo",
+      "imdb": 8.2,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Nightcrawler",
+      "year": 2014,
+      "category": "Thriller",
+      "mediaType": "movie",
+      "director": "Dan Gilroy",
+      "cast": "Jake Gyllenhaal, Rene Russo",
+      "imdb": 7.8,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Gladiator",
+      "year": 2000,
+      "category": "Épicas",
+      "mediaType": "movie",
+      "director": "Ridley Scott",
+      "cast": "Russell Crowe, Joaquin Phoenix",
+      "imdb": 8.5,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Braveheart",
+      "year": 1995,
+      "category": "Épicas",
+      "mediaType": "movie",
+      "director": "Mel Gibson",
+      "cast": "Mel Gibson, Sophie Marceau",
+      "imdb": 8.3,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Troya",
+      "year": 2004,
+      "category": "Épicas",
+      "mediaType": "movie",
+      "director": "Wolfgang Petersen",
+      "cast": "Brad Pitt, Eric Bana",
+      "imdb": 7.2,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Titanic",
+      "year": 1997,
+      "category": "Románticas",
+      "mediaType": "movie",
+      "director": "James Cameron",
+      "cast": "Leonardo DiCaprio, Kate Winslet",
+      "imdb": 7.9,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Notting Hill",
+      "year": 1999,
+      "category": "Románticas",
+      "mediaType": "movie",
+      "director": "Roger Michell",
+      "cast": "Julia Roberts, Hugh Grant",
+      "imdb": 7.2,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "Truman Show",
+      "year": 1998,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Peter Weir",
+      "cast": "Jim Carrey, Laura Linney",
+      "imdb": 8.2,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Groundhog Day",
+      "year": 1993,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Harold Ramis",
+      "cast": "Bill Murray, Andie MacDowell",
+      "imdb": 8.0,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "When Harry Met Sally",
+      "year": 1989,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Rob Reiner",
+      "cast": "Billy Crystal, Meg Ryan",
+      "imdb": 7.7,
+      "platforms": [],
+      "rental": false,
+      "platformRaw": null,
+      "status": "pendiente"
+    },
+    {
+      "title": "As Good as It Gets",
+      "year": 1997,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "James L. Brooks",
+      "cast": "Jack Nicholson, Helen Hunt",
+      "imdb": 7.6,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Loco por Mary",
+      "year": 1998,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Bobby y Peter Farrelly",
+      "cast": "Cameron Diaz, Ben Stiller",
+      "imdb": 7.2,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "La Familia de mi Novia",
+      "year": 2000,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Jay Roach",
+      "cast": "Robert De Niro, Ben Stiller",
+      "imdb": 7.0,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Pretty Woman",
+      "year": 1990,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Garry Marshall",
+      "cast": "Julia Roberts, Richard Gere",
+      "imdb": 7.0,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Sleepless in Seattle",
+      "year": 1993,
+      "category": "Comedia Romántica",
+      "mediaType": "movie",
+      "director": "Nora Ephron",
+      "cast": "Tom Hanks, Meg Ryan",
+      "imdb": 6.8,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Goodfellas",
+      "year": 1990,
+      "category": "Acción",
+      "mediaType": "movie",
+      "director": "Martin Scorsese",
+      "cast": "Robert De Niro, Ray Liotta",
+      "imdb": 8.7,
+      "platforms": [
+        "Max"
+      ],
+      "rental": false,
+      "platformRaw": "Max",
+      "status": "pendiente"
+    },
+    {
+      "title": "Saving Private Ryan",
+      "year": 1998,
+      "category": "Acción",
+      "mediaType": "movie",
+      "director": "Steven Spielberg",
+      "cast": "Tom Hanks, Matt Damon",
+      "imdb": 8.6,
+      "platforms": [
+        "Paramount+",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Paramount+ / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Kill Bill: Vol. 1",
+      "year": 2003,
+      "category": "Acción",
+      "mediaType": "movie",
+      "director": "Quentin Tarantino",
+      "cast": "Uma Thurman, David Carradine",
+      "imdb": 8.1,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    },
+    {
+      "title": "The wolf of wallstreet",
+      "year": 2002,
+      "category": "Comedia",
+      "mediaType": "movie",
+      "director": "Martin Scorsese",
+      "cast": "Leonardo DiCaprio, Jonah Hill",
+      "imdb": 8.2,
+      "platforms": [
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Catch me if you can",
+      "year": 2013,
+      "category": "Comedia",
+      "mediaType": "movie",
+      "director": "Steven Spielberg",
+      "cast": "Leonardo DiCaprio, Tom Hanks",
+      "imdb": 8.1,
+      "platforms": [
+        "Paramount+",
+        "Prime Video"
+      ],
+      "rental": false,
+      "platformRaw": "Paramount+ / Prime Video",
+      "status": "pendiente"
+    },
+    {
+      "title": "Home Alone",
+      "year": 1990,
+      "category": "Comedia",
+      "mediaType": "movie",
+      "director": "Chris Columbus",
+      "cast": "Macaulay Culkin, Joe Pesci",
+      "imdb": 7.7,
+      "platforms": [
+        "Disney+"
+      ],
+      "rental": false,
+      "platformRaw": "Disney+",
+      "status": "pendiente"
+    },
+    {
+      "title": "Once upon a time in Hollywood",
+      "year": 2019,
+      "category": "Comedia",
+      "mediaType": "movie",
+      "director": "Quentin Tarantino",
+      "cast": "Leonardo DiCaprio, Brad Pitt",
+      "imdb": 7.6,
+      "platforms": [
+        "Netflix"
+      ],
+      "rental": false,
+      "platformRaw": "Netflix",
+      "status": "pendiente"
+    }
+  ]
+}

@@ -1,13 +1,11 @@
 /* =========================================================================
-   Recomendadas · lógica de la app
-   - Búsqueda de títulos en TMDB
-   - Alta anónima y lectura de recomendaciones en Firestore (Firebase)
+   Recomendadas · watchlist grupal
+   - Lista compartida de películas/series pendientes, por categoría
+   - Plataforma donde verlas · estado "vista" POR PERSONA (alias)
+   - Búsqueda / enriquecido con TMDB · guardado en Firestore
    Sin build step: módulo ES cargado directo por el navegador.
    ========================================================================= */
 
-/* El SDK de Firebase se importa de forma dinámica dentro de initFirebase(),
-   solo cuando hay config válida (ver más abajo). Así la pantalla de "falta
-   configurar" no depende de ninguna red. */
 let FS = null; // funciones de Firestore, cargadas bajo demanda
 
 /* ---------------------------------------------------------------- Config */
@@ -18,42 +16,50 @@ const FB = CFG.FIREBASE_CONFIG || {};
 
 const TMDB_BASE = "https://api.themoviedb.org/3";
 const IMG_BASE = "https://image.tmdb.org/t/p";
-const COLLECTION = "recomendaciones";
+const COLLECTION = "titulos";
+const ALIAS_KEY = "reco_alias";
 
-function isPlaceholder(v) {
-  return !v || typeof v !== "string" || v.startsWith("PEGA_AQUI");
-}
-function configReady() {
-  return !isPlaceholder(TMDB_KEY) && !isPlaceholder(FB.apiKey) && !isPlaceholder(FB.projectId);
-}
+const PLATFORMS = ["Netflix", "Max", "Disney+", "Prime Video", "Paramount+", "Apple TV+", "Alquiler"];
+
+const isPlaceholder = (v) => !v || typeof v !== "string" || v.startsWith("PEGA_AQUI");
+const configReady = () => !isPlaceholder(TMDB_KEY) && !isPlaceholder(FB.apiKey) && !isPlaceholder(FB.projectId);
 
 /* ---------------------------------------------------------------- DOM */
 const $ = (id) => document.getElementById(id);
-const grid = $("grid");
 const els = {
   config: $("configState"), error: $("errorState"), errorText: $("errorText"),
-  loading: $("loadingState"), empty: $("emptyState"), noMatch: $("noMatchState"),
-  typeFilter: $("typeFilter"), feedSearch: $("feedSearch"), sortSelect: $("sortSelect"),
-  overlay: $("modalOverlay"), openBtn: $("openModalBtn"), closeBtn: $("closeModalBtn"),
-  tmdbSearch: $("tmdbSearch"), results: $("results"), resultsHint: $("resultsHint"),
-  commentField: $("commentField"), commentInput: $("commentInput"), charCount: $("charCount"),
-  modalFooter: $("modalFooter"), publishBtn: $("publishBtn"), modalMsg: $("modalMsg"),
+  loading: $("loadingState"), empty: $("emptyState"), importing: $("importingState"),
+  noMatch: $("noMatchState"), sections: $("sections"), controls: $("controls"),
+  aliasChip: $("aliasChip"), aliasWho: $("aliasWho"), openAddBtn: $("openAddBtn"),
+  statusFilter: $("statusFilter"), catFilter: $("catFilter"), platFilter: $("platFilter"), feedSearch: $("feedSearch"),
+  importBtn: $("importBtn"), emptyAddBtn: $("emptyAddBtn"), importBar: $("importBar"), importLbl: $("importLbl"),
+  // alias modal
+  aliasOverlay: $("aliasOverlay"), aliasCloseBtn: $("aliasCloseBtn"), aliasInput: $("aliasInput"),
+  aliasExisting: $("aliasExisting"), aliasSaveBtn: $("aliasSaveBtn"),
+  // add modal
+  addOverlay: $("addOverlay"), addCloseBtn: $("addCloseBtn"), tmdbSearch: $("tmdbSearch"),
+  results: $("results"), resultsHint: $("resultsHint"), addDetails: $("addDetails"),
+  catChips: $("catChips"), catCustom: $("catCustom"), platChips: $("platChips"),
+  addBtn: $("addBtn"), addMsg: $("addMsg"),
 };
 
 /* ---------------------------------------------------------------- Estado */
 let db = null;
-let allRecos = [];      // docs crudos de Firestore
-let grouped = [];       // agrupados por título
-let genreMap = {};      // id -> nombre (movie + tv combinados)
-let selected = null;    // título elegido en el modal
-let uiFilter = { type: "all", text: "", sort: "top" };
+let titles = [];                 // docs de Firestore
+let alias = "";
+let uiFilter = { status: "pending", cat: "all", plat: "all", text: "" };
+let addSel = { item: null, category: null, platforms: new Set() };
 
-function showOnly(stateEl) {
-  [els.config, els.error, els.loading, els.empty, els.noMatch].forEach(e => e.style.display = "none");
-  grid.style.display = "none";
-  if (stateEl === grid) grid.style.display = "grid";
-  else if (stateEl) stateEl.style.display = "block";
+function showState(el) {
+  [els.config, els.error, els.loading, els.empty, els.importing, els.noMatch].forEach(e => e.style.display = "none");
+  els.sections.style.display = "none";
+  if (el === els.sections) els.sections.style.display = "block";
+  else if (el) el.style.display = "block";
 }
+
+const escapeHtml = (s) => (s || "").replace(/[&<>"']/g, c => (
+  { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+));
 
 /* ======================================================================
    TMDB
@@ -62,49 +68,48 @@ async function tmdb(path, params = {}) {
   const url = new URL(TMDB_BASE + path);
   url.searchParams.set("api_key", TMDB_KEY);
   url.searchParams.set("language", TMDB_LANG);
-  for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+  for (const [k, v] of Object.entries(params)) if (v != null && v !== "") url.searchParams.set(k, v);
   const res = await fetch(url);
   if (!res.ok) throw new Error("TMDB " + res.status);
   return res.json();
 }
 
-async function loadGenres() {
-  try {
-    const [mv, tv] = await Promise.all([
-      tmdb("/genre/movie/list"),
-      tmdb("/genre/tv/list"),
-    ]);
-    for (const g of [...(mv.genres || []), ...(tv.genres || [])]) genreMap[g.id] = g.name;
-  } catch (e) {
-    console.warn("No se pudieron cargar los géneros de TMDB", e);
-  }
-}
-
-function posterUrl(path, size = "w200") {
-  return path ? `${IMG_BASE}/${size}${path}` : null;
-}
+const posterUrl = (p, size = "w342") => (p ? `${IMG_BASE}/${size}${p}` : null);
 
 function normalizeResult(r) {
-  const isMovie = r.media_type === "movie";
-  const title = isMovie ? r.title : r.name;
+  const isMovie = r.media_type ? r.media_type === "movie" : true;
+  const title = isMovie ? (r.title || r.name) : (r.name || r.title);
   const date = isMovie ? r.release_date : r.first_air_date;
   return {
     tmdbId: r.id,
-    mediaType: r.media_type,
+    mediaType: r.media_type || "movie",
     title: title || "(sin título)",
-    year: date ? date.slice(0, 4) : "",
+    year: date ? Number(date.slice(0, 4)) : null,
     posterPath: r.poster_path || null,
     overview: r.overview || "",
-    genres: (r.genre_ids || []).map(id => genreMap[id]).filter(Boolean).slice(0, 3),
   };
 }
 
 async function searchTMDB(q) {
-  const data = await tmdb("/search/multi", { query: q, include_adult: "false", page: "1" });
+  const data = await tmdb("/search/multi", { query: q, include_adult: "false", page: 1 });
   return (data.results || [])
     .filter(r => (r.media_type === "movie" || r.media_type === "tv") && (r.title || r.name))
-    .slice(0, 12)
-    .map(normalizeResult);
+    .slice(0, 12).map(normalizeResult);
+}
+
+// Busca la mejor coincidencia para un item de la semilla (título + año).
+async function enrichSeed(item) {
+  try {
+    const data = await tmdb("/search/movie", { query: item.title, year: item.year || "", page: 1 });
+    let best = (data.results || [])[0];
+    // si hay año, preferir match exacto de año
+    if (item.year) {
+      const exact = (data.results || []).find(r => (r.release_date || "").slice(0, 4) === String(item.year));
+      if (exact) best = exact;
+    }
+    if (best) return { tmdbId: best.id, posterPath: best.poster_path || null, overview: best.overview || "" };
+  } catch (e) { /* seguimos sin enriquecer */ }
+  return { tmdbId: null, posterPath: null, overview: "" };
 }
 
 /* ======================================================================
@@ -116,303 +121,356 @@ async function initFirebase() {
     import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"),
   ]);
   FS = firestore;
-  const app = initializeApp(FB);
-  db = FS.getFirestore(app);
+  db = FS.getFirestore(initializeApp(FB));
 }
 
-async function loadRecos() {
-  const q = FS.query(FS.collection(db, COLLECTION), FS.orderBy("createdAt", "desc"), FS.limit(1000));
-  const snap = await FS.getDocs(q);
-  allRecos = snap.docs.map(d => {
+async function loadTitles() {
+  const snap = await FS.getDocs(FS.query(FS.collection(db, COLLECTION), FS.orderBy("createdAt", "desc"), FS.limit(2000)));
+  titles = snap.docs.map(d => {
     const x = d.data();
     return {
       id: d.id,
-      tmdbId: x.tmdbId,
-      mediaType: x.mediaType,
+      tmdbId: x.tmdbId ?? null,
+      mediaType: x.mediaType || "movie",
       title: x.title || "",
-      year: x.year || "",
+      year: x.year || null,
       posterPath: x.posterPath || null,
       overview: x.overview || "",
-      genres: Array.isArray(x.genres) ? x.genres : [],
-      comment: (x.comment || "").trim(),
-      createdAt: x.createdAt && x.createdAt.toDate ? x.createdAt.toDate() : null,
+      category: x.category || "Sin categoría",
+      platforms: Array.isArray(x.platforms) ? x.platforms : [],
+      rental: !!x.rental,
+      director: x.director || "",
+      cast: x.cast || "",
+      imdb: x.imdb ?? null,
+      addedBy: x.addedBy || "",
+      seenBy: Array.isArray(x.seenBy) ? x.seenBy : [],
     };
   });
 }
 
-function groupRecos() {
-  const map = new Map();
-  for (const r of allRecos) {
-    const key = `${r.mediaType}:${r.tmdbId}`;
-    if (!map.has(key)) {
-      map.set(key, {
-        key, tmdbId: r.tmdbId, mediaType: r.mediaType, title: r.title, year: r.year,
-        posterPath: r.posterPath, overview: r.overview, genres: r.genres,
-        count: 0, comments: [], latest: r.createdAt || new Date(0),
-      });
-    }
-    const g = map.get(key);
-    g.count += 1;
-    if (r.comment) g.comments.push({ text: r.comment, when: r.createdAt });
-    if (r.createdAt && r.createdAt > g.latest) g.latest = r.createdAt;
-    // completar metadata si algún doc viejo la tuviera vacía
-    if (!g.posterPath && r.posterPath) g.posterPath = r.posterPath;
-    if (!g.genres.length && r.genres.length) g.genres = r.genres;
-  }
-  grouped = [...map.values()];
+async function addTitle(doc) {
+  await FS.addDoc(FS.collection(db, COLLECTION), { ...doc, createdAt: FS.serverTimestamp() });
 }
 
-async function publishReco(item, comment) {
-  await FS.addDoc(FS.collection(db, COLLECTION), {
-    tmdbId: item.tmdbId,
-    mediaType: item.mediaType,
-    title: item.title,
-    year: item.year,
-    posterPath: item.posterPath,
-    overview: item.overview,
-    genres: item.genres,
-    comment: comment || "",
-    createdAt: FS.serverTimestamp(),
-  });
+async function toggleSeen(t) {
+  if (!alias) { openAliasModal(); return; }
+  const ref = FS.doc(db, COLLECTION, t.id);
+  const has = t.seenBy.includes(alias);
+  await FS.updateDoc(ref, { seenBy: has ? FS.arrayRemove(alias) : FS.arrayUnion(alias) });
+  // update local
+  t.seenBy = has ? t.seenBy.filter(a => a !== alias) : [...t.seenBy, alias];
+  renderFeed();
 }
+
+/* ======================================================================
+   Identidad (alias)
+   ====================================================================== */
+function loadAlias() {
+  try { alias = localStorage.getItem(ALIAS_KEY) || ""; } catch (e) { alias = ""; }
+  els.aliasWho.textContent = alias || "¿quién sos?";
+}
+function saveAlias(name) {
+  alias = name.trim();
+  try { localStorage.setItem(ALIAS_KEY, alias); } catch (e) {}
+  els.aliasWho.textContent = alias || "¿quién sos?";
+}
+function knownAliases() {
+  const set = new Set();
+  for (const t of titles) { for (const a of t.seenBy) set.add(a); if (t.addedBy) set.add(t.addedBy); }
+  return [...set].sort((a, b) => a.localeCompare(b));
+}
+function openAliasModal() {
+  els.aliasInput.value = alias;
+  els.aliasSaveBtn.disabled = !alias;
+  const others = knownAliases().filter(a => a !== alias);
+  els.aliasExisting.innerHTML = others.length
+    ? `<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">O elegí uno ya usado:</div>
+       <div class="alias-list">${others.map(a => `<button class="who-opt" data-a="${escapeHtml(a)}">${escapeHtml(a)}</button>`).join("")}</div>`
+    : "";
+  els.aliasExisting.querySelectorAll(".who-opt").forEach(b =>
+    b.addEventListener("click", () => { saveAlias(b.dataset.a); closeAliasModal(); renderFeed(); }));
+  els.aliasOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  els.aliasInput.focus();
+}
+function closeAliasModal() { els.aliasOverlay.classList.remove("open"); document.body.style.overflow = ""; }
 
 /* ======================================================================
    Render del feed
    ====================================================================== */
-function timeAgo(date) {
-  if (!date) return "";
-  const s = Math.floor((Date.now() - date.getTime()) / 1000);
-  if (s < 60) return "recién";
-  const m = Math.floor(s / 60); if (m < 60) return `hace ${m} min`;
-  const h = Math.floor(m / 60); if (h < 24) return `hace ${h} h`;
-  const d = Math.floor(h / 24); if (d < 30) return `hace ${d} d`;
-  const mo = Math.floor(d / 30); if (mo < 12) return `hace ${mo} mes${mo > 1 ? "es" : ""}`;
-  return `hace ${Math.floor(mo / 12)} año${mo >= 24 ? "s" : ""}`;
+function distinct(getter) {
+  const c = new Map();
+  for (const t of titles) for (const v of [].concat(getter(t))) if (v) c.set(v, (c.get(v) || 0) + 1);
+  return [...c.entries()].sort((a, b) => b[1] - a[1]);
 }
 
-function escapeHtml(s) {
-  return (s || "").replace(/[&<>"']/g, c => (
-    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
-  ));
+function populateFilters() {
+  const cats = distinct(t => t.category);
+  els.catFilter.innerHTML = `<option value="all">Todas las categorías</option>` +
+    cats.map(([c, n]) => `<option value="${escapeHtml(c)}">${escapeHtml(c)} (${n})</option>`).join("");
+  els.catFilter.value = uiFilter.cat;
+
+  const plats = distinct(t => (t.platforms.length ? t.platforms : ["Por confirmar"]));
+  els.platFilter.innerHTML = `<option value="all">Todas las plataformas</option>` +
+    plats.map(([p, n]) => `<option value="${escapeHtml(p)}">${escapeHtml(p)} (${n})</option>`).join("");
+  els.platFilter.value = uiFilter.plat;
 }
 
-function applyFilters() {
-  let list = grouped.slice();
-  if (uiFilter.type !== "all") list = list.filter(g => g.mediaType === uiFilter.type);
-  if (uiFilter.text) {
-    const t = uiFilter.text.toLowerCase();
-    list = list.filter(g => g.title.toLowerCase().includes(t));
+function matchesFilters(t) {
+  if (uiFilter.status === "pending" && alias && t.seenBy.includes(alias)) return false;
+  if (uiFilter.status === "seen" && !(alias && t.seenBy.includes(alias))) return false;
+  if (uiFilter.cat !== "all" && t.category !== uiFilter.cat) return false;
+  if (uiFilter.plat !== "all") {
+    const plats = t.platforms.length ? t.platforms : ["Por confirmar"];
+    if (!plats.includes(uiFilter.plat)) return false;
   }
-  if (uiFilter.sort === "recent") {
-    list.sort((a, b) => b.latest - a.latest);
-  } else { // top
-    list.sort((a, b) => b.count - a.count || b.latest - a.latest);
-  }
-  return list;
+  if (uiFilter.text && !t.title.toLowerCase().includes(uiFilter.text.toLowerCase())) return false;
+  return true;
+}
+
+function cardHTML(t) {
+  const img = posterUrl(t.posterPath, "w342");
+  const seenMine = alias && t.seenBy.includes(alias);
+  const plats = t.platforms.length
+    ? t.platforms.map(p => `<span class="plat-chip">${escapeHtml(p)}</span>`).join("")
+    : `<span class="plat-chip na">Plataforma por confirmar</span>`;
+  const seenLine = t.seenBy.length
+    ? `👁 <b>${escapeHtml(t.seenBy.join(", "))}</b>`
+    : `Nadie la vio todavía`;
+  const rental = t.rental ? `<span class="rental-badge">💲 Alquiler</span>` : "";
+  const imdb = t.imdb ? `<span class="imdb-badge">★ ${t.imdb}</span>` : "";
+  return `
+    <article class="card ${seenMine ? "seen-mine" : ""}">
+      <div class="poster">
+        ${img ? `<img loading="lazy" src="${img}" alt="${escapeHtml(t.title)}">` : `<div class="no-img">🎞️</div>`}
+        <div class="badges-tl"><span class="cat-badge">${escapeHtml(t.category)}</span>${rental}</div>
+        ${imdb}
+      </div>
+      <div class="card-body">
+        <div class="card-title">${escapeHtml(t.title)}</div>
+        ${t.year ? `<div class="card-year">${t.year}${t.mediaType === "tv" ? " · Serie" : ""}</div>` : ""}
+        <div class="platforms">${plats}</div>
+        <div class="card-foot">
+          <div class="seen-line">${seenLine}</div>
+          <button class="btn-seen ${seenMine ? "on" : ""}" data-id="${t.id}">${seenMine ? "✓ La vi" : "Marcar como vista"}</button>
+        </div>
+      </div>
+    </article>`;
 }
 
 function renderFeed() {
-  const list = applyFilters();
-  if (!grouped.length) { showOnly(els.empty); return; }
-  if (!list.length) { showOnly(els.noMatch); return; }
+  populateFilters();
+  if (!titles.length) { showState(els.empty); return; }
+  const list = titles.filter(matchesFilters);
+  if (!list.length) { showState(els.noMatch); return; }
 
-  grid.innerHTML = list.map(g => {
-    const img = posterUrl(g.posterPath, "w342");
-    const typeLabel = g.mediaType === "movie" ? "🎬 Peli" : "📺 Serie";
-    const genres = g.genres.map(x => `<span class="genre-chip">${escapeHtml(x)}</span>`).join("");
-    const comments = g.comments
-      .sort((a, b) => (b.when || 0) - (a.when || 0))
-      .map(c => `<div class="comment">${escapeHtml(c.text)}<span class="when">${timeAgo(c.when)}</span></div>`)
-      .join("");
-    const commentsBlock = g.comments.length
-      ? `<button class="comments-toggle" data-key="${g.key}">💬 ${g.comments.length} comentario${g.comments.length > 1 ? "s" : ""}</button>
-         <div class="comments" data-comments="${g.key}">${comments}</div>`
-      : "";
+  // agrupar por categoría (ordenadas por cantidad)
+  const groups = new Map();
+  for (const t of list) { if (!groups.has(t.category)) groups.set(t.category, []); groups.get(t.category).push(t); }
+  const ordered = [...groups.entries()].sort((a, b) => b[1].length - a[1].length);
+
+  els.sections.innerHTML = ordered.map(([cat, items]) => {
+    items.sort((a, b) => (b.imdb || 0) - (a.imdb || 0) || a.title.localeCompare(b.title));
     return `
-      <article class="card">
-        <div class="poster">
-          ${img ? `<img loading="lazy" src="${img}" alt="${escapeHtml(g.title)}">` : `<div class="no-img">🎞️</div>`}
-          <span class="type-badge ${g.mediaType}">${typeLabel}</span>
-          <span class="reco-badge">👍 ${g.count}</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">${escapeHtml(g.title)}</div>
-          <div class="card-meta">${g.year ? escapeHtml(g.year) : ""}</div>
-          ${genres ? `<div class="genres">${genres}</div>` : ""}
-          ${commentsBlock}
-        </div>
-      </article>`;
+      <section class="cat-section">
+        <div class="cat-head"><h2>${escapeHtml(cat)}</h2><span class="n">${items.length}</span></div>
+        <div class="grid">${items.map(cardHTML).join("")}</div>
+      </section>`;
   }).join("");
 
-  grid.querySelectorAll(".comments-toggle").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const box = grid.querySelector(`[data-comments="${btn.dataset.key}"]`);
-      if (box) box.classList.toggle("open");
-    });
-  });
+  els.sections.querySelectorAll(".btn-seen").forEach(btn =>
+    btn.addEventListener("click", () => { const t = titles.find(x => x.id === btn.dataset.id); if (t) toggleSeen(t); }));
 
-  showOnly(grid);
+  showState(els.sections);
+  els.controls.style.display = "block";
 }
 
 /* ======================================================================
-   Modal: buscar y publicar
+   Importar semilla (una vez)
+   ====================================================================== */
+async function importSeed() {
+  showState(els.importing);
+  let seed;
+  try {
+    seed = (await (await fetch("seed.json")).json()).titulos || [];
+  } catch (e) {
+    showState(els.error); els.errorText.textContent = "No encontramos seed.json para importar."; return;
+  }
+  const total = seed.length;
+  let done = 0;
+  const setProg = () => { els.importBar.style.width = `${Math.round(done / total * 100)}%`; els.importLbl.textContent = `${done} / ${total}`; };
+  setProg();
+
+  // procesar en tandas de 5 para no saturar TMDB
+  for (let i = 0; i < seed.length; i += 5) {
+    const chunk = seed.slice(i, i + 5);
+    await Promise.all(chunk.map(async (s) => {
+      const enr = await enrichSeed(s);
+      await addTitle({
+        tmdbId: enr.tmdbId, mediaType: s.mediaType || "movie",
+        title: s.title, year: s.year || null,
+        posterPath: enr.posterPath, overview: enr.overview,
+        category: s.category || "Sin categoría",
+        platforms: Array.isArray(s.platforms) ? s.platforms : [],
+        rental: !!s.rental, director: s.director || "", cast: s.cast || "",
+        imdb: s.imdb ?? null, addedBy: "lista base", seenBy: [],
+      });
+      done++; setProg();
+    }));
+  }
+  await refresh();
+}
+
+/* ======================================================================
+   Modal: agregar título
    ====================================================================== */
 let searchTimer = null;
 
-function openModal() {
-  els.overlay.classList.add("open");
+function openAddModal() {
+  resetAddModal();
+  els.addOverlay.classList.add("open");
   document.body.style.overflow = "hidden";
   els.tmdbSearch.focus();
 }
-function closeModal() {
-  els.overlay.classList.remove("open");
-  document.body.style.overflow = "";
-  resetModal();
-}
-function resetModal() {
-  els.tmdbSearch.value = "";
-  els.results.innerHTML = "";
-  els.resultsHint.style.display = "block";
-  els.resultsHint.textContent = "Escribí un título para buscar.";
-  els.commentField.style.display = "none";
-  els.modalFooter.style.display = "none";
-  els.commentInput.value = "";
-  els.charCount.textContent = "0";
-  els.modalMsg.className = "modal-msg";
-  els.publishBtn.disabled = true;
-  selected = null;
+function closeAddModal() { els.addOverlay.classList.remove("open"); document.body.style.overflow = ""; }
+function resetAddModal() {
+  els.tmdbSearch.value = ""; els.results.innerHTML = "";
+  els.resultsHint.style.display = "block"; els.resultsHint.textContent = "Escribí un título para buscar.";
+  els.addDetails.style.display = "none"; els.catCustom.value = "";
+  els.addMsg.className = "modal-msg"; els.addBtn.disabled = true;
+  addSel = { item: null, category: null, platforms: new Set() };
 }
 
 function renderResults(items) {
-  if (!items.length) {
-    els.results.innerHTML = "";
-    els.resultsHint.style.display = "block";
-    els.resultsHint.textContent = "No encontramos nada con ese título.";
-    return;
-  }
+  if (!items.length) { els.results.innerHTML = ""; els.resultsHint.style.display = "block"; els.resultsHint.textContent = "No encontramos nada con ese título."; return; }
   els.resultsHint.style.display = "none";
   els.results.innerHTML = items.map((it, i) => {
     const img = posterUrl(it.posterPath, "w92");
     const tag = it.mediaType === "movie" ? `<span class="tag movie">🎬 Peli</span>` : `<span class="tag tv">📺 Serie</span>`;
-    return `
-      <button class="result" data-i="${i}">
+    return `<button class="result" data-i="${i}">
         ${img ? `<img src="${img}" alt="">` : `<div class="no-img">🎞️</div>`}
-        <div class="result-info">
-          <span class="t">${escapeHtml(it.title)}</span>
-          <span class="m">${tag}${it.year ? `<span>${escapeHtml(it.year)}</span>` : ""}</span>
-          ${it.overview ? `<span class="o">${escapeHtml(it.overview)}</span>` : ""}
-        </div>
-      </button>`;
+        <div class="result-info"><span class="t">${escapeHtml(it.title)}</span>
+        <span class="m">${tag}${it.year ? `<span>${it.year}</span>` : ""}</span></div></button>`;
   }).join("");
-
-  els.results.querySelectorAll(".result").forEach(btn => {
-    btn.addEventListener("click", () => selectResult(items[+btn.dataset.i], btn));
-  });
+  els.results.querySelectorAll(".result").forEach(b => b.addEventListener("click", () => selectResult(items[+b.dataset.i], b)));
 }
 
 function selectResult(item, btn) {
-  selected = item;
+  addSel.item = item;
   els.results.querySelectorAll(".result").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
-  els.commentField.style.display = "block";
-  els.modalFooter.style.display = "block";
-  els.publishBtn.disabled = false;
-  els.commentInput.focus();
+  // chips de categoría (las existentes)
+  const cats = distinct(t => t.category).map(([c]) => c);
+  els.catChips.innerHTML = cats.map(c => `<button class="chip-opt" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join("");
+  els.catChips.querySelectorAll(".chip-opt").forEach(b => b.addEventListener("click", () => {
+    els.catCustom.value = "";
+    els.catChips.querySelectorAll(".chip-opt").forEach(x => x.classList.remove("on"));
+    b.classList.add("on"); addSel.category = b.dataset.cat; updateAddBtn();
+  }));
+  // chips de plataforma
+  els.platChips.innerHTML = PLATFORMS.map(p => `<button class="chip-opt plat" data-p="${escapeHtml(p)}">${escapeHtml(p)}</button>`).join("");
+  els.platChips.querySelectorAll(".chip-opt").forEach(b => b.addEventListener("click", () => {
+    const p = b.dataset.p;
+    if (addSel.platforms.has(p)) { addSel.platforms.delete(p); b.classList.remove("on"); }
+    else { addSel.platforms.add(p); b.classList.add("on"); }
+  }));
+  els.addDetails.style.display = "block";
+  updateAddBtn();
+}
+
+function currentCategory() { return els.catCustom.value.trim() || addSel.category; }
+function updateAddBtn() { els.addBtn.disabled = !(addSel.item && currentCategory()); }
+
+async function onAdd() {
+  const cat = currentCategory();
+  if (!addSel.item || !cat) return;
+  els.addBtn.disabled = true; els.addBtn.textContent = "Agregando…";
+  try {
+    const it = addSel.item;
+    await addTitle({
+      tmdbId: it.tmdbId, mediaType: it.mediaType, title: it.title, year: it.year,
+      posterPath: it.posterPath, overview: it.overview,
+      category: cat, platforms: [...addSel.platforms],
+      rental: addSel.platforms.has("Alquiler"), director: "", cast: "", imdb: null,
+      addedBy: alias || "anónimo", seenBy: [],
+    });
+    els.addMsg.className = "modal-msg success show"; els.addMsg.textContent = "¡Agregada a la lista! 🎉";
+    await refresh();
+    setTimeout(closeAddModal, 900);
+  } catch (e) {
+    console.error(e);
+    els.addMsg.className = "modal-msg error show"; els.addMsg.textContent = "No se pudo agregar. Revisá las reglas de Firestore (ver README).";
+    els.addBtn.disabled = false;
+  } finally { els.addBtn.textContent = "Agregar a la lista"; }
 }
 
 function onSearchInput() {
   const q = els.tmdbSearch.value.trim();
   clearTimeout(searchTimer);
-  selected = null;
-  els.commentField.style.display = "none";
-  els.modalFooter.style.display = "none";
-  if (q.length < 2) {
-    els.results.innerHTML = "";
-    els.resultsHint.style.display = "block";
-    els.resultsHint.textContent = "Escribí un título para buscar.";
-    return;
-  }
-  els.resultsHint.style.display = "block";
-  els.resultsHint.textContent = "Buscando…";
+  addSel.item = null; els.addDetails.style.display = "none";
+  if (q.length < 2) { els.results.innerHTML = ""; els.resultsHint.style.display = "block"; els.resultsHint.textContent = "Escribí un título para buscar."; return; }
+  els.resultsHint.style.display = "block"; els.resultsHint.textContent = "Buscando…";
   searchTimer = setTimeout(async () => {
-    try {
-      const items = await searchTMDB(q);
-      // evita pisar resultados si el usuario siguió escribiendo
-      if (els.tmdbSearch.value.trim() === q) renderResults(items);
-    } catch (e) {
-      console.error(e);
-      els.resultsHint.style.display = "block";
-      els.resultsHint.textContent = "No pudimos buscar en TMDB. Revisá tu conexión o la API key.";
-    }
+    try { const items = await searchTMDB(q); if (els.tmdbSearch.value.trim() === q) renderResults(items); }
+    catch (e) { els.resultsHint.textContent = "No pudimos buscar en TMDB. Revisá tu conexión o la API key."; }
   }, 350);
-}
-
-async function onPublish() {
-  if (!selected) return;
-  els.publishBtn.disabled = true;
-  els.publishBtn.textContent = "Publicando…";
-  els.modalMsg.className = "modal-msg";
-  try {
-    await publishReco(selected, els.commentInput.value.trim());
-    els.modalMsg.className = "modal-msg success show";
-    els.modalMsg.textContent = "¡Gracias! Tu recomendación ya está publicada. 🎉";
-    await refresh();
-    setTimeout(closeModal, 1100);
-  } catch (e) {
-    console.error(e);
-    els.modalMsg.className = "modal-msg error show";
-    els.modalMsg.textContent = "No se pudo publicar. Revisá las reglas de Firestore (ver README).";
-    els.publishBtn.disabled = false;
-  } finally {
-    els.publishBtn.textContent = "Publicar recomendación";
-  }
 }
 
 /* ======================================================================
    Refresh + eventos
    ====================================================================== */
-async function refresh() {
-  await loadRecos();
-  groupRecos();
-  renderFeed();
-}
+async function refresh() { await loadTitles(); renderFeed(); }
 
 function wireEvents() {
-  els.openBtn.addEventListener("click", openModal);
-  els.closeBtn.addEventListener("click", closeModal);
-  els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && els.overlay.classList.contains("open")) closeModal(); });
-
+  els.openAddBtn.addEventListener("click", openAddModal);
+  els.emptyAddBtn.addEventListener("click", openAddModal);
+  els.addCloseBtn.addEventListener("click", closeAddModal);
+  els.addOverlay.addEventListener("click", e => { if (e.target === els.addOverlay) closeAddModal(); });
   els.tmdbSearch.addEventListener("input", onSearchInput);
-  els.commentInput.addEventListener("input", () => { els.charCount.textContent = els.commentInput.value.length; });
-  els.publishBtn.addEventListener("click", onPublish);
-
-  els.typeFilter.querySelectorAll(".seg").forEach(seg => {
-    seg.addEventListener("click", () => {
-      els.typeFilter.querySelectorAll(".seg").forEach(s => s.classList.remove("active"));
-      seg.classList.add("active");
-      uiFilter.type = seg.dataset.type;
-      renderFeed();
-    });
+  els.catCustom.addEventListener("input", () => {
+    if (els.catCustom.value.trim()) els.catChips.querySelectorAll(".chip-opt").forEach(x => x.classList.remove("on"));
+    updateAddBtn();
   });
+  els.addBtn.addEventListener("click", onAdd);
+
+  els.aliasChip.addEventListener("click", openAliasModal);
+  els.aliasCloseBtn.addEventListener("click", closeAliasModal);
+  els.aliasOverlay.addEventListener("click", e => { if (e.target === els.aliasOverlay) closeAliasModal(); });
+  els.aliasInput.addEventListener("input", () => { els.aliasSaveBtn.disabled = !els.aliasInput.value.trim(); });
+  els.aliasSaveBtn.addEventListener("click", () => { if (els.aliasInput.value.trim()) { saveAlias(els.aliasInput.value); closeAliasModal(); renderFeed(); } });
+
+  els.importBtn.addEventListener("click", importSeed);
+
+  els.statusFilter.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", () => {
+    els.statusFilter.querySelectorAll(".seg").forEach(s => s.classList.remove("active"));
+    seg.classList.add("active"); uiFilter.status = seg.dataset.status; renderFeed();
+  }));
+  els.catFilter.addEventListener("change", () => { uiFilter.cat = els.catFilter.value; renderFeed(); });
+  els.platFilter.addEventListener("change", () => { uiFilter.plat = els.platFilter.value; renderFeed(); });
   els.feedSearch.addEventListener("input", () => { uiFilter.text = els.feedSearch.value.trim(); renderFeed(); });
-  els.sortSelect.addEventListener("change", () => { uiFilter.sort = els.sortSelect.value; renderFeed(); });
+
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (els.addOverlay.classList.contains("open")) closeAddModal();
+    if (els.aliasOverlay.classList.contains("open")) closeAliasModal();
+  });
 }
 
 /* ======================================================================
    Arranque
    ====================================================================== */
 async function main() {
-  if (!configReady()) { showOnly(els.config); return; }
+  if (!configReady()) { showState(els.config); return; }
+  loadAlias();
   wireEvents();
-  showOnly(els.loading);
+  showState(els.loading);
   try {
-    initFirebase();
-    await loadGenres();
+    await initFirebase();
     await refresh();
+    if (!alias && titles.length) openAliasModal(); // pedir nombre la primera vez
   } catch (e) {
     console.error(e);
-    showOnly(els.error);
+    showState(els.error);
     els.errorText.textContent = "No pudimos conectar con Firebase. Revisá config.js y las reglas de Firestore (ver README).";
   }
 }

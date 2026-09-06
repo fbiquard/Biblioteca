@@ -1,123 +1,131 @@
-# Recomendadas 🍿
+# Recomendadas 🍿 · nuestra lista para ver
 
-Series y películas **recomendadas por la comunidad**. Cualquiera entra, busca un
-título (con póster, año y sinopsis que trae TMDB), cuenta por qué lo recomienda
-y esa recomendación queda visible para todos. Es **anónimo** (no hay cuentas ni
-login) y **sin costo**.
+Lista **compartida** de películas y series **pendientes de ver**, al estilo del
+Excel familiar: organizada por **categoría**, mostrando **en qué plataforma**
+verlas, y con la posibilidad de que **cada persona marque lo que ya vio** (con un
+alias, sin cuentas ni contraseñas).
 
 - **Frontend**: HTML + CSS + JavaScript, una sola página, sin build ni framework.
-- **Datos de títulos**: [TMDB](https://www.themoviedb.org/) (búsqueda, póster, año, sinopsis, géneros).
-- **Guardado de recomendaciones**: [Firebase / Firestore](https://firebase.google.com/) (plan gratis).
-- **Hosting**: GitHub Pages → queda en **series.biquard.com/recomendadas/**.
+- **Datos de títulos**: [TMDB](https://www.themoviedb.org/) (búsqueda + póster + sinopsis).
+- **Guardado de la lista**: [Firebase / Firestore](https://firebase.google.com/) (plan gratis).
+- **Semilla**: `seed.json` con las 70 películas del Excel, ya normalizadas
+  (categorías propias, plataformas en lista, IMDb). Se importan con **un botón**
+  y se enriquecen con póster/sinopsis de TMDB.
+- **Hosting**: GitHub Pages → **series.biquard.com/recomendadas/**.
+
+## Cómo funciona
+
+1. **Ponés tu nombre** (alias) la primera vez. Queda guardado en tu dispositivo.
+2. Ves la lista **agrupada por categoría**, con la plataforma de cada título y su
+   nota de IMDb.
+3. Filtrás por **Pendientes / Todas / Vistas**, por **categoría** y por
+   **plataforma** (ej: "mostrame solo lo que hay en Max y todavía no vi").
+4. **"Marcar como vista"** suma tu alias a esa peli; se ve **quién la vio**.
+5. **Agregás** títulos buscándolos (TMDB autocompleta póster/año), eligiendo
+   categoría y plataforma(s).
 
 ---
 
 ## 🟢 Puesta en marcha (sin terminal, ~10 minutos)
 
-La app necesita dos "llaves" gratis: una de **Firebase** (para guardar las
-recomendaciones) y una de **TMDB** (para buscar los títulos). Después las pegás
-en el archivo `config.js` y listo.
+Necesitás dos llaves gratis: **Firebase** (guarda la lista) y **TMDB** (busca los
+títulos). Se pegan en `config.js`.
 
 ### Paso 1 — Crear el proyecto de Firebase
 
 1. Entrá a **https://console.firebase.google.com** con tu cuenta de Google.
-2. **Agregar proyecto** → ponele un nombre (ej. `recomendadas`) → seguí los
-   pasos. (Podés desactivar Google Analytics, no hace falta.)
-3. Cuando esté creado, en el panel de inicio hacé clic en el ícono **`</>`**
-   ("Web") para **registrar una app web**. Ponele un apodo y **Registrar app**.
-4. Te va a mostrar un bloque `const firebaseConfig = { … }`. **Esos son los
-   valores que vas a copiar** en el Paso 4. (Si lo cerraste: ⚙️ **Configuración
-   del proyecto → Tus apps → SDK setup and configuration → Config**.)
+2. **Agregar proyecto** → nombre (ej. `recomendadas`) → seguí los pasos
+   (podés desactivar Analytics).
+3. Hacé clic en el ícono **`</>`** ("Web") para **registrar una app web**,
+   ponele un apodo y **Registrar app**.
+4. Copiá el bloque `const firebaseConfig = { … }` (lo usás en el Paso 4). Si lo
+   cerraste: ⚙️ **Configuración del proyecto → Tus apps → Config**.
 
-### Paso 2 — Activar la base de datos (Firestore)
+### Paso 2 — Activar la base de datos (Firestore) y pegar las reglas
 
-1. En el menú de la izquierda: **Compilación → Firestore Database**.
-2. **Crear base de datos** → elegí una ubicación (ej. `southamerica-east1`) →
-   empezá en **modo producción** (después pegamos las reglas correctas).
-3. Cuando esté creada, andá a la pestaña **Reglas** (Rules), **borrá todo** y
-   pegá exactamente esto, luego **Publicar**:
+1. Menú izquierdo: **Compilación → Firestore Database → Crear base de datos** →
+   ubicación (ej. `southamerica-east1`) → **modo producción**.
+2. Pestaña **Reglas** (Rules) → borrá todo y pegá esto → **Publicar**:
 
    ```
    rules_version = '2';
    service cloud.firestore {
      match /databases/{database}/documents {
 
-       match /recomendaciones/{doc} {
-         // Todos pueden LEER las recomendaciones
+       match /titulos/{doc} {
+         // Todos pueden LEER la lista
          allow read: if true;
 
-         // Cualquiera puede CREAR una recomendación, pero validada:
+         // Cualquiera del grupo puede AGREGAR un título válido
          allow create: if
-           request.resource.data.tmdbId is int
-           && (request.resource.data.mediaType == 'movie'
-               || request.resource.data.mediaType == 'tv')
-           && request.resource.data.title is string
+           request.resource.data.title is string
            && request.resource.data.title.size() > 0
            && request.resource.data.title.size() <= 200
-           && request.resource.data.comment is string
-           && request.resource.data.comment.size() <= 280
+           && request.resource.data.category is string
+           && request.resource.data.category.size() > 0
+           && request.resource.data.category.size() <= 60
+           && request.resource.data.seenBy is list
            && request.resource.data.createdAt == request.time;
 
-         // Nadie puede editar ni borrar lo de otros
-         allow update, delete: if false;
+         // Solo se pueden editar estos campos (marcar vista, ajustar plataforma/categoría)
+         allow update: if
+           request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['seenBy', 'platforms', 'category', 'rental'])
+           && request.resource.data.seenBy is list;
+
+         // Nadie borra (por ahora)
+         allow delete: if false;
        }
 
      }
    }
    ```
 
-   > Estas reglas dejan **leer a todos** y **crear** recomendaciones válidas de
-   > forma anónima, pero **impiden editar o borrar**. Así nadie puede romper las
-   > recomendaciones de los demás. La colección se llama `recomendaciones` y se
-   > crea sola con la primera carga.
+   > **Modelo de confianza**: como no hay login, cualquiera que entre puede
+   > agregar títulos y marcar vistas. Es a propósito — es una lista de un
+   > **grupo de confianza** (la familia). Las reglas igual impiden borrar y
+   > limitan qué campos se editan. Si más adelante querés login real o listas
+   > por grupo, se puede sumar.
 
-### Paso 3 — Conseguir la API key de TMDB (gratis)
+### Paso 3 — API key de TMDB (gratis)
 
-1. Entrá a **https://www.themoviedb.org** y creá una cuenta.
-2. **Configuración (perfil) → API → Solicitar / Create → Developer**. Completá
-   el formulario (podés poner un uso "personal/educativo").
-3. Copiá la **API Key (v3 auth)** — una tira de letras y números.
+1. **https://www.themoviedb.org** → creá cuenta.
+2. **Configuración → API → Create → Developer** → completá el formulario.
+3. Copiá la **API Key (v3 auth)**.
 
 ### Paso 4 — Pegar todo en `config.js`
 
-Abrí el archivo **`config.js`** (en esta misma carpeta) y reemplazá los
-`PEGA_AQUI_...` por tus valores:
+Abrí **`config.js`** y reemplazá los `PEGA_AQUI_...`:
+- `FIREBASE_CONFIG` ← valores del Paso 1.
+- `TMDB_API_KEY` ← key del Paso 3.
 
-- En `FIREBASE_CONFIG`, pegá los valores del bloque `firebaseConfig` del Paso 1
-  (`apiKey`, `authDomain`, `projectId`, `storageBucket`, `messagingSenderId`,
-  `appId`).
-- En `TMDB_API_KEY`, pegá la key del Paso 3.
+Guardá / commiteá.
 
-Guardá el archivo. Si editás por la web de GitHub, con **Commit** ya queda.
+### Paso 5 — Abrir e importar la lista base
 
-### Paso 5 — ¡Listo!
+Entrá a **https://series.biquard.com/recomendadas/**. Como la lista arranca
+vacía, vas a ver el botón **"📥 Importar lista base (70)"**: hacé clic **una vez**
+y la app carga las 70 películas del Excel, buscando el póster y la sinopsis de
+cada una en TMDB. ¡Listo! 🎉
 
-GitHub Pages sirve la carpeta automáticamente. Abrí:
-
-**https://series.biquard.com/recomendadas/**
-
-Buscá una serie o peli, agregá tu comentario y publicá. La recomendación
-aparece al toque para todos. 🎉
+> Después, cualquiera agrega títulos nuevos con **＋ Agregar**.
 
 ---
 
 ## ¿Y si algo no anda?
 
-La app te avisa en pantalla:
-
-| Qué ves | Qué significa | Cómo se arregla |
+| Qué ves | Significa | Se arregla |
 | --- | --- | --- |
-| "Falta configurar la app" | `config.js` todavía tiene los `PEGA_AQUI_...` | Completá el Paso 4 |
-| "No pudimos conectar con Firebase" | Config mal pegada o Firestore sin activar | Revisá Pasos 1 y 2 |
-| "No se pudo publicar" | Faltan las reglas de Firestore | Pegá las reglas del Paso 2 |
-| "No pudimos buscar en TMDB" | API key inválida o sin conexión | Revisá el Paso 3 |
+| "Falta configurar la app" | `config.js` con `PEGA_AQUI_...` | Paso 4 |
+| "No pudimos conectar con Firebase" | Config mal pegada o Firestore sin activar | Pasos 1 y 2 |
+| "No se pudo agregar" | Faltan las reglas de Firestore | Paso 2 |
+| "No pudimos buscar en TMDB" | API key inválida o sin conexión | Paso 3 |
 
 ---
 
 ## Correr en tu computadora (opcional, requiere terminal)
 
-Como la app usa módulos JS y `fetch`, **no funciona abriendo el HTML con doble
-clic** (`file://`). Serví la carpeta:
+Usa módulos JS y `fetch`, así que **no funciona con doble clic** (`file://`):
 
 ```bash
 cd recomendadas
@@ -131,17 +139,22 @@ npx http-server -p 8080 .
 
 ```
 recomendadas/
-├── index.html   # estructura + estilos (dark, mobile-first)
-├── app.js       # búsqueda TMDB + alta/lectura en Firestore + render
+├── index.html   # UI: filtros, grilla por categoría, modales
+├── app.js       # alias + Firestore (un doc por título, seenBy) + TMDB + import
+├── seed.json    # las 70 pelis del Excel, normalizadas (semilla)
 ├── config.js    # TUS llaves (Firebase + TMDB) — editá este archivo
 └── README.md    # esta guía
 ```
 
 ## Notas
 
-- Las recomendaciones son **anónimas**: no se guarda quién las hizo.
-- Si un mismo título lo recomiendan varias personas, se agrupa y se muestra el
-  contador **👍 N** con todos los comentarios.
-- Los valores de `config.js` quedan públicos en el repo: es **normal y seguro**.
-  La config de Firebase está pensada para ser pública (lo que protege los datos
-  son las **reglas**), y la key de TMDB es de solo lectura y regenerable.
+- Cada título es **un documento** en la colección `titulos`. `seenBy` guarda los
+  alias de quienes ya lo vieron.
+- El alias vive en tu navegador (`localStorage`); podés cambiarlo tocando el chip
+  👤 del header.
+- La semilla respeta las **categorías propias** de la familia y sus notas de
+  **IMDb**; TMDB solo agrega póster y sinopsis.
+- 13 títulos venían **sin plataforma** en el Excel: quedan como "por confirmar" y
+  se pueden completar editando (o al re-cargar).
+- Los valores de `config.js` quedan públicos en el repo: es **normal y seguro**
+  (Firebase se protege con las reglas; la key de TMDB es de solo lectura).
