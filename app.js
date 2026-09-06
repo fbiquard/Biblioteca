@@ -123,10 +123,15 @@ async function fetchCredits(mediaType, id) {
 
 function pickTrailer(vids) {
   const yt = (vids || []).filter(v => v.site === "YouTube");
-  return yt.find(v => v.type === "Trailer" && v.official)
-    || yt.find(v => v.type === "Trailer")
-    || yt.find(v => v.type === "Teaser")
-    || yt[0] || null;
+  // Puntaje: inglés primero, luego tipo "Trailer" > "Teaser", y oficial suma.
+  const score = v => {
+    let s = 0;
+    if (v.iso_639_1 === "en") s += 100;
+    if (v.type === "Trailer") s += 20; else if (v.type === "Teaser") s += 10;
+    if (v.official) s += 5;
+    return s;
+  };
+  return yt.slice().sort((a, b) => score(b) - score(a))[0] || null;
 }
 
 function fmtRuntime(d, mediaType) {
@@ -145,11 +150,12 @@ function fmtRuntime(d, mediaType) {
 
 // Trae la ficha completa de un título (en vivo, al abrir la card).
 async function fetchDetail(mediaType, id) {
-  const d = await tmdb(`/${mediaType}/${id}`, { append_to_response: "credits,videos,external_ids" });
-  // Preferimos el tráiler en inglés; si no hay, caemos al del idioma por defecto.
-  let trailer = null;
-  try { const v = await tmdb(`/${mediaType}/${id}/videos`, { language: "en-US" }); trailer = pickTrailer(v.results || []); } catch (e) {}
-  if (!trailer) trailer = pickTrailer((d.videos && d.videos.results) || []);
+  // Traemos videos en inglés + español (y sin idioma) y elegimos con puntaje (inglés primero).
+  const d = await tmdb(`/${mediaType}/${id}`, {
+    append_to_response: "credits,videos,external_ids",
+    include_video_language: "en,es,null",
+  });
+  let trailer = pickTrailer((d.videos && d.videos.results) || []);
   const credits = d.credits || {};
   let director = "";
   if (mediaType === "tv") director = (d.created_by || []).map(c => c.name).slice(0, 2).join(", ");
