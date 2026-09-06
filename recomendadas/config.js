@@ -17,12 +17,13 @@ window.APP_CONFIG = {
      Consola → ⚙️ Configuración del proyecto → "Tus apps" → SDK setup and
      configuration → Config.  Copiá y pegá los valores tal cual.            */
   FIREBASE_CONFIG: {
-    apiKey:            "PEGA_AQUI_TU_apiKey",
-    authDomain:        "PEGA_AQUI_TU_authDomain",
-    projectId:         "PEGA_AQUI_TU_projectId",
-    storageBucket:     "PEGA_AQUI_TU_storageBucket",
-    messagingSenderId: "PEGA_AQUI_TU_messagingSenderId",
-    appId:             "PEGA_AQUI_TU_appId",
+    apiKey:            "AIzaSyDEcQDBKvf-n9NgvlPiFC2MsflXiFu9xdk",
+    authDomain:        "recomendadas-4103b.firebaseapp.com",
+    projectId:         "recomendadas-4103b",
+    storageBucket:     "recomendadas-4103b.firebasestorage.app",
+    messagingSenderId: "1091883863450",
+    appId:             "1:1091883863450:web:65cb79597b89f565ccbe23",
+    measurementId:     "G-9WW8EJHPT0",
   },
 
   /* 2) TMDB  -------------------------------------------------------------
